@@ -1,0 +1,196 @@
+<TITLE>The Suggested Upper Merged Ontology (SUMO) - Ontology Portal</TITLE>
+<BODY BACKGROUND="OP/images/border.gif">
+<UL>
+<META NAME="description" CONTENT="The Suggested Upper Merged Ontology (SUMO) - Ontology Portal">
+
+<table><tr><td valign=top><img src="OP/images/sumo1k.gif" height=75></td>
+<td valign=top><font size=6 face="verdana,arial,sans-serif"><b>Suggested Upper Merged Ontology (SUMO)</b></font></td></tr></table>
+
+<TABLE WIDTH=95%><tr><td BGCOLOR=#EEEEEE><b><font face="Arial, Helvetica" color=#5555FF><CENTER>[Home | 
+  <A HREF="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO" TITLE="Browse ontologies on line">Browse</A> | 
+  <A HREF="https://github.com/ontologyportal/sumo" TITLE="Download ontology and lexicon source files">Download</A> | 
+  <A HREF="OP/Pubs.html" TITLE="publications about SUMO">Publications</A> | 
+  <A HREF="http://ontologyportal.github.io/sigmakee/">Tools</A> | 
+  <A HREF="OP/WhatsNew.html">What&lsquo;s New</A> | 
+  <A HREF="OP/About.html" TITLE="Who runs this site.">About</A>]</CENTER></FONT></B></TD></TR></TABLE><P>
+
+<TABLE WIDTH=95%>
+  <TR>
+    <TD VALCIGN=top>
+        The Suggested Upper Merged Ontology (SUMO) and its domain ontologies form
+        the largest formal public ontology in existence today.  They are being used
+        for research and applications in search, linguistics and reasoning. SUMO is
+        the only formal ontology that has been mapped to all of the 
+        <A HREF="http://wordnet.princeton.edu">WordNet</A> lexicon.  SUMO is
+        written in the 
+        <A HREF="https://github.com/ontologyportal/sigmakee/blob/master/suo-kif.pdf">SUO-KIF</A>
+        language.  SUMO
+        is free and owned by the IEEE.  The ontologies that extend SUMO are available
+        under <A HREF="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</A>.
+        <A HREF="professional.html">Adam Pease</A> is the 
+        Technical Editor of SUMO.<P>
+
+    </TD>
+    <TD><IMG width=20 SRC="OP/images/dot_clear.gif"></TD>
+    <TD VALIGN=top BGCOLOR=#EEEEEE WIDTH=300>
+        Find an English word and its corresponding formal term in SUMO:
+        <form method="GET" action="http://sigma.ontologyportal.org:8080/sigma/WordNet.jsp">
+            <TABLE>                
+            <tr>
+                <td WIDTH="100">English Word:&nbsp;</td>
+                <td align="left" valign="top">
+                    <input type="text" size="27" name="word" VALUE="table">
+                    <img SRC="http://www.adampease.org/OP/pixmaps/1pixel.gif" WIDTH="3"></td>
+                <td align="left" valign="top">
+                    <select name="POS">
+                        <option value="1">Noun <option value="2">Verb
+                    </select>
+                </td>
+                <td align="left" valign="top">
+                    <input type="submit" value="Show">
+                </td>
+            </tr>
+            </table><P>
+        </form>        
+    </TD></TR>
+    <TR><TD><IMG height=10 SRC="OP/images/dot_clear.gif"></TD></TR>
+    <TR><TD VALIGN=top>
+        <TABLE WIDTH=100%><TR><TD BGCOLOR=#EEEEEE>
+        <B>Features</B></TD></TR></TABLE>
+        <UL>
+            <LI><A HREF="https://github.com/ontologyportal/sumo/tree/master/WordNetMappings">Mappings</A> 
+                to all of WordNet
+            <LI><A HREF="https://github.com/ontologyportal/sumo/tree/master/Translations">Language 
+                generation templates</A> for Hindi, Chinese, Italian, German, Czech and English
+
+            <LI>Tools for browsing, editing, inferencing and NLP with SUMO are
+                found in the SigmaKEE (<a href="https://github.com/ontologyportal/sigmakee">source</a>, 
+                <a href="http://www.ontologyportal.org/sigmakee-doc/">api</a>, 
+                <A href="https://hub.docker.com/r/apease/sigmakee2018/">docker image</a>) and
+                SigmaNLP (<a href="https://github.com/ontologyportal/sigmanlp">source</a>, 
+                <a href="http://www.ontologyportal.org/sigmanlp-doc/">api</a>,
+                <A href="https://hub.docker.com/r/apease/sigmanlp2018/">docker image</a>)
+                systems
+
+            <LI>Largest free, formal ontology available, with ~25,000 terms and ~80,000 axioms when 
+                all domain ontologies are combined.  These consist of 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Merge.kif">SUMO</A> itself, 
+                the <A HREF="https://github.com/ontologyportal/sumo/blob/master/Mid-level-ontology.kif">MId-Level Ontology (MILO)</A>, 
+                and ontologies of 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Communications.kif">Communications</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/CountriesAndRegions.kif">Countries and regions</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/QoSontology.kif">Distributed computing</A> and 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/UXExperimentalTerms.kif">User interfaces</a>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Economy.kif">Economy</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/FinancialOntology.kif">Finance</A>,
+                <a href="https://github.com/ontologyportal/sumo/blob/master/Cars.kif">Automobiles</a> and
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/engineering.kif">Engineering components</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Food.kif">Food</A>, 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Dining.kif">Dining</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Sports.kif">Sports</a>, 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Catalog.kif">Shopping catalogs</a> and 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Hotel.kif">Hotels</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Geography.kif">Geography</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Government.kif">Government</A> and
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Justice.kif">Justice</a>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Languages.kif">Language taxonomy</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Law.kif">Law</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Media.kif">Media</A>
+                and <a HREF="https://github.com/ontologyportal/sumo/blob/master/Music.kif">Music</a>,
+                Military (<a HREF="https://github.com/ontologyportal/sumo/blob/master/Military.kif">General</a>, 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/MilitaryDevices.kif">Devices</a>, 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/MilitaryProcesses.kif">Processes</a>, 
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/MilitaryPersons.kif">People</a>),
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/naics.kif">North American Industrial Classification System</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/People.kif">People</A> and their
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/emotion.kif">Emotions</a>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/elements.kif">Physical elements</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/TransnationalIssues.kif">Transnational issues</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Transportation.kif">Transportation</A> and its
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/TransportDetail.kif">Details</a>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/VirusProtein%26CellPart.kif">Viruses</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/Weather.kif">Weather</A>,
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/WorldAirports.kif">world airports</A>, and
+                <a HREF="https://github.com/ontologyportal/sumo/blob/master/WMD.kif">weapons of mass destruction</A>.  
+                See also a large amount of instance content from DBPedia about 
+                <a href="OP/content/DBPediaPeople.zip">people</a> and the 
+                <a href="http://gerard.demelo.org/yagosumo/">YAGO</a>, project which includes
+		millions of facts from Wikipedia merged with SUMO, and an initial merge of the Mondial 
+                <a href="https://github.com/ontologyportal/sumo/blob/master/mondial.kif">geographical
+                data</a> with SUMO.  The Open Biomedical Ontologies are lightly <a href="OP/OBO.html">mapped</a> to SUMO.
+                Additional ontologies of terrorism are available on request.
+            <LI>Richly axiomatized, not just a taxonomy.  All terms are formally defined.  Meanings are
+                not dependent on a particular inference implementation.  
+        </UL><P>
+
+        <TABLE WIDTH=100%><TR><TD BGCOLOR=#EEEEEE><B>Documentation and other resources</B></TD></TR></TABLE>        
+        <Ul>
+            <LI>An introductory <a href="http://www.youtube.com/watch?v=EFQRvyyv7Fs">talk</a>,
+              <a href="https://www.youtube.com/channel/UCVyCle22zz5gZjWvNWCBq9Q?view_as=subscriber">YouTube Channel</a>, 
+              <b><a href="OP/Podcasts.html">podcasts</a></b> and a 
+              <A href="OP/Blog.html">blog</a> about SUMO and Sigma
+            <li>Some good <a href="http://www.tptp.org/Seminars/SPASS-XDB/Testing.html">examples</a> that show why simple search isn't enough and that we need inference to
+synthesize information from multiple sources
+            <LI>look at <A HREF="OP/SUMOhistory.html">historical versions</A> of SUMO
+            <LI>We ask that people working with SUMO cite our <A HREF="professional/index.html#FOIS">primary paper</A> 
+            and <A HREF="professional/index.html#BOOK">book</a> in any publications
+            <LI><A HREF="OP/conform.html">Conformance</A> testing for SUMO
+            <LI>Translation of <A HREF="OP/SUMO.owl.html">SUMO into OWL</A> and <A HREF="OP/WordNet.owl.html">WordNet 3.0 in OWL</A>
+            <li>WordNet in 
+              <a href="OP/content/WNout.tptp.zip">TPTP format</a>
+            <LI>Some thoughts on an ontology development 
+                <a href="OP/Process.html">process</a> and ontology development <A HREF="OP/Pitfalls.html">pitfalls</A>
+            <li>An introduction to <a href="OP/resolution.html">resolution theorem proving</a>
+            <LI><B><A HREF="OP/FAQ.html">Frequently asked questions</A></B>
+            <LI>A <A HREF="https://github.com/ontologyportal/sumo/blob/master/WordNetMappings/wordFrequencies.txt">word 
+                sense frequency analysis</A> based on WordNet SemCor that can be used for simple
+                word sense disambiguation.  This was done on WN 1.6 but could be rerun with 
+                the <A HREF="http://www.cs.unt.edu/~rada/downloads.html#semcor">automatic remappings to 2.0</A>
+            <li>A <a href="OP/images/SUMOclasses.gif">very big graph</a> of the taxonomy in SUMO v 1.75
+                <small>(too big to display in a browser, download and view in a drawing application)</small>
+        </UL>
+        </TD>
+        <TD><IMG width=20 SRC="OP/images/dot_clear.gif"></TD>
+        <TD VALIGN=top><IMG SRC="OP/images/SUMOMILO.gif"><p>
+        <img src="OP/images/SUMOcover-lowRes.jpg" width=300><P>
+        Order a copy of the book "<a href="OP/Book.html">Ontology: A Practical Guide</a>"
+        for $25+tax/domestic US shipping <small>(international customers should 
+        <A href="mailTo:apease@articulatesoftware.com">email</a> me first to get shipping costs)</small>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+<P>
+        Using SUMO on a project already?  Some <a href="OP/SigmaStats2010Nov.html">5000 unique domains</a> 
+        use the online Sigma browser every month.
+        Please consider making a donation
+        to help us continue providing support and improvements.
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+        </TD>
+    
+        </TR>
+</TABLE><P>
+
+<P>
+
+<TABLE WIDTH=95%><TR><TD BGCOLOR=#EEEEEE><SMALL><A HREF="mailTo:apease at articulatesoftware dot com">Webmaster</A><br>
+<script>
+var theDate = ""
+theDate = document.lastModified
+document.writeln("Last modified: ");
+document.write(theDate);
+document.write();
+</script></SMALL><br>
+
+</TD></TR></TABLE>
+</Ul>

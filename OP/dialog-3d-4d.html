@@ -1,0 +1,2912 @@
+<TITLE>Endurantism vs. Perdurantism</TITLE>
+
+<CENTER><FONT SIZE=6><B>Endurantism
+and Perdurantism: An Ongoing Debate</B></FONT></CENTER>
+
+<CENTER>
+Pat Hayes, Fritz Lehmann and Chris Welty<br>
+Edited by Adam Pease</CENTER><P>
+
+<H1>Introduction</H1>
+
+<P>The following is a
+dialog about how to model entities and change with respect to time.
+These issues have practical application in temporal reasoning,
+natural language understanding and robot world modeling.  This
+discussion assumes a context of the need to formalize these models in
+logic, either first order logic (FOL), or possibly FOL with some
+extensions.</P>
+
+<P>The two broad positions
+explored in this debate are a model in which entities that are
+situated in space and time are modeled as persisting over time and
+undergoing change without losing their identity.  This position has
+been termed <I>endurantism</I> or &ldquo;3-D&rdquo; modeling.  The
+opposing position advocates a model in which entities do not change. 
+Unchanging entities are situated in space and time and are related to
+their different manifestations at different points in time.  These
+temporal slices of an entity, when taken together, form a history of
+the existence of an object. This position has been termed
+<I>perdurantism</I> or &ldquo;4-D&rdquo; modeling.  This summary does
+not do full justice to either position but should serve to orient the
+reader to the issues explored below.  Further helpful background may
+be found in (Loux, 1998).</P>
+
+<P>To create this
+document, several private email discussions were combined, re-ordered
+and amended by the editor, so because comments may have received
+multiple replies, a few statements are no longer responsive to the
+statements just before them. Editorial notes below are contained in
+[].</P>
+<H1>The Debate</H1>
+
+<P><B>Fritz Lehmann:</B>
+My view that the &quot;temporally qualified 3-D versus 4-D spacetime&quot;
+distinction has nothing whatever to do with the &quot;continuant
+versus occurrent&quot; distinction.  To me, the former is a mere
+modeling (and logic) choice.  The latter is an important (though
+tricky) classification of actual content.</P>
+
+<P><B>Pat Hayes:</B> That,
+I think, is characteristic of the perdurantist, often misdescribed as
+4-D, view of things (which I myself find congenial, as you know.) To
+an endurantist, however, the continuant/occurrent distinction is much
+more fundamental and basic, on a par with the abstract/physical
+distinction.</P>
+
+<P><B>FL:</B> The
+important thing for occurrents is change.  The important thing for
+continuants is that which gets changed (or not).  (The usual
+&quot;identity criteria&quot; dirge applies to both.)</P>
+
+<P><B>FL:</B> An &quot;event&quot;
+most primitively is just some change in something.  A change is any
+difference in something at different times.  
+</P>
+
+<P><B>PH:</B> Ah, there
+indeed speaks a true perdurantist. But Fritz, ask yourself: what kind
+of thing is that 'something' that has differences at different times?</P>
+
+<P><B>FL:</B> Identity
+criteria (by convention) settle this.  
+</P>
+
+<P><B>PH:</B> Yes, I agree
+that is the most useful way to encode this discussion within a
+perdurantist viewpoint. But I also recognize that this point of view
+isn't really acceptable to a confirmed dyed-in-the-wool endurantist,
+who would regard this entire framework of putting together fake (as
+it would seem to them) 'continuants' by using identity criteria to
+assemble the right collection of 'slices' (which they would not even
+recognize as meaningful entities) as bogus and confused, and as
+approaching the entire discussion backwards. And since the
+occurrent/continuant distinction is one that is made primarily by
+endurantists, so that this is in a sense their technical vocabulary. 
+</P>
+
+<P><B>FL:</B> If some
+authority requires endurantism (3-D) to define them, I'll use
+different words.  I say that 3-D vs. 4-D modeling should be
+irrelevant to distinguishing events from objects (where a sneeze is
+an event and a nose is an object).  Events involve, or are, changes
+in objects.  Whether we use 3-D or 4-D, we still need this
+distinction.</P>
+
+<P><B>PH:</B> Please don't
+identify endurantism with '3-D modelling'. (Maybe you didn't intend
+to.)</P>
+
+<P><B>PH:</B> Look,
+<I>everyone </I>agrees that there are (intuitive) objects that
+typically last for a while and which undergo changes in which their
+properties change, and things that are intuitively events. Nobody
+disagrees with that. The issue is how to describe all this properly
+in some ontological framework.</P>
+
+<P><B>PH:</B> Actually I&rsquo;m
+not sure I fully agree with your last claim, however. Maybe I'm a
+more thoroughgoing perdurantist than some others, but I would rather
+like to get rid of the sharp object/event distinction. I think it is
+less useful than it seems to be. Many entities seem to be neither
+object nor event, but to have aspects of both; or maybe, can be
+looked at in either way, while being the same thing (flames, waves,
+weather phenomena, etc.); 
+</P>
+
+<P><B>FL:</B> Agreed;
+that's what I meant by event-constellations.  These are not single or
+primitive changes, but large, spatially extended, temporally extended
+complexes of interrelated sub-events, participants, etc.  
+</P>
+
+<P><B>PH:</B> Well, I
+wouldn't normally think of a flame as large, having many parts, etc.;
+or indeed of an ocean wave, for that matter. Seems to me that very
+small things indeed can often be thought of as both object-like and
+event-like (e.g., photons)</P>
+
+<P><B>FL:</B> At a gross
+enough level of granularity they can be deemed simple events
+(localized changes) or moving objects.</P>
+
+<P><B>PH:</B> The
+essential descriptive apparatus for talking about physical
+relationships between spatiotemporal entities applies equally well to
+anything with a spatiotemporal boundary, i.e. to objects and events
+together. So while the distinction is often useful, I wouldn't say it
+was fundamental or absolute. 
+</P>
+
+<P><B>FL:</B> Yes.  For
+event-constellations it must be a matter of some convention.</P>
+
+<P><B>PH:</B> But I
+recognize that endurantists would disagree: they think of it as one
+of the most basic distinctions possible in describing the temporal
+physical world.</P>
+
+<P><B>FL:</B> For simple
+changes (as opposed to the thing changed) I think the distinction is
+fundamental, in 3-D and in 4-D.</P>
+
+<P><B>PH:</B> I disagree.
+I don't think it is fundamental anywhere, but it is often
+pragmatically useful in medium-sized everyday life.</P>
+
+<P><B>FL:</B> By &quot;change&quot;
+in 4-D I mean only a difference in properties of two parts of a 
+</P>
+<P>timeworm at different
+positions in the temporal dimension, not that timeworms move.  
+</P>
+
+<P><B>Chris Welty:</B>
+Note that an event can be something that causes properties to <I>stop</I>
+changing.</P>
+
+<P><B>PH:</B> True. Or to
+alter their rate of changing, etc. (Sound of whip cracking.)</P>
+
+<P><B>FL:</B> Ok, since
+we've agreed what &quot;change&quot; means in a 4-D model, no future
+protests &quot;There's no change in 4-D!&quot; will be instructive.</P>
+
+<P><B>PH:</B> Since we are
+here discussing two different perspectives, I&rsquo;m not sure if you
+are using the terms (like 'change') intuitively, or with the
+technical meaning from one of those perspectives.</P>
+
+<P><B>FL:</B> A timeworm
+that is a perfect, uniform, straight, endless cylinder aligned along
+the temporal dimension has no such &quot;change&quot;. 
+</P>
+
+<P><B>CW:</B> But the
+shape of the worm is just an artifact of its 3-D position and shape
+over time.  Such a cylinder could easily have changing properties
+over time.</P>
+
+<P><B>PH:</B> That is
+true, and Fritz and I have been careless. Think of the worm as having
+many colors, for example.</P>
+
+<P><B>FL:</B> Indeed a 4-D
+cylindrification (in the Cylindric Algebra sense (Feldman, 1990)) of
+any 3-D shape along the time dimension has no such &quot;change&quot;.</P>
+
+<P><B>CW:</B> Right - but
+that's only the shape.  What about the color, age, etc. These could
+be properties of different sections.</P>
+
+<P><B>PH:</B> Right. In
+fact, age is a <I>necessary</I> property of different sections,
+right? (I thought you might like to see me using a modality for a
+change.)</P>
+
+<P><B>CW:</B> You got it!</P>
+
+<P><B>PH:</B> So a
+&quot;change&quot; here is a kind of kink, or maybe an alteration in
+cross-section, of the timeworm.  But that isn't what an endurantist
+would think of as a change.</P>
+
+<P><B>PH:</B> I think that
+to <I>assume</I> that these terms have the relatively weak meanings
+that they acquire when mapped into a different ontological framework
+(that an endurantist would reject out of hand) is really not doing
+the terms justice. It is a bit like an atheist wiping his nose on an
+altar cloth, and then professing to be puzzled at the rage expressed
+by one of the faithful, on the grounds that altar cloths are only
+cloths. I would agree in a purely intellectual sense; but I would
+also recognize that the rage might well be justified.</P>
+
+<P><B>CW:</B> I don't
+think any strong argument against having an event/object distinction
+in a 4-D view was made.  Pat seems to be arguing against it as a
+distinction at all.    Part of the basis of his argument, of course,
+is that no self-respecting perdurantist would view the distinction as
+meaningful.</P>
+
+<P><B>CW:</B> Since event
+is my distinction, I don't expect you to believe that the mapping
+into a &quot;different ontological framework&quot; is relatively
+strong.  I want the distinction, so I'll worry about making it carry
+the right meaning.</P>
+
+<P><B>CW:</B> It seems to
+me we're actually swapping our usual positions: Pat arguing that the
+philosophical &quot;perdurantism&quot; and &quot;endurantism&quot;
+are labels for a bag of things that <I>should</I> be kept together,
+and I'm arguing to throw away the philosophy in this case and see if
+the parts can be interchanged.</P>
+
+<P><B>CW:</B> I get it,
+though I'm not clear whom you are casting as the religious ones here.
+ But to continue your story, there are also agnostics who (to use the
+modern meaning) aren't sure if they're religious or not, that
+wouldn't be offended by the nose wiping, but probably wouldn't wipe
+their noses on the cloth either (just in case).</P>
+
+<P><B>CW:</B> I believe I
+am in that boat, that is, not really strictly endurantist, but don't
+buy into the perdurantist story either, because it just seems like
+the same darn thing!   
+</P>
+
+<P><B>PH:</B> I am
+genuinely unable to follow what your position is, then. I can
+understand taking one view over the other here, but I cannot see how
+you can possibly think they are the same.</P>
+
+<P><B>CW:</B> I'm
+certainly not a &quot;dyed in the wool&quot; endurantist, by your
+definition, because identity criteria seem just fine as a way to
+settle the issue.  But I don't want to be limited to your identity
+criteria. I want to use mine.  You shouldn't care - identity criteria
+are an independent notion from perduring/enduring.</P>
+
+<P><B>PH:</B> Maybe you
+could say what you mean by 'identity criteria'. This phrase gets
+bandied about a lot, but I suspect that we don't all agree what it
+means. What I mean by 'identity' is strict logical identity: being
+the very same thing. What that means, of course, depends on what you
+count as 'things', but then so does everything else we say. 
+</P>
+
+<P><B>FL:</B> Yes exactly!
+ The set-mavens of the world (the Great Unwashed - which includes
+model-theorists) &ndash; 
+</P>
+
+<P><B>PH:</B> This from a
+man who makes his living writing first-order axioms? Shame on you!</P>
+
+<P><B>FL:</B> - <I>start
+</I>with a nice set (the domain &quot;D&quot;) in which all the
+individuation work has already been attended to (leaving aside &quot;pure
+sets&quot; made of the empty set).   Members of a <I>set</I> are, by
+<I>definition</I>, pairwise nonidentical.  The whole
+identity-criteria decision has been made <I>prior</I> to accepting D
+as given.  Ask them about exact cardinality.  A finite set always has
+one.  Some El Setto declaims: &quot;Let us take the set of the
+world's mountain ranges, and ...&quot; - Hold it, what's the <I>exact</I>
+cardinality of &quot;the set&quot;?  
+</P>
+
+<P><B>PH:</B> There are
+many sets, each with an exact cardinality. The problem (if there is
+one) isn't with &quot;set&quot; in that &quot;Let us take....&quot;,
+but with &quot;mountain ranges&quot;. If that is supposed to <I>define</I>
+a <I>particular</I> set, then indeed whoever makes that stipulation
+had better be prepared to give us a clear criterion for what counts
+as a mountain range. However, a perfectly reasonable response could
+be: &quot;I'm not sure exactly what counts as a mountain range, but
+whatever you choose, let S be the set of those....&quot;, and now S
+is not precisely defined. That is ok, of course: one can make
+imprecise assertions about precise entities by being imprecise about
+which entity one is talking about; its like saying 'let P be a
+person...' without saying exactly who.</P>
+
+<P><B>FL:</B> To decide
+this requires deciding what is one mountain range versus two (or
+zero: 
+</P>
+<P>Sutter Buttes,
+California, is declared by locals, with pride, to be &quot;the
+world's smallest mountain range&quot;).  John Sowa mentioned
+something similar with trees connected at the roots: one tree or
+many?  For abstract things a different problem arises, where
+isomorphism is identity.  
+</P>
+
+<P><B>PH:</B> You seem to
+have been hung up about this for years, Fritz, and I have no idea
+why. This really isn't a serious issue. If there is one thing that
+set theory <I>can </I>describe well, it is mathematical abstractions.
+There is no 'problem' with isomorphism being identity.</P>
+
+<P><B>FL:</B> How many
+graphs of the form</P>
+
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">   
+   <FONT FACE="Courier New, monospace"><FONT SIZE=2>c</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">   
+  <FONT FACE="Courier New, monospace"><FONT SIZE=2>/|</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">   
+ <FONT FACE="Courier New, monospace"><FONT SIZE=2>/ |</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>a---b
+ |</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">   
+ <FONT FACE="Courier New, monospace"><FONT SIZE=2>\ |</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">   
+  <FONT FACE="Courier New, monospace"><FONT SIZE=2>\|</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">   
+   <FONT FACE="Courier New, monospace"><FONT SIZE=2>d</FONT></FONT></P>
+
+<P><B>FL:</B> are there?  
+</P>
+
+<P><B>PH:</B> It depends
+on what you mean by 'graph'. You can play the same trick with all
+kinds of things. Consider the following line of text:</P>
+
+<P><B>PH:</B> foodle
+foodle foodle faddle</P>
+
+<P><B>PH:</B> and ask how
+many words there are in it. If you mean word tokens there are 4, if
+you mean words in a more abstract sense there are 2.  So, you have to
+say what you mean; tough luck.</P>
+
+<P><B>FL:</B> Is it the
+&quot;same graph&quot; if a and b are switched?  
+</P>
+
+<P><B>PH:</B> With the
+usual definition of 'graph', yes. 
+</P>
+
+<P><B>FL:</B> What about
+switching (the categorically indistinguishable) c and d?  
+</P>
+
+<P><B>PH:</B> Yes, same
+graph. Also if you draw it with c on the left and d on the right,
+same graph.</P>
+
+<P><B>FL:</B> What if all
+the labels are removed?  
+</P>
+
+<P><B>PH:</B> Then it&rsquo;s
+a different kind of graph.</P>
+
+<P><B>FL:</B> Or if you
+add arrows, etc. Are there zillions because of every graph-drawing or
+constellation or coat hanger that has this form?  
+</P>
+
+<P><B>PH:</B> No.</P>
+
+<P><B>FL: </B>To count
+these &quot;things&quot; requires a prior decision about what
+constitutes one distinct thing.  
+</P>
+
+<P><B>PH:</B> True. We all
+agree on that point, it seems.</P>
+
+<P><B>FL:</B> Only then
+does x=x, etc. work fine.  Equality is a mere naming (or, with
+functions or &quot;the&quot;, describing) issue.  Another issue: Did
+the abstract character string &quot;ABC&quot; exist before the
+invention of the alphabet?  
+</P>
+
+<P><B>PH:</B> Does it
+matter? I would say the question is ill formed and has no answer. (It
+asks a temporal question about an atemporal entity.)</P>
+
+<P><B>FL:</B> If so, did
+the work Moby Dick exist in 1 million B.C.? 
+</P>
+
+<P><B>PH:</B> No. But then
+the <I>work </I>is not an abstract character string, e.g. it has an
+author, was composed at a particular time, etc.</P>
+
+<P><B>FL:</B> Is the
+italic version of &quot;ABC&quot; the &quot;same&quot; string?  How
+about &quot;abc&quot;? Etc. 
+</P>
+
+<P><B>PH:</B> All these
+questions force us into making more distinctions than we might want
+to make (tough), but none of them are unanswerable or mysterious. The
+real moral of all this rhetoric is that the conceptual world is more
+complicated than it seems to be to the naive listener. Do you find
+that surprising? Common sense is not common-sensically obvious. This
+is like thinking that one can do linguistics just by talking.</P>
+
+<P><B>FL:</B> Is there a
+&quot;set&quot; consisting of the world's web-pages?  
+</P>
+
+<P><B>PH:</B> Without the
+scare quotes, and if you say precisely when you are asking, yes.</P>
+
+<P><B>FL:</B> Are two
+mirrored web-pages &quot;the same page&quot;?  
+</P>
+
+<P><B>PH:</B> No, by
+decree of the W3C. [ed. note: see http://www.w3c.org/]</P>
+
+<P><B>FL:</B> Are two
+utterly different URLs that happen to point to a single physical disk
+file &quot;the same web page&quot;? 
+</P>
+
+<P><B>PH:</B> The web
+pages are the same, the URIs are different.</P>
+
+<P><B>FL:</B> If it's
+updated tomorrow, is that &quot;the same&quot; web page or &quot;a
+different&quot; web page?</P>
+
+<P><B>PH:</B> Also by
+decree, it is the same &quot;resource&quot;. But this is widely
+acknowledged to be something of a fantasy. All these are interesting
+questions about web pages, but they haven&rsquo;t got anything to do
+with sets.</P>
+
+<P><B>FL:</B>  What if a
+URL returns a different document on each access?  What if a web page
+is physically copied to a new place and URL? I don't want answers
+here. There are various known answers. I just want to show
+non-obvious cases.</P>
+
+<P><B>PH:</B> What I don't
+understand is a kind of let-it-all-hang-out ontological agnosticism,
+which says that identity is kind of arbitrary and flexible. If
+identity has no sharp meaning, then neither does quantification or
+predication, and all our logical machinery is confused and
+meaningless. So I'm presuming that we have the notion of individual
+thing settled before we even start talking about 'identity'. 
+</P>
+
+<P><B>FL:</B> Yes.  That's
+the rub.</P>
+
+<P><B>PH:</B> If you think
+that is a 'rub', then you shouldn't be using logic at all. That is
+like complaining that cars use oil.</P>
+
+<P><B>PH:</B> One of the
+basic incompatibilities between the endurantists and the
+perdurantists is that they start out with different notions of
+identity. I'm not saying that either is right (though I prefer the
+perdurantist approach myself for doing ontology), but I do insist
+that they are different and incompatible.</P>
+
+<P><B>FL:</B> Ok, you're
+agreeing that they are different notions of identity.  
+</P>
+
+<P><B>PH:</B> I'm not
+'agreeing', I've been saying that loud and clear at every opportunity
+for several years.</P>
+
+<P><B>FL:</B> The 3-D
+(endurantist) statement: Pat happy (today) and Pat not happy 
+(yesterday), is contradictory in first order logic (FOL) unless times
+are arguments of happy.  
+</P>
+
+<P><B>PH:</B> Right; but
+notice, this is so because Pat is the <I>same</I> (3-D) Pat at two
+different times. Contrast the 4-D way of talking.</P>
+
+<P><B>FL:</B> (If,
+instead, FOL just treats is-happy and was-happy as two different
+predicates, then immediately the question is how they're related.) It
+makes sense in temporal logic because you get was-true versus
+is-true, where &quot;Pat&quot; is deemed to be somehow the &quot;same&quot;
+Pat even though the happiness is different.  Or, rather,
+is-true(was-true(happy(Pat))) and is-true(not(happy(Pat))) are not
+contradictory in temporal logic.</P>
+
+<P><B>FL:</B> With
+criteria such that &quot;Pat at time X&quot; has no identity with any
+Pat before or after, then fine, you've got a 3-D Pat.  
+</P>
+
+<P><B>PH:</B> No, you have
+a 3-D Pat-slice. But that is a different thing from the slice of Pat
+a few minutes later. The endurantist position is that Pat is <I>exactly
+the same thing</I> at all times throughout Pats life. That is what
+'endure' means: a continuant <I>retains </I>its identity. Pat-at-3pm
+is <I>identical</I> to Pat-at-5pm. Really, really identical. 
+</P>
+
+<P><B>FL:</B> Alas,
+identity criteria are crucial to this, since Pat changes while doing
+this enduring but is still the same Pat.</P>
+
+<P><B>PH:</B> The only
+'identity criterion' that is relevant is actual identity, the
+relationship which holds between a thing and itself. Logical
+identity, if you want to call it that.</P>
+
+<P><B>CW:</B> Well now -
+they are the <I>same entity</I>, however the real problem is coming
+up with a way of accounting for identity while still allowing for
+change.  
+</P>
+
+<P><B>PH:</B> That is one
+way to think about it. Another is to find a framework that simply has
+no change (the perdurantist one).</P>
+
+<P><B>CW:</B> Some seem to
+think if Liebnitz Rule doesn't hold <I>on the entity</I>, then
+they're different, period. But of course this doesn&rsquo;t account
+for common sense.  
+</P>
+
+<P><B>PH:</B> Well, it
+shows that common sense needs to be encoded into a logically coherent
+framework with a little finesse. It doesn't show that there is a
+unique way to do that, however.</P>
+
+<P><B>CW:</B> Pat, by the
+normal understanding, is the same Pat as we saw before, even though
+he's lost some hairs or whatever.  Of course, if we choose to define
+identity criteria that make Pat at two times different entities, then
+we would have to live with that.  
+</P>
+
+<P><B>PH:</B> Right, that
+is perdurantism, and people have learned to live with it. It seems to
+me that you do this yourself, in fact, though you don't want to admit
+it.</P>
+
+<P><B>CW:</B> My point is
+that choosing our identity criteria let us have it either way.  
+</P>
+
+<P><B>PH:</B> No, it does
+<I>not</I>. They are <I>logically </I>incompatible.</P>
+
+<P><B>CW:</B> In the
+perdurantist view, it does not seem like you ever have that choice.  
+</P>
+
+<P><B>PH:</B> On the
+contrary, the perdurantist view probably gives you most flexibility
+in this regard. Too much, in fact, for an endurantist. For example,
+here's a perfectly well-defined perdurantist entity. Take a group of
+people p1 p2 p3....pn standing in a circle, and think of the history
+which has the spatial envelope of p1 during the interval [ti, t2),
+then of p2 during [t2, t3), and so on around the circle to pn during
+[tn, tn+1), then back to p1 during [tn+1, tn+2), etc. . (This
+space-time 'worm' has some disconnections in it, but so do plenty of
+others that make intuitive sense, and in any case with a bit more
+work we could have made it spatiotemporally continuous by putting in
+'morphing'.) Now, that thing certainly isn't any kind of continuant
+or any rational kind of occurrent, I suspect, but its there in 4-D
+space-time. You have <I>complete</I> freedom of choice to stitch
+together 'slices' in any way you like.</P>
+
+<P><B>CW:</B> Since Pat is
+one worm from womb to tomb, we can not choose to say he is a
+different entity at any point in time.</P>
+
+<P><B>PH:</B> I have no
+idea what you are talking about here. Why would I ever want to say I
+am something different from what I in fact am?</P>
+
+<P><B>PH:</B> Bear in mind
+that these 'worms' are just like 'locations' in 3-space or
+'intervals' in 1-D time; they are only pieces of spacetime. They
+might contain anything. So of course Pat's history (to be exact) is
+one worm, but that in itself doesn't say anything other than that Pat
+is Pat.</P>
+
+<P><B>CW:</B> Note, also,
+that the non-perdurantist has the advantage of not having to live
+with people calling them worms.</P>
+
+<P><B>PH:</B> Not my term.
+I personally am a man of History.</P>
+
+<P><B>PH:</B> And,
+moreover, Pat is really, really, 3-D (not 4-D; only occurrents are
+4-D) Continuants are always 3-D (or lower, e.g. surfaces) and always
+retain their identity through time. This is impossible in the
+perdurantist framework, if taken literally, which may be why you seem
+to have such trouble with it. But it is the way that we speak and
+seem to think, when we aren't being ontologists: this thing I'm
+typing on is the same machine that it was yesterday, for example, and
+its all here, in front of me; there isn't anything missing. If
+someone says that it's yesterday-part is missing, so it's incomplete,
+I will just laugh at them.</P>
+
+<P><B>CW:</B> Ok, well if
+this is the criterion you want to use, then try responding that &quot;it's
+the same spatiotemporal worm!&quot;  Yeah, that's real natural.</P>
+
+<P><B>PH:</B> Yes, I agree
+(presuming that you are being sarcastic, right?). I was speaking
+earlier as an endurantist would argue, trying to get Fritz to see
+what that position's rationale is.</P>
+
+<P><B>CW:</B> It has
+always seemed to me that, in fact, the way we think and speak is <I>not
+</I>what the perdurantists want to account for at all.  
+</P>
+
+<P><B>PH:</B> Be careful.
+That isn't the way we <I>speak</I>, I agree. But we do often think
+that way, I think one can show. We express ourselves using
+endurantist talk, but we easily make mental distinctions that seem to
+be possibly only in a perdurantist framework.</P>
+
+<P><B>FL:</B> Agreed, but
+my experience (Cyc (Lenat, 1995) had 4-D &quot;subabstractions&quot;
+as well as 3-D &quot;holdsIn&quot;) taught me that people have a much
+easier time with &quot;was-true&quot; or &quot;true-in-1988&quot;
+than with &quot;Pat-throughout-1988&quot; even though the <I>logic</I>
+of the latter is much simpler.  Maybe it's because all declarative
+English is tensed.</P>
+
+<P><B>PH:</B> Yes, I
+suspect that a lot of our ways of using <I>language</I> have evolved
+in the setting of a surrounding context of a communicative act, so
+there is always a 'now' and a 'here' and an &lsquo;I&rsquo; and so
+on.</P>
+
+<P><B>PH:</B> For example,
+try to define something like a moving weather front, which by coming
+south will bring rain to Wisconsin within 24 hours, in endurantist
+terms.</P>
+
+<P><B>CW:</B> I've always
+thought of it as a revisionist theory, that uses physics or quantum
+physics (whatever the latest is) as the basis of their
+justifications.  Isn't this what you were trying to say?</P>
+
+<P><B>PH:</B> No, the
+opposite. The 4-D space we are all talking about here is not the 4-D
+space used in special relativity - Minkowski space (Thompson, 1996) -
+which is altogether more peculiar and quite unintuitive.</P>
+
+<P><B>FL:</B> There is no
+&quot;change&quot; within the slice, whereas 4-D Pat with identity
+across times includes &quot;change&quot;. (In Maine lots of breath
+was wasted on the meaning of &quot;change&quot; in the 4-D approach
+--- on the one hand the 4-D model includes &quot;change&quot; within
+it, e.g. as a bend along the time dimension, while the whole 4-D
+world does not itself &quot;change&quot;.)  Simons' (Simons, 1987)
+&quot;all parts wholly present&quot; confines Pat to the 3-D slice,
+excluding past or future Pats from the &quot;something&quot;. 
+</P>
+
+<P><B>PH:</B> No, that is
+a perdurantist misunderstanding. Those 'past or future Pats' are the
+<I>same</I> Pat as the one that is here now. They aren't excluded
+(how could they be, if they are the same?) And they aren't part of
+Pat, either. Pat 'extends' through time (though that is a misleading
+way of putting it), but is wholly present at every single time. 
+</P>
+
+<P><B>FL:</B> That just
+means that this 'extends' does not involve the notion of part-whole 
+</P>
+<P>used in Peter Simons'
+&quot;wholly present&quot;.</P>
+
+<P><B>PH:</B> <I>No</I>.
+That is the perdurantist reading, but that is <I>not</I> what the
+endurantist means. He really does mean <I>logical </I>identity. Pat
+at one time and Pat at another time are <I>exactly </I>the same
+thing; they are identically the same thing. There is only one thing,
+and they are both it.</P>
+
+<P><B>PH:</B> Is Pat all
+here now? Yes. Wait a minute. Is Pat all here <I>now</I>? Yes. All of
+Pat is all here at both times. Same Pat, always all there.</P>
+
+<P><B>FL:</B> This does
+not preclude there being relations between things at different times
+that amount to the same notion, but then they are not the relations
+of identity or parthood.  Like almost all arguments about identity
+criteria, this can be handled either way, by agreed-upon convention.</P>
+
+<P><B>PH:</B> It's not
+that simple. They can be handled in this way <I>provided </I>that one
+rejects the endurantist ontology and accepts a perdurantist one.
+However, I think you want to have it both ways, and you can't.</P>
+
+<P><B>CW:</B> What? 
+That's clever.  I think the misunderstanding is going around in
+heaps.  Why can't the endurantist say this?  
+</P>
+
+<P><B>PH:</B> Because the
+endurantist 'convention' of identity between times for continuants is
+not a mere convention, and admits of no degrees or ambiguity; it is
+logical identity: being the same thing.</P>
+
+<P><B>FL:</B> Yes there
+are no degrees, but calling it &quot;logical identity&quot; doesn't
+mean you haven't followed some convention on what is &quot;the same
+thing&quot;.  
+</P>
+
+<P><B>PH:</B> It means
+that whatever those 'conventions' are, they are presupposed by the
+logical language in use. As you point out above, there have to be
+some conventions in use, in a sense; but calling it 'logical
+identity' means that it is determined by these conventions that are
+<I>outside</I> the ontology, and cannot be discussed or modified from
+within it.</P>
+
+<P><B>FL:</B> If Pat and
+Claudia Schiffer have a brain transplant, is that really a body
+transplant?  Will the Claudia-bodied one then be former president of
+the AAAI?  Will the Pat-bodied one be the Supermodel?  Which is &quot;the
+same Pat&quot; under endurantism?  Again, I don't really want an
+answer &ndash;</P>
+
+<P><B>PH:</B> Good,
+because you aren't going to get one. (In a former life I actually
+used to have serious conversations with rational adults on topics
+like this. What a total waste of time. )</P>
+
+<P><B>FL:</B> - but there
+is an issue here to decide before saying Pat then is the identical
+person to Pat now.</P>
+
+<P><B>PH:</B> Tell this to
+an endurantist. They take identity-across-times as absolutely
+fundamental, not admitting of degrees. All you are saying here, in
+endurantist terms, is that one has to decide whether or not something
+is a continuant. True, of course. However, once it is a continuant,
+there is no further room for discussion about identity.</P>
+
+<P><B>CW:</B> I just don't
+get why you see making properties temporally indexed is any different
+than making entities worms with &quot;slices&quot; that can have
+properties.</P>
+
+<P><B>PH:</B> Well, I
+don't know if I can possibly explain it better than I have already.
+Temporal indexing of properties does not imply that the things that
+the properties are true of have temporal extents, for example, or
+have temporal slices, or indeed have any temporal 'structure' at all.</P>
+
+<P><B>PH:</B> I didn't
+used to think it was different, but Peter Simons (and others since)
+convinced me otherwise. I now see that I have been a perdurantist
+most of my life (certainly since being a teenager) and had not fully
+appreciated the force of the endurantist position. I really do think
+of things as histories, and I don't think of myself as being the same
+person now as I was when I was, say, 21. (I'm a different person with
+memories of that other person.). My own private ontological view - my
+common-sense view - is more like a universe of Whiteheadian
+(Whitehead, 1929) processes than one filled with continuants. But I
+also acknowledge that I may be unusual in this regard.</P>
+
+<P><B>FL:</B> I want a
+choice between the two, without either choice mucking up the event-</P>
+<P>object distinction.</P>
+
+<P><B>PH:</B> Each choice
+will muck up that distinction in the other choice. Sorry, no way
+around this. From a perdurantist perspective, endurantism is
+logically incoherent, and vice versa. The perdurantist can translate
+the endurantist ontology into perdurantist terms, but not in a way
+that an endurantist would find acceptable.</P>
+
+<P><B>FL:</B> If any one
+thing experiences change at all, it must have some identity across
+times.</P>
+
+<P><B>PH:</B> What does
+'some identity' mean? That is like 'slightly pregnant'. 
+</P>
+
+<P><B>FL:</B> In 4-D it
+mean the same worm (the whole timeworm is identical with itself)
+whereas I put the &quot;some&quot; in for the 3-D case in which some
+identity criterion distinguishes essential from accidental properties
+that may change and yet preserve the object's identity as time
+passes.</P>
+
+<P><B>PH:</B> It is clear
+that for you, being the 4-D worm is not the same as being any of its
+3-D cross-sections. Clearly, you are a perdurantist. The endurantist
+does not need any scare quotes around 'identical' when he says that a
+continuant is identical as time passes; he does not need to appeal to
+'identity criteria' to reconstruct the enduring continuant from some
+collection of slices. To the endurantist, the continuant simply is
+the same - literally the same - thing, at all times during its
+lifetime. There is only one thing there; it is 3-Dimensional, and it
+endures. The only 'criterion of identity' is, simply, identity.</P>
+
+<P><B>PH:</B> Identity
+means being the <I>same</I> thing. 
+</P>
+
+<P><B>FL:</B>
+(Incidentally, all this emphasis of <I>identical</I> and <I>same</I>,
+and &quot;really, really identical&quot;, suggests to me that the
+confusing ambiguity of &quot;identical&quot; and of &quot;same&quot;
+in English isn't irrelevant to discussions like this.)</P>
+
+<P><B>PH:</B> Think
+otherwise. I am only trying to emphasize to you that I am using
+'identical' in the strictest sense possible, i.e. as logical
+identity; not in some derivative sense from some vaguely defined
+'criterion of identity'. The relationship I have in mind is the
+relationship whose extension is the set of pairs of the form &lt;x,x&gt;,
+and no others.</P>
+
+<P><B>PH:</B> That isn't a
+relationship that admits of degrees: if there is any difference, then
+identity is false. 
+</P>
+
+<P><B>FL:</B> Difference
+in what?  
+</P>
+
+<P><B>PH:</B> In any
+property describable in the formal language in current use.</P>
+
+<P><B>FL:</B> Essential
+properties - under some identity criterion - then yes you're right. 
+Anything else - no.  
+</P>
+
+<P><B>PH:</B> I have no
+idea what 'essential' means; and since we are only talking about a
+single world here, I don't see that it can possibly be relevant. In
+any case, nothing I have said in this thread has anything to do with
+any notion of 'essential'.</P>
+
+<P><B>FL:</B> Note that I
+agree that no two things are identical; if identical, &quot;they&quot;
+are one.</P>
+
+<P><B>PH:</B> Right,
+exactly.</P>
+
+<P><B>CW:</B> I am
+slightly different than before, but I'm the same entity.  Identity
+does <I>not </I>mean &quot;identical&quot;, it means I have the same
+identity.  
+</P>
+
+<P><B>PH:</B> Wrong. That
+is <I>exactly</I> what it means. It is the relation of equality, the
+relation whose extension is all and only the pairs &lt;x,x&gt;, the
+relation that things have with themselves and with no other thing.
+Period. If you mean something else, don't call it 'identity' (just
+like if you want to say that 2+3 both =5 and =/=5, don't call it
+'addition') For the record, that is the only sense I can make of
+'same entity'.</P>
+
+<P><B>PH:</B> However,
+this is only a matter of terminology. I would be interested to know
+more about this relationship that you call 'identity'. Apparently it
+does not mean 'identical to' in the logical sense. So what does it
+mean, then? If Pat-today is w-identical to Pat-yesterday, but not
+actually identical to him (it?), what does this relation between the
+(two different) Pat-things amount to, exactly? And what <I>kinds</I>
+of thing are those two different Pat-things? (They are apparently not
+the same continuant, for example, or they really would be identical. 
+Are they two slices of something, maybe? Or two things that have the
+same identity-hood, or the same Secret Name, or something like that?)</P>
+
+<P><B>PH:</B> Having the
+same identity means being the same thing, as far as I can see. If it
+means something else for you, please explain what you mean, and how
+we can put it into an ontology written in KIF (Genesereth, 1991).</P>
+
+<P><B>PH:</B> Maybe you
+mean that there is Pat, for example, on the one hand, and Pat's
+identity, on the other; and that there is a relationship of 'having'
+between them? That would make a kind of eerie sense; then the
+identity-things themselves could persist, enduring like continuants,
+but would not need to be spatiotemporal in nature; and the slices of
+the space-time worms could also exist: embodying, as it were, the
+identity in the crass, mundane, world of spatiotemporality, by
+'having' the same identity, rather in the way that two pieces of
+carpet can 'have' the same color. This gives a kind of dualistic
+picture with a perdurantist physical world but an endurantist world
+of abstract identity. It raises the issue, however, of where the
+identities go after death, which might take a few days to get sorted
+out to everyone's satisfaction.</P>
+
+<P><B>FL:</B> This isn't
+preposterous.  
+</P>
+
+<P><B>PH:</B> I'm afraid I
+think it is.</P>
+
+<P><B>FL:</B> The &quot;stuff&quot;
+of 4-D spacetime is a miasma before we agree on the useful boundaries
+of the worms.  
+</P>
+
+<P><B>PH:</B> I think I
+agree with what you intend to say here, but not with your words.
+Apply it to 3-D; there are locations - patches of space - containing
+matter, and also ones that do not, and all kinds of things in
+between. That is called having a theory of spatial location, not a
+&quot;miasma&quot;.</P>
+
+<P><B>FL:</B> The worms
+&quot;exist&quot; (as values of bound variables [joke]) for
+convenience.  I believe in the cookie-cutter theory of individuals
+and categories, but with lumpy dough.  
+</P>
+
+<P><B>PH:</B> I cannot
+follow that metaphor, sorry. If you mean, there is stuff occupying
+space, and some histories have stuff in them (and that this is a
+significant fact about them that needs to be described properly),
+then of course I agree. But that kind of distinction arises in both
+3-D and 4-D, so has nothing particularly to do with the (original)
+topic of this thread (except that there are more kinds of 4-D stuff
+than there are of 3-D stuff, e.g. melting icecream and freezing water
+(i.e. water becoming ice, not freezing-cold) are both kinds of
+'dynamic' stuff in 4-D. In general, 4-D ontologies tend to be richer
+in kinds of entities than the 3-D one.)</P>
+
+<P><B>FL:</B>
+Pro-abortionists assume shorter person-worms than anti-abortionists. 
+</P>
+
+<P><B>PH:</B> They assume
+that people occupy shorter histories, but they can still both talk
+about the same sets of histories, just as they use the same spatial
+geometry and the same calendar.</P>
+
+<P><B>FL:</B> If a French
+company dissolves and the same people re-form for the same purpose
+with the same owners a year later, it's a new company under French
+law, whereas in Germany it's the same company (longer, but
+non-connected corporate worms).</P>
+
+<P><B>PH:</B> The
+histories are the same; a German lawyer can <I>reason</I> about
+French law, after all. They differ about the spatiotemporal shapes of
+'companies', is all; that is the kind of disagreement that can be
+discussed within a single ontology, however. It&rsquo;s like
+disagreeing over whether saucepans are round or oval.</P>
+
+<P><B>CW:</B> Some subset
+of my properties persists and must persist.</P>
+
+<P><B>PH:</B> Must? That
+seems a little presumptuous to me. I personally wouldn't go so far as
+to insist that any of my properties <I>must</I> persist. God alone
+knows what could happen to me tomorrow. (By the way, had you ever
+noticed that phrases like 'God knows', when applied to the future,
+embody a kind of divine perdurantism?)</P>
+
+<P><B>FL:</B> By the way,
+I don't <I>like </I>talking about identity criteria.  They come up
+all the time.  But, a) they're sometimes needed, and b) they're
+mainly a matter of convention.</P>
+
+<P><B>PH:</B> How can
+something in one place be <I>identical</I> with something at a
+different place? It can't. 
+</P>
+
+<P><B>CW:</B> Sure it can.
+ I just read the <I>same</I> story to my kids that someone else did. 
+</P>
+
+<P><B>PH:</B> The story is
+not <I>in </I>the place that it is read. The event of the
+story-telling is, maybe; but then that event is not the same as
+another event of reading the same story.</P>
+
+<P><B>CW:</B> Of course
+it's hard to pin down place for a story.  
+</P>
+
+<P><B>FL:</B> It's hard to
+pin down identity criteria for a story, since a story is in no
+physical place at all, any more than an algorithm is.  Identity
+criteria for algorithms are hard to devise too.</P>
+
+<P><B>PH:</B> Right. For
+sure, however, they are not spatiotemporal.</P>
+
+<P><B>CW:</B> What about
+the color of my carpet?  If I rip a piece off, it has the same color
+as the rest of the carpet.  
+</P>
+
+<P><B>PH:</B> Right, no
+problem with that. Different piece, same color. Color in this sense
+is a property of spatiotemporal things, though, not a spatiotemporal
+thing itself.</P>
+
+<P><B>CW:</B> So maybe you
+don't admit to instances of colors.  
+</P>
+
+<P><B>PH:</B> Actually I
+can take it either way. If we are talking about color tropes [ed.
+note, from (Zalta, 2002) &ldquo;A trope is an instance or bit (not an
+exemplification) of a property or a relation; e.g. Clinton&rsquo;s
+eloquence, Sydney&rsquo;s beauty&rdquo;], then the carpet and the
+ripped-off piece have <I>different</I> color-tropes, so no problem.
+If we are talking about colors, see above.</P>
+
+<P><B>CW:</B> There are
+other examples, if you want to allow for non-concrete entities.  What
+about sets?  Numbers?</P>
+
+<P><B>FL:</B> Slight
+digression: Suppose, in a knowledge base like Cyc or the like, you
+define a set S in list form: S = {Moe, Curly, Larry, Scott,
+AuthorOfWaverly} &ndash;</P>
+
+<P><B>PH:</B> What do you
+mean? A set is not a list, so this sounds to me like saying you are
+defining a dog in cat form. What exactly are you saying here? The
+answers to your subsequent questions depend on your answer to this.
+(Is S a set, and those are its members? I will assume that is
+correct.)</P>
+
+<P><B>FL:</B> - and, later
+on, the identity Scott=AuthorOfWaverly is deduced from the rest of
+the knowledge base.  Does the cardinality of S change?  
+</P>
+
+<P><B>PH:</B> No.</P>
+
+<P><B>FL:</B> Was S not
+well-formed?  
+</P>
+
+<P><B>PH:</B> It was
+well-formed. It had (at most) 4 members, but you didn't know that
+then, apparently.</P>
+
+<P><B>FL:</B> Was it
+merely the set of stooges plus one (like {a, b, b}={a,b})?  
+</P>
+
+<P><B>PH:</B> Right,
+exactly.</P>
+
+<P><B>FL:</B> Was S not
+really a set at all, but rather a multiset/bag?  
+</P>
+
+<P><B>PH:</B> You <I>said</I>
+it was a set. Were you lying?</P>
+
+<P><B>FL:</B> Or was the S
+definition &quot;false&quot; by falsely claiming non-identity of
+Scott and 
+</P>
+<P>AuthorOfWaverly?  
+</P>
+
+<P><B>PH:</B> Well, that
+again depends on what <I>you</I> meant. If that list was supposed to
+indicate that its elements were distinct, then you already had a
+contradiction when you inferred Scott=AuthorOfWaverly</P>
+
+<P><B>FL:</B> This isn't a
+deep question, just a practical implementation issue for {,,,,} set
+notation  -- it doesn't arise for {x|P(x)} &quot;such that&quot;
+notation.</P>
+
+<P><B>PH:</B> Neither of
+them spatiotemporal, so irrelevant to the present discussion</P>
+<P>.</P>
+<P><B>PH:</B> In the
+perdurantist view, time is just like space. How can something located
+at one time - one Pat-slice- be <I>identical</I> with something
+located at a different time? It can't. They can both be <I>part</I>
+of something else, of course; but then that other thing - the 4-D
+Pat-salami - cannot be all present at any time. So whatever that
+thing is, it&rsquo;s not <I>me</I>, buddy, because I am <I>all here
+now</I>.</P>
+
+<P><B>PH:</B> (By the way,
+if you are going to say, but when <I>is</I> 'now'? The response is,
+whenever you like; but it doesn't matter, since whenever now is, I'm
+all here then as well.)</P>
+
+<P><B>PH:</B> In the 4-D
+view of things, aren't the slices of the salami just as much
+first-class citizens as the salami itself? So why do we have words
+for things like apples, but no words for, say, apple-slices five
+seconds apart? If the apple changes color between t1 and t2, and yet
+it is the same apple, what <I>kind</I> of thing is an apple, that it
+can be the same but also be different? 
+</P>
+
+<P><B>FL:</B> &quot;Same
+but different&quot; arises normally in all issues of identity
+criteria.</P>
+
+<P><B>PH:</B> You are just
+tossing words around here. Identity has a strict, firm meaning. If
+you mean something else, don't say &quot;identity&quot;.</P>
+
+<P><B>CW:</B> Of course it
+does, but it refers to something more fundamental than matter - which
+is what you seem to be hung up on.  
+</P>
+
+<P><B>PH:</B> Nothing to
+do with matter at all. I haven&rsquo;t mentioned matter once; I've
+been talking about space-time, time, identity and logic.</P>
+
+<P><B>CW:</B> Matter is
+not all there is.  Nor energy.  
+</P>
+
+<P><B>PH:</B> Well, just
+for the record, matter IS energy.</P>
+
+<P><B>CW:</B> I am me, I
+am not a worm, and I am the same person I was a few minutes ago, yet
+not everything is the same about me.</P>
+
+<P><B>PH:</B> Ok, try
+writing that down in logic and see how long it takes to get a
+contradiction (two steps in most ND systems: 1. a=b; 2. P(a); 3. not
+P(b); 4. P(b) [1,2: subst] ; false [3,4: not-elim.] .)</P>
+
+<P><B>FL:</B> The 3-D
+endurantist, to talk about time, can either use real temporal logic,
+add 
+</P>
+<P>times as arguments of P
+in FOL, or use distinct predicates is-P and was-P in 
+</P>
+<P>FOL.</P>
+
+<P><B>PH:</B> Yes, I know,
+but Chris was <I>not </I>doing that, which was my point. I have never
+argued that endurantism is incoherent or unformalizable.</P>
+
+<P><B>PH:</B> Look, it&rsquo;s
+<I>easy </I>to write English sentences like the above and feel one
+has solved the problem. But that is an illusion, like a politician
+making a speech and feeling that he has put the economy in order. The
+problems we are talking about here haven't even had their surfaces
+scratched until one gets down to a logical description. You seem to
+have the intuitions of an endurantist, and seem unable to appreciate
+perdurantism: the exact opposite of Fritz; yet you seem to think you
+agree with him. I suspect that it because you only talk to one
+another in intuitive English prose, which allows each way of thinking
+to go along by itself without apparently contradicting the other, by
+an elegant process of mutual misunderstanding. Try swapping axioms
+and see how long you agree.</P>
+
+<P><B>CW:</B> Why do you
+see this as a problem for non-perdurantists?  
+</P>
+
+<P><B>PH:</B> See above.
+Now, you can get around it by saying that you are not the same person
+you were a few minutes ago, which is a perdurantist position, at
+bottom. Or, you can get around it by insisting that you are the same
+person, but by saying that predications have to be made relative to a
+time, so that apparent contradiction between P(a) and notP(b) is an
+error and should instead be written P(a, t1) and notP(a, t2). That
+would be more an endurantist's strategy. Both of them work, but they
+give different notions of 'object'. What you can't do, consistently,
+is have it both ways.</P>
+
+<P><B>CW:</B> If I'm
+looking for a common sense account of things 
+</P>
+
+<P><B>PH:</B> That remark
+deserves a book-length comment. Do you think that &quot;common-sense&quot;
+means &quot;so stupidly simple that any jerk can do it with his eyes
+shut&quot;?  Formalizing common sense is <I>hard</I>. We shouldn't
+expect it to seem, or to be, easy; any more than having a brain
+should make one into a brain surgeon, or being able to speak makes
+one into a linguist. I don't expect it to be done properly in any of
+our lifetimes. 
+</P>
+
+<P><B>FL:</B> I'd like us
+to accomplish a big part, semi-properly at least, in my short
+expected lifetime.</P>
+
+<P><B>CW:</B> Anyway, even
+if you take that for identity, when I'm out of your sight and return
+again your identity criteria don't help me, because I lost track of
+your worm, yet still we're able to do it.    I don't identify you as
+Pat because of your worm.</P>
+
+<P><B>PH:</B> Please, try
+to think about the ideas, not the words. If I <I>am</I> my worm, then
+<I>obviously</I> you are going to do that. You identify me as me
+because I am me, right?</P>
+
+<P><B>PH:</B> In fact,
+it&rsquo;s the endurantists who make the distinction. They would
+allow the Pat-worm as well as Pat. It's an occurrent:  Pat's life;
+the sum total of events that make up my most intimate biography.
+Unlike a thoroughgoing perdurantist, however, they cannot identify
+that with Pat, since one is an occurrent and the other is a
+continuant, so for them (and for you, I think) the question arises
+which of these two different things has ontological priority. To a
+perdurantist like me, that is like asking whether 2 is better than 2;
+it just seems to be a silly question.</P>
+
+<P><B>PH:</B> Identity, in
+the sense I am using it, admits of no degrees.</P>
+
+<P><B>FL:</B> Identity and
+nonidentity presuppose identity criteria. (So do sets and hence
+models.)  
+</P>
+
+<P><B>PH:</B> That sounds
+neat but doesn't stand up to scrutiny &ndash;</P>
+
+<P><B>FL:</B> I tried to
+explain that earlier.</P>
+
+<P><B>PH:</B> - and the
+fact of the matter is exactly the opposite; without a basic notion of
+logical identity, &quot;identity criteria&quot; don't even make
+sense, and could not possibly be stated. How are you going to state
+an 'identity criterion'? Its conclusion will have the form (.... then
+ x=y), right? Whatever you mean by '=' here is what I mean by
+'identity', OK? Being the same thing in the universe of discourse.
+Being the same value of a bound variable. Being the same thing. What
+could be simpler, or more fundamental, than that?</P>
+
+<P><B>FL:</B> Leibniz's
+&quot;strict&quot; Identity of Indiscernibles (Loemker, 1969) begs
+the question because the identity criteria determine what can be
+&quot;discerned&quot; as distinct.  (By the way, I don't really
+believe in the Identity of Indiscernibles &ndash;</P>
+
+<P><B>PH:</B> Me neither,
+but that&rsquo;s irrelevant to this discussion.</P>
+
+<P><B>FL:</B> - in a
+symmetric universe -- but I do believe in the Indiscernibility of
+Identicals.)  Your own example of being the <I>same </I>Pat tomorrow
+but different in properties from Pat today illustrates my point.</P>
+
+<P><B>PH:</B> I fail to
+see how. Seems to me that it just illustrates that you think like a
+perdurantist.</P>
+
+<P><B>FL:</B> As I was
+saying earlier, &quot;Same but different&quot; arises normally in all
+issues of identity criteria. equivalence-classes, isomorphisms,
+homomorphisms, &quot;kernels&quot; of relations, fluents, etc.  The
+apple is the &quot;same apple&quot; but &quot;different&quot; at
+different times. 
+</P>
+
+<P><B>PH:</B> Now you are
+talking like an endurantist. That is nonsensical in the perdurantist
+framework. You can't have it both ways; say what you mean, and don't
+use scare quotes.</P>
+
+<P><B>FL:</B> The scare
+quotes are needed for ambiguous &quot;same&quot; and &quot;different&quot;.
+ 
+</P>
+
+<P><B>PH:</B> I didn't use
+those words in a sense that could admit ambiguity. &quot;Same&quot;
+means literally, logically, the same entity. &quot;Different&quot;
+means not the same.  x is the same as y iff (x=y) is true. End of
+story.</P>
+
+<P><B>FL:</B> Endurantism
+allows fluents, and changes (differences) in the properties (fluents)
+of a (the same) thing. Perdurantism allows differences between the
+properties of the different temporal (as well as spatial) parts of
+the same thing.</P>
+
+<P><B>PH:</B> Yes, but
+those two notions of 'thing' are <I>different</I>. Surely you can see
+this? It&rsquo;s as obvious as it can get. The 'thing' the
+endurantist is talking about is 3-D, but it has no temporal location;
+it is the same - no scare-quotes, logically the same - thing at
+different times. (Think of it as in a 3-D universe, which is the
+domain of quantification of an essentialist Kripkean (Kripke, 1971)
+model of a temporal logic.) The perdurantist 'thing' that has
+temporal parts is <I>not</I> 3-D, but 4-D; it is <I>not </I>the same
+thing at different times, because it doesn't even make sense to speak
+of it being 'at' a time; and its not the same as any of its temporal
+parts.</P>
+
+<P><B>PH:</B> The
+perdurantist (4-D) position is that there are three things; the apple
+extended through time (the apple-history) and two parts of it, two
+temporal slices of the apple at two different times. Call these A, B
+and C. The endurantist position is that there is one, single, 3-D
+apple, which endures through time. Call that D. Now, D is not
+identical to any of A, B or C. It isn't identical to A because (among
+other things) C is 3-D and A is 4-D. It is more like B and C, but it
+can't be identical to them, because if we used that criterion of
+identity is would have to be identical to them both, and they are not
+identical. In fact, there isn't <I>anything</I> in the 4-D world
+corresponding exactly to D, since anything that did would have to be
+extended in time, and D is not extended in time; it endures through
+time, but is itself 3-D, not 4-D. It has no temporal extent, but it
+endures. It doesn't really belong in the 4-D world at all. 
+</P>
+
+<P><B>FL:</B> Agreed.  No
+3-D entity is identical to any 4-D (or 42-D) entity, though it could 
+</P>
+<P>be a projection of it.</P>
+
+<P><B>PH:</B> The 3-D
+things in the perdurantist world - the slices or projections of the
+4-D worms - are not the same as the 3-D things the endurantist is
+talking about. For a start, they don't endure. Pat-yesterday isn't
+around today<I> at all</I>. In fact, Pat-when his
+finger-hits-the-'p'-key isn't around when Pat's finger is hitting the
+'a' key.</P>
+
+<P><B>FL:</B> What &quot;we
+have words for&quot; is not fundamental, but English suggests
+temporal qualification (and temporal logic) with identity across
+times, as the easiest to map to English simply.  (English fails to
+distinguish similarity from identity -</P>
+
+<P><B>PH:</B> True, but
+irrelevant to the current discussion.</P>
+
+<P><B>FL:</B>  We say
+&quot;they're the same&quot; or &quot;they're identical&quot; to mean
+only that they are very similar, or are &quot;the same up to
+equivalence as to P&quot;.  &quot;All men are equal&quot; doesn't
+mean that there's only one man!)</P>
+
+<P><B>PH:</B> Such things
+apparently do not have colors as such. Do they have any properties as
+such, <I>in re</I>, in themselves, or are all properties only
+applicable at times? (What about the property of a thing being
+identical to itself?)</P>
+
+<P><B>FL:</B> With
+(3-D-based) temporal qualification, some predicates vary with time
+and some don't.  &quot;Fritz is fat (now).&quot; varies; &quot;1 plus
+1 equals 2 (now).&quot;, &quot;1984 ends before 2001 begins (now).&quot;
+and &quot;x equals x (now).&quot; don't vary since they are
+timelessly true.</P>
+
+<P><B>PH:</B> I don't mean
+to imply by this rhetorical outburst that these questions have no
+answer, but only to try to shake your confidence that the answers are
+obvious, and unique.</P>
+
+<P><B>FL:</B> I believe
+that the answers are fairly obvious and fairly obviously not unique,
+since you can adopt either convention (4-D or 3-D) at will.</P>
+
+<P><B>PH:</B> A
+perdurantist can do that, but an endurantist will vehemently reject
+the 4-D view as incoherent, fallacious, nonsensical, violently
+unintuitive, etc. 
+</P>
+
+<P><B>FL:</B> The last two
+are ok just to allege, but the first two should be proved. I don't
+know that either 3-D space+time or 4-D spacetime is internally
+incoherent or fallacious.</P>
+
+<P><B>PH:</B> Well,
+endurantists can be just as blinkered in their outlook as
+perdurantists can be.</P>
+
+<P><B>PH:</B> Moreover,
+they are right to get so feshed, since the 4-D view is radically
+incompatible with their way of thinking; any change produces an
+immediate logical contradiction. If Pat-now is wearing a hat and
+Pat-then isn't, and Pat-now is the identically same thing as
+Pat-then, then there is a contradiction. The endurantist response is
+to refuse to talk about things like Pat-then and Pat-now. 
+</P>
+
+<P><B>FL:</B> Yeah; the
+endurantist talks about True-then and True-now instead.</P>
+
+<P><B>FL:</B> This was a
+main point of mine.  Instead of a stack of Pats, a stack of worlds.</P>
+
+<P><B>PH:</B> The
+perdurantist response is to reject the identity of Pat-now and
+Pat-then. You seem to want to have the logical security of the latter
+while also pretending to have the identity criteria of the former,
+but that isn't logically possible. If A is <I>identical</I> to B then
+if P(A), then P(B) follows <I>logically</I>. There isn't any room for
+'partial identity' to have it both ways; partial identity is just
+non-identity.</P>
+
+<P><B>FL:</B> Agreed, or
+rather: there is no partial identity.  But there are
+identity-up-to-isomorphism, identity-up-to-equivalence-wrt-P, etc. 
+Identity-up-to-Leibniz is the extreme.</P>
+
+<P><B>PH:</B> There is
+only what you are calling the 'extreme'. Even to talk about
+'up-to-ismorphism' is to admit that there is a set of <I>different</I>
+things that are isomorphic, but not identical, to each other.
+Mathematicians are very careless about identity (they can afford to
+be, since they are usually based in pure set theory) but we aren't
+doing mathematics here.</P>
+
+<P><B>FL:</B> An &quot;event&quot;
+less primitively is a constellation of changes and participants
+therein.</P>
+
+<P><B>PH:</B> But what
+distinguishes events from their participants? Aren't they all just
+(the contents of) variously-shaped pieces of spacetime, all on a par
+with each other? After all, Germany existed both before and after WW
+II, so in what sense were, say, Germany-during-1914 or
+Germany-during-1999 &quot;part&quot; of WW II? Or did you mean to say
+that German-during-WWII was a 'part' of WW II? Ok, then, but what
+does just plain &quot;Germany&quot; refer to? Was it the same Germany
+in 1914 as it is now? Was it the same Germany five seconds ago?</P>
+
+<P><B>FL:</B> The &quot;pure&quot;
+events are just changes.  
+</P>
+
+<P><B>PH:</B> There are no
+changes in the 4-D world.</P>
+
+<P><B>PH:</B> I know we
+spent a lot of time talking about this, but you don't seem to have
+fully understood what this means. 
+</P>
+
+<P><B>FL:</B> See my
+tentative definition, above, of &quot;change&quot; in a 4-D spacetime
+model.</P>
+
+<P><B>PH:</B> If you want
+to classify some 4-D regions as 'change-like' as opposed to
+'thing-like' then of course we can try to do that, but you need to
+come up with some criteria for making the distinction. 
+</P>
+
+<P><B>FL:</B> Yes, I will,
+but it will turn out to be not quite regions, I think, but certain 
+</P>
+<P>Husserlian &quot;moments&quot;
+(as opposed to parts) of regions. (Note: My scare-quotes on &quot;moment&quot;
+are to stop anyone from thinking that this very technical term has 
+</P>
+<P><I>anything </I>to do
+with normal English moments which are short time periods.)</P>
+
+<P><B>PH:</B> Saying they
+'are just changes' doesn't say anything, and there is no prior notion
+of 'pure event' to fall back on. The basic 4-D spatiotemporal
+geometry has no way to make this distinction; it can't tell the
+difference between things and events. 
+</P>
+
+<P><B>FL:</B> I think
+that's wrong, if you mean we can't, in 4-D, distinguish a change from
+</P>
+<P>the object that
+changes.</P>
+
+<P><B>PH:</B> I mean that
+there is no basis in the geometry or topology of 4-D spacetime itself
+for making this distinction, even qualitatively, so it has to be made
+on some external criteria. The distinction is axiomatic and
+fundamental to the endurantist, but poses a problem in definition for
+the perdurantist. (If you see it as a problem, that is. For myself
+I'd be happy to treat it as an arbitrary pragmatic distinction of no
+basic importance. )</P>
+
+<P><B>PH:</B> (In fact,
+this is one of its strengths, seems to me, since many entities are a
+kind of thing/event hybrid, and being forced to distinguish them just
+gets in the way.)</P>
+
+<P><B>FL:</B> This deals
+with event-constellations.  
+</P>
+
+<P><B>PH:</B> I don't know
+what that means either. Is a flame or an ocean wave an
+event-constellation? How about a green tomato slowly ripening to red
+in the sunshine?</P>
+
+<P><B>FL:</B> Yes. Most
+common-sense notions of event are in fact about compound event-</P>
+<P>constellations.</P>
+
+<P><B>PH:</B> But these
+examples seem to me to be quite un-constellation-like. Maybe I still
+don't follow what you mean by this term.</P>
+
+<P><B>FL:</B> I believe
+that various workable schemes can be defined (classifying regions of
+4-D spacetime as event-constellations) once the change/thing-changed
+distinction is clear.</P>
+
+<P><B>PH:</B> I'm puzzled
+as to why you want to get it clear. I think it is almost more trouble
+than it is worth. Suppose for example that we (both 4-D perdurantists
+for now) know that some thing, A, is an object as opposed to an
+event. What follows from this? If we say, that means that its
+properties don't change unless something makes them change, then (a)
+this is false, e.g. consider the tomato, and (b) we have just created
+the frame problem where there was no problem before. If we say that
+this means that it will endure, the same is true for many events, and
+false of many short-lived objects (such things are rife inside
+machinery, cellular chemistry, etc.); wouldn't it be better just to
+talk about its temporal dimensions directly?</P>
+
+<P><B>FL:</B> The
+&quot;constellation&quot; events and their participants are as you
+suggest -</P>
+
+<P><B>PH:</B> I wasn&rsquo;t
+suggesting anything, only asking you what you meant.</P>
+
+<P><B>FL:</B> - The
+colloquial meaning in English of &quot;event&quot; (and &quot;Germany&quot;)
+is not precise.</P>
+
+<P><B>PH:</B> I am not
+relying on colloquial ambiguities. I am asking you what <I>you</I>
+mean by this example, and I want to you get more exact about the
+structures of events and participants that you are assuming. Seems to
+me that you are in a tar-pit here, and I won't let you escape by
+retreating into vagueness.</P>
+
+<P><B>FL:</B>  (in this
+meaning, Germany is a sort-of &quot;part&quot; of the &quot;event&quot;
+World War II).  The former, purer, meaning shouldn't be confused with
+the latter, colloquial, meaning.</P>
+
+<P><B>FL:</B> This has
+nothing to do with time-slices and time-worms.  
+</P>
+
+<P><B>PH:</B> Of course it
+does. See above comments on temporal sections of Germany, for
+example.</P>
+
+<P><B>FL:</B> I still
+disagree.  The colloquial ambiguities in &quot;event&quot;, &quot;Germany&quot;
+&quot;part&quot;, etc. are still there regardless of whether 3-D or
+4-D formal modeling is used.</P>
+
+<P><B>FL:</B> I don't see
+that Peter Simons' &quot;all parts wholly present now&quot; helps (it
+merely says that a slice excludes the rest of the salami - so what?)
+since that is just about 3-D vs 4-D objects.</P>
+
+<P><B>PH:</B> No, it says
+much more than that. It says - you may find this crazy, but it does
+say this - that the slice <I>is</I> the <I>entirety</I> of the thing.
+There are no 'salamis' to be sliced; the 'slices' are what are real -
+except that the it is the <I>same</I> thing, not a series of distinct
+slices - and the 4-D salami is a fiction; and a pernicious fiction,
+at that, according to Simons (at least, the Simons of a certain while
+ago who wrote a famous book) and for example Barry Smith. Things that
+you call true 'of the slice' are true at a certain time, of course;
+but <I>all</I> things are true at a time in this world-view. In fact,
+all things that are true, are true now, because there is only one
+world, and it is all present now. In this view, time is not a
+dimension, to be laid out like a ribbon and viewed from 'nowhen', but
+more like a kind of enclosing dynamic property of the instantaneous
+world, and that world is <I>all </I>that is real. 
+</P>
+
+<P><B>FL:</B> That's fine;
+it's one of the two models, either of which is fine. I find neither
+model pernicious.</P>
+
+<P><B>PH:</B> But you do
+agree that they are incompatible, right? If not, please explain how
+you would make A B C and D all fit together into one framework.</P>
+
+<P><B>FL:</B> The two
+models are distinct but can be linked by projection of 4 dimensions
+into 3 dimensions and translation between classical logic (with
+timeless truth) and temporally-qualified (technically, modal) logic
+(with truth at time t).  Various books explain the latter
+translation.</P>
+
+<P><B>PH:</B> Yes, I know
+about that stuff. But that doesn't do the endurantist perspective
+justice. Endurantist entities are translated, in these mappings, into
+collections of distinct entities that are event-like (because
+momentary) and hence not thing-like from the endurantist viewpoint.</P>
+
+<P><B>FL:</B> There are
+two different issues mixed here.  First is: 4-D time versus temporal
+qualification of (and outside of) a 3-D world.  Second, given
+temporal qualification, is: &quot;God's eye&quot;  (&quot;P true at
+the turn of the 20th Century&quot;) versus &quot;situated relative to
+the context&quot;, i.e. &quot;tensed&quot; (&quot;P was true&quot;)
+relative to the &quot;now&quot; of the context. The latter
+distinction is McTaggart's  (McTaggart, 1908) A-Series versus
+B-Series [ed note: from
+<FONT COLOR="#0000ff"><U><A HREF="http://www.bun.kyoto-u.ac.jp/~suchii/mctaggart.html">http://www.bun.kyoto-u.ac.jp/~suchii/mctaggart.html</A></U></FONT>
+&ldquo;'past, present, and future' is the A series, and that in the
+'earlier than' relation is the B series&rdquo;]. All this has been
+analyzed plenty in works on temporal logic.</P>
+
+<P><B>PH:</B> Yes, I know
+all that stuff. But that distinction alone does not do justice to the
+radical ontological differences between the perdurantist/endurantist
+viewpoints.</P>
+
+<P><B>PH:</B> We can speak
+of the past and the future, of course, but we always do so from the
+present, and in the present. 
+</P>
+
+<P><B>FL:</B> Yeah, that's
+A-Series talk.</P>
+
+<P><B>PH:</B> Right. But
+one could be an A-series-talking perdurantist.</P>
+
+<P><B>FL:</B> I think that
+makes sense (A-Series being really an indexicality choice) but it's
+rare.  As far as I know, I've never met one.</P>
+
+<P><B>PH:</B> Well, I used
+to be one. As a perdurantist, you should have no trouble thinking
+about being introduced to one of my past slices. Fritz, Past-Pat;
+Past-Pat, Fritz. Good day to you, Sir.</P>
+
+<P><B>PH:</B> Things  -
+continuants - endure; and while they do of course change, they retain
+their identity - that is real identity, the logically-equals kind.
+They are <I>not</I> made up of unchanging slices arranged in time
+like a series of movie stills, all distinct and separated from each
+other: two such 'slices' cannot both exist; for if they could, they
+would be the same thing. On this view, there are no 4-D objects; the
+idea is nonsensical. Events happen, of course, but events -
+occurrents - are completely different kinds of things altogether, The
+occurrents are what constitute time, in a sense: they are the
+enclosing dynamical entities that constitute changes in the
+continuants; but all the structure in the world, the fabric, as it
+were, that makes our world more than simply chaos, is comprised of
+the continuants that serve as the basis for our sense of identity
+through the plenum of change created by the occurrents.  Occurrents
+(literally) do not exist in the sense that continuants do; they
+<I>happen</I>.</P>
+
+<P><B>FL:</B> I agree with
+the last sentence, but the &quot;made up of&quot; &quot;exist&quot;
+&quot;enclosing&quot; &quot;plenum of change&quot;, etc. are the
+places in that paragraph where a choice between 3-D and 4-D may be
+made.  
+</P>
+
+<P><B>PH:</B> I obviously
+did not express myself well enough. The point I was trying to convey
+by this rather poetic language was exactly the opposite; that the
+endurantist perspective allows no such choices; it insists on a very
+strict adherence to a binary classification, in which one kind of
+entity is <I>essentially</I> 3-D (or less) but <I>endures</I> through
+time, and the other kind of entity is <I>essentially</I> temporally
+extended but has no enduring. In this framework, the rather casual
+'spatial' sense of temporal occupancy which comes naturally to you
+and me, where pieces of the world can both occupy time and be located
+in time, is completely and rigorously suppressed. A thing either is
+purely spatial, with no temporal extent, and endures; or it is
+temporally extended, and happens. Nothing is both; that is as
+impossible, in this world-view, as a solid integer. 
+</P>
+
+<P><B>FL:</B> Isn't that
+classification just the distinction between 3-D and 4-D -</P>
+
+<P><B>PH:</B> Nope. It has
+to be 3-D with a particular relationship to time; neither embedded or
+projected.</P>
+
+<P><B>FL:</B> - extending
+is not enduring, this occupying is not locating-in, etc.? &quot;Happening&quot;
+being &quot;temporally extended but not enduring&quot; is one
+proposed answer to the event-object distinction.  
+</P>
+
+<P><B>PH:</B> But in 4-D
+that is meaningless, right? To endure <I>is</I> to be extended in
+time. There isn't any other way to be 'at' two times than to be
+extended in time. The idea of something enduring but having no
+temporal parts is incoherent in 4-D.</P>
+
+<P><B>FL:</B> (It is a 3-D
+answer that reminds me a little of my earlier proposed 4-D answer,
+now abandoned, that objects are long skinny timeworms in the time
+dimension whereas events are spacetime regions that are short in the
+time dimension.)</P>
+
+<P><B>PH:</B> That notion
+of 'enduring' is very odd indeed to a perdurantist, and deserves
+careful thought. It is the key to the endurantist position, as the
+name suggests. It does NOT mean having a temporal extent; on the
+contrary, it means having no temporal extent, but nevertheless
+continuing to be 'present' as time passes.</P>
+
+<P><B>FL:</B> Even in a
+4-D model, a bend (an occurrent) in a time-worm is not a piece or
+part of it, rather it's a foundationally-dependent &quot;moment&quot;
+in the Husserl/Barry Smith/Peter Simons sense.  
+</P>
+
+<P><B>PH:</B> Maybe this
+is the first place we genuinely disagree. I cannot see any way to
+justify this claim. What, in the 4-D perdurantist framework, can
+possibly justify one spacetime part having a different ontological
+status than another? 
+</P>
+
+<P><B>FL:</B> A Husserlian
+&quot;moment&quot; is not a part, strictly speaking. 
+</P>
+
+<P><B>CW:</B> I was under
+the impression that 4-Dism doesn't exclude moments, though I'm not
+sure how they would be treated and I'm not enough of an expert in 4-D
+to think of how.</P>
+
+<P><B>PH:</B> Well, I have
+no idea what these 'moments' are, so maybe we could try some mutual
+education. (I gather that this does not mean 'moment' in the vulgar
+sense of very short time period, as in &quot;Hang on, I'll just be a
+moment&quot;, right? Does it have any relationship to the sense of
+'moment' from mechanics, as in 'moment of inertia'?)</P>
+
+<P><B>CW:</B> A moment in
+this sense is I think supposed to be the spatial equivalent of a
+temporal moment.  They cannot exist without the object they are part
+of (yes, they are parts).  
+</P>
+
+<P><B>PH:</B> Ok, you and
+Fritz please settle that one; he says they are not parts.</P>
+
+<P><B>CW:</B> You can't
+have an edge without the knife, you can't have a bend without a road
+- this is what we meant by dependence.  
+</P>
+
+<P><B>PH:</B> Well, you
+can't have an edge by itself, or a surface; but you can have a bend.
+I bet that bends have been built on movie sets without any
+surrounding road leading to them or from them.</P>
+
+<P><B>CW:</B> In addition,
+the boundaries of the part are difficult to pin down.</P>
+
+<P><B>PH:</B> Speaking now
+as a perdurantist, the bend in the road seems obviously just as much
+a part of the road as any other part of the road. 
+</P>
+
+<P><B>CW:</B> I strongly
+agree with Fritz's position here.</P>
+
+<P><B>PH:</B> So you think
+the bend is <I>not</I> part of the road?</P>
+
+<P><B>CW:</B> No, of
+course not.  What we were disagreeing with was the &quot;just as
+much&quot; - they are not &quot;just as much parts&quot; as the rest.
+ They are special kinds of parts - dependent parts - they cannot be
+separated from the whole.  They cannot be cut out. They can only
+exist as parts of the whole.</P>
+
+<P><B>PH:</B> I know bends
+in roads that have skid marks on them; am I hallucinating? Road signs
+often warn of dangerous bends ahead; are they lying? Are those curved
+pieces of road not just as real, solid, pieces of road as the
+straight sections? (Do you guys think that roads are essentially
+straight, so that bends do not count as road, or something?)</P>
+
+<P><B>CW:</B> I love it
+when you say, &quot;essentially&quot;. 
+</P>
+
+<P><B>PH:</B> Well, I was
+being sarcastic, you understand.</P>
+
+<P><B>CW:</B> Anyway,
+there <I>are</I> bends in roads - not all roads are straight. <I>Make
+sure you understand this before you drive home!</I></P>
+
+<P><B>PH:</B> Ok, then you
+can isolate the bend; you can have the bend without the (rest of the)
+road. Maybe we are at cross-purposes about the meaning of 'bend'?</P>
+
+<P><B>CW:</B> Maybe, but
+this could get lengthy - a Hollywood set of a bend makes sense only
+because it is implied that there is a road.  Anyway, we're talking
+about a bend in something, like a bend in a branch, etc.</P>
+
+<P><B>CW:</B> I don't see
+how you can deny that edges and bends exist, and have special
+properties such as dependence, but again I'm not sure the 4-D view
+excludes them.  Does it, or is it just the Pat view that does?</P>
+
+<P><B>PH:</B> Of course I
+don't deny that edges and bends exist. In fact, I drive around bends
+all the time, and sometimes touch edges, and I don't feel like the
+road ceases to exist. However, I have no idea what it means to have a
+<I>property</I> of dependence.</P>
+
+<P><B>PH:</B> As far as I
+know, nothing (including me) excludes them in 4-D either. (I'm not
+sure what led you to suppose anyone was saying that.)</P>
+
+<P><B>CW:</B> The problem
+with moments is unity - how do you identify what is, e.g. the edge,
+and what isn't?  
+</P>
+
+<P><B>PH:</B> I have no
+idea what you mean. I have no trouble identifying edges in real life;
+being a sometime carpenter, I often spend a lot of time attending to
+edges, in fact, and I usually know exactly where they are. (It is
+dangerous not to, I find.) There are special ways to carry chisels
+and saws in order to protect their edges from damage, for example. So
+you surely do not mean 'identify' in the ordinary everyday sense, of
+being able to locate them in space/time. I wonder what sense you can
+have in mind that could possibly make this into a sensible question?</P>
+
+<P><B>CW:</B> I was
+careless in using the word &ldquo;identify&rdquo;. I meant &quot;isolate&quot;.
+ One property of moments is that they are tough to isolate (this is
+not unique to moments, of course).</P>
+
+<P><B>PH:</B> Fair enough.
+Seems a bit weak, though, if that is all that can be said about them.</P>
+
+<P><B>CW:</B> A <I>lot</I>
+can be said about them, hence a book edited by Barry on them, among
+others.  They are dependent, in that they cannot exist without the
+thing they are a moment of.  They typically have special geometric
+properties.  I'm not an expert on it.</P>
+
+<P><B>CW:</B> For example,
+say you have a sword.  The edge is sharp.  Another sword has a dull
+edge.  How do you represent that in a 4-D view?  
+</P>
+
+<P><B>PH:</B> The same as
+you would in a 3-D view, it being a purely 3-D matter. The difference
+is that the 4-D view would also contain some other dependent things,
+e.g. the history of the edge becoming sharp - the sharpening - would
+have the same kind of relationship to the knife-history that the edge
+does to the knife.</P>
+
+<P><B>CW:</B> How do you
+say, &quot;The edge is sharp&quot;.  Use your where and when (and
+whatever else) notation below.</P>
+
+<P><B>PH:</B> Well, the
+thing that would be sharp would presumably be a temporal section of
+the history of the edge (unless this was an unusual knife) so this
+would be something like Sharp(edge(knife)@I) which would be
+equivalent to Sharp(edge(knife@I)) precisely because of the
+dependency relationship that you note, which in this case would be
+described extensionally as a rule saying that any history of the edge
+is the (spatial) edge of a contemporary history of the knife:</P>
+
+<P><B>PH:</B> edge(x)@I =
+edge(x@I)</P>
+
+<P><B>CW:</B> Fine, of
+course I could just say this in a 3d view the same way:
+sharp(edge(knife),t1)</P>
+
+<P><B>PH:</B> Right,
+sharpness is a basically 3-D phenomenon. Becoming sharp is more of an
+essentially 4-D kind of thing. There are essentially 4-D kinds of
+'sharpness', however, and they would be things like a cutting, i.e.
+the exact event (or if you prefer, the spatiotemporal envelope of the
+event) of a sharp edge cutting a surface; that would be a temporal
+boundary which is in all other respects exactly like the spatial
+boundary defining the sharp edge (and which coincides with that
+spatial boundary at the exact time of the cut, by the way.)</P>
+
+<P><B>CW:</B> But now that
+I'm getting it I see that there is no particular difficulty in
+defining moments - no more than in 3-D, which is what I suspected in
+the beginning.</P>
+
+<P><B>CW:</B> Good, so I
+believe Fritz's point is that many of these moments in your 4-D world
+represent what we intuitively call &quot;change&quot;, as you say.</P>
+
+<P><B>PH:</B> Yes, of
+course they do, that has never been at issue. Although why one
+singles out these particular parts of the 4-D world as 'moments' is
+rather beyond me. (I am in general averse to making categorizations
+that have no functional or pragmatic basis; it is the worst fault of
+mediocre philosophy to become a kind of abstract botanizing, a
+process of classifying nothing in particular on no particular
+observational basis.)</P>
+
+<P><B>CW:</B> Are you
+seriously trying to claim that events are not observed? 
+</P>
+
+<P><B>PH:</B> Of course
+not. The issue is not whether there really are things we intuitively
+call 'events' or 'objects'. As I&rsquo;ve said many times, we all
+agree about that. The issue is how we design the <I>formal </I>frameworks
+to describe this world, which we all inhabit and know pretty well.
+Endurantism is a strategy for doing that which elevates this
+intuitive distinction into a basic - perhaps <I>the</I> basic -
+foundational distinction on which the entire framework rests. To an
+endurantist, things and events are as different as chalk from cheese,
+and to even dream of confusing them would be a basic category error.
+What I am talking about is this elevation of the distinction into
+something ontologically basic. It seems to me that the closer and
+more carefully I look at the actual world, the <I>less </I>basic the
+distinction becomes. Some objects can be seen as events, some things
+can be seen either way, some things can only be adequately described
+by using notions from both categories in a kind of blend (e.g. a
+falling water droplet that is changing its shape and also evaporating
+as it falls). Sometimes, the reasoning that we seem to need can only
+be done by switching between the 'object' and 'event' ways of
+thinking (e.g. explaining how slanting waves make the sand on a beach
+move sideways, or doing weather forecasting, or explaining why one
+should not drink out of a cup that has been in a sewer) In fact, the
+more closely one looks, the more the distinction seems to become
+inadequate as a basis of any kind of formal classification.</P>
+
+<P><B>PH:</B> And in fact,
+what I was talking about above was 'moments'. I haven&rsquo;t seen
+the need for this classification yet in any part of the observational
+world. There are edges and corners and holes and curves (etc), of
+course; but like most other everyday classifications, these things
+all seem to demand their own axiomatic treatments, and they seem to
+have little to do with one another. Moreover, I feel like I pretty
+much understand edges, corners, surfaces and bends (and even things
+like linear movements of cutting edges, spatiotemporal locations of
+point impacts, and things like that), but I wouldn't know what to say
+about a moment, so introducing them doesn't seem to be helpful. I
+don't see any need for the general category.</P>
+
+<P><B>CW:</B> That change
+is not observed?  That a great part of our language supports the
+capability of describing change and events?</P>
+
+<P><B>PH:</B> Yes, in fact
+I think that the distinction is more linguistic than physical. But
+you know my opinion about using linguistic data in ontology, right?</P>
+
+<P><B>PH:</B> &quot;Edge&quot;
+here would be defined topologically, probably as the 2-D history of
+the line where two 3-D surface-histories (parts of the surface of the
+history of the knife) intersect.  (This is a slight idealization, in
+treating a physical edge as though it were a mathematical edge. A
+better theory would distinguish them and have a notion of
+approximation relative to a granularity. However, I have no idea how
+to do this adequately, so I won't claim to be able to.) Exactly how
+to define 'Sharp' I don't know off-hand, but it might involve
+geometry, although I suspect that my own experience with tools just
+treats 'sharpness' as a predicate of physical edges, without going
+into geometrical details, and connects it to properties like the
+ability to cut fine shavings, make smooth mortises in cross-grain
+wood, etc.</P>
+
+<P><B>FL:</B> I think this
+is wrong, which is key to my current view.  A curve in a road, like a
+corner, a boundary, a smile, a hole, an angle, a line-end, a
+difference, or a change, is not a part in the ordinary sense (in the
+way that a brain is part of a head).  
+</P>
+
+<P><B>PH:</B> I see what
+you mean. However the key point is that you said 'curve' and I said
+'bend'. Let us stick to purely spatial terminology for the moment.
+The bend is part of the road; one can drive along it, it can be
+surfaced with concrete as opposed to tarmac, it has a weight, and so
+on. The curve is more like an abstraction of come kind; it is the
+'shape' of the bend considered in isolation from any of the stuff
+that is used to realize this shape in the actual road. The bend is
+the part of the road that is curved, we might say, or perhaps that
+realizes or instantiates the curve, though I am not sure what this
+way of talking really means.</P>
+
+<P><B>PH:</B> However,
+there is something odd about talking of these shape-abstractions as
+separate from the parts of the shaped thing, in any sense other than
+as properties of them. I see what you mean, and agree, that a corner
+of a brick, say, is not a part of the brick in quite the sense that
+my liver is part of me, since it could not be removed and exhibited
+in isolation. (If it is part of anything, it is perhaps part of the
+<I>surface</I> of the brick, which similarly cannot be removed from
+the brick; but even this isn't quite right, since even if we allow
+surfaces to be real, one feels, a corner in isolation would simply be
+a point; what makes it a corner is the spatial dispositions of the
+other parts of the brick, rather than the corner itself - whatever
+that could possibly mean). But the key point, seems to me, is that
+there has to be some real thing there, and that these words - curve,
+corner, surface, boundary, angle, whatever - refer to <I>properties</I>
+of those things, usually properties that can be referred to
+(locations of) parts of the things. We often use the same word for
+the property and the (location of the?) part, e.g. when speaking of
+damage to a corner of a piece of furniture, or of repairing a hole in
+something, or smoothing a metal angle by filing. I suspect that we
+can get a long way by continuing to be careless about this
+distinction, and thinking of these things as being parts. For
+example, I am quite happy to think of the surface of a brick as being
+part of the brick. It is a very peculiar and special kind of part,
+and it cannot be separated from the brick, but so what? It certainly
+has things like location and size, and can be touched (and when we
+do, we say we have touched the brick). A corner of a brick is the
+place (on the surface) where the property of cornerness is
+manifested. If you take away the brick, that location has no such
+property, of course; that is the (rather crude) sense in which the
+corner is not a part. But in every other useful sense it is a part of
+the brick.</P>
+
+<P><B>FL:</B> These are
+Husserlian &quot;moments&quot;.  Barry Smith and Kevin Mulligan
+co-edited a whole book (Smith, 1982) on this distinction, called
+&quot;Parts and Moments&quot;.  Among other things, an individual
+&quot;moment&quot; is existentially-founded upon whatever individual
+it's a moment of (unlike a part).  
+</P>
+
+<P><B>PH:</B> That seems
+too simple, though, as a basis for making the distinction. Many
+things we call parts are 'existentially founded' in the sense that
+they wouldn't be what they are when considered purely in isolation. 
+</P>
+
+<P><B>FL:</B> Right -
+that's why I said &quot;among other things&quot; - mere dependence
+isn't enough but now I forget what the other requirements for the
+&quot;foundation&quot; of a Husserlian &quot;moment&quot; are besides
+dependence (individual existential dependence).  I think maybe Peter
+Simons threw in an extra requirement for foundation that the
+dependent thing is not &quot;founded&quot; on its own parts, because
+that would make almost everything trivially &quot;founded&quot;,
+since almost no thing can exist without its parts existing.</P>
+
+<P><B>PH:</B> They are
+'contextual' in a sense, e.g. the largest lake in Finland, or a
+basal-cell carcinoma (the point being here that this refers to the
+whole carcinoma, not part of it.)</P>
+
+<P><B>FL:</B> Being
+functionally-defined based on features of X is distinct from being
+existentially &quot;founded on&quot; X.  The largest internal organ
+of Pat (thus functionally-defined) is Pat's liver, and &quot;it&quot;
+could possibly exist without Pat existing.  Being
+functionally-defined is a matter of description rather than
+individual existence.</P>
+
+<P><B>PH:</B> Thanks, I
+get that now.  But you know, this entire game of arguing about what
+counts as a 'moment', what is or isn't 'existentally founded'  and so
+on strikes me as tiresome and pointless. Does <I>any</I> of this
+matter, Fritz? Isn't it like having a debate on some point of
+theology? Suppose I were to say: Ok, Husserlian moments exist, fine.
+I would then completely ignore them when writing axioms about
+anything I would ever want to talk or reason about, and I suspect
+that you would, also.</P>
+
+<P><B>FL:</B> An
+individual brain can exist without the head existing that it is the
+brain of, but an individual corner necessarily cannot exist without
+the box existing that it is the corner of.  Similarly, an individual
+curve in a road necessarily cannot exist unless the individual road
+exists (for the curve to be a curve in).  
+</P>
+
+<P><B>PH:</B> In the sense
+I used 'bend' that is not true. One could have an isolated 'bend'
+(perhaps on a film set somewhere) all by itself, and it would be
+quite existentially secure all by itself. What you cannot have is a
+curve in a road with no road to be curved, of course.</P>
+
+<P><B>FL:</B> Similarly,
+an individual &quot;change&quot; (as I define it for 4-D above, as an
+instance of certain sort of difference) in an object necessarily
+cannot exist unless the individual object exists.  
+</P>
+
+<P><B>PH:</B> But now,
+consider these individual objects that exist, in your account. Are
+they 3-D things that endure, or 4-D things with a temporal extension?
+I am guessing the latter, right? If so, then I suspect that you and
+Simons were at cross-purposes.</P>
+
+<P><B>FL:</B> [Nicola]
+Guarino, Simons and I have pushed for necessary existential
+dependence (a main feature of Husserlian &quot;foundation&quot;) as a
+top distinction ([John] Sowa has a different reason).</P>
+
+<P><B>FL:</B> On this
+view, a universe could have perpetual objects with no events, but it
+could not have events (changes) with no changed things.  Thus this
+proposal doesn't have quite the symmetric duality of the 3-D-based
+view.</P>
+
+<P><B>PH:</B> Not sure
+what you mean by this last point. Endurantism does not have this
+symmetric duality you refer to, e.g. occurrents can have continuant
+parts but not vice versa. (Which, by the way, strikes me as a bug
+rather than a feature.)</P>
+
+<P><B>PH:</B> And
+obviously, that part exists, just as much as any other part exists.</P>
+
+<P><B>FL:</B> That's
+slightly controversial.  I think that Husserlian moments exist &quot;as
+much as&quot; parts exist, but not quite in the same way.  This to me
+is still formal ontology (as Husserl urged), i.e. a matter of
+theories and not a matter of pure logic (except for necessity). I'd
+prefer not to mess up backwards E, in 4-D or in 3-D.</P>
+
+<P><B>PH:</B> I am not
+really following you here. When I say 'exists', I mean backwards E.
+If you mean something else, please explain.</P>
+
+<P><B>PH:</B> By the way,
+you have continuant/occurrent backwards here. It's the occurrents
+that have a temporal extent.</P>
+
+<P><B>FL:</B> So even in
+4-D I'd agree that &quot;Occurrents (literally) do not exist in the
+sense that continuants do&quot;.</P>
+
+<P><B>PH:</B> Then maybe
+you could say in what sense they do exist, and how that differs from
+any other sense of existence. (I presume you are not going to say
+that the 4-D 'bend' does not exist <I>at all</I>, right?)</P>
+
+<P><B>FL:</B> Right.  I've
+mentioned the main sense, and that I don't think it's mainly a matter
+of logic (in 4-D at least - 3-D needs temporal logic to allow
+change).  I'm not competent to give you the full story on the mode of
+existence of &quot;moments&quot;; Peter Simons could.  
+</P>
+
+<P><B>PH:</B> Well, I do
+know that Peter's view is resoundingly endurantist; he is the one who
+referred to the 4-D perspective as a 'fallacy'. So maybe you and he
+aren't using words like 'object' in quite the same way.</P>
+
+<P><B>FL:</B> (This is
+related, but not quite identical, I believe, to Peirce's (Peirce,
+1931) Secondness, and to Sowa's (Sowa, 2000) Role-Types.)</P>
+
+<P><B>FL:</B> I only say
+&quot;Husserlian moments&quot; just to make sure that it's understood
+in the very technical sense; I think &quot;moment&quot; is a terrible
+choice of word, in English as well as in German, since it has the
+normal meaning so strongly.  And I'm probably wrong to call them
+&quot;Husserlian&quot; anyway; they might come from Bolzano (Berg,
+1962) or the scholastics (Bishop Uhrplek?) or somebody else
+pre-Husserl, or maybe it should be &quot;Simonsian&quot; because of
+Peter Simons' aforementioned exclusion of one's own parts.</P>
+
+<P><B>PH:</B> I will leave
+the historical scholarship to the historians.</P>
+
+<P><B>PH:</B> That is
+endurantism; it has deep roots in Hegel and is very consistent with
+Heideggerian (Heidegger, 1927) phenomenology, in contrast with the
+'objective' view of the world that is embodied in most of our
+physical science, from Newton to Minkowski, and which notoriously has
+no place for subjectivity or experience. Again, don't shoot the
+messenger. I'm not advocating endurantism as a useful ontological
+perspective; on the contrary, in fact; but I do think that we need to
+respect its internal coherence and wide appeal (and for example its
+deep ties to natural language and to much of intuitive psychology),
+and to not simply ignore it, try to legislate it out of existence, or
+pretend that it is something else.</P>
+
+<P><B>FL:</B> Agreed, if
+this means only 3-D space+time.  I just doubt that 3-D is needed to
+distinguish objects from events usefully.</P>
+
+<P><B>FL:</B> Yes it's a
+perfectly fine model (as is 4-D) and it better fits English. My claim
+is (still) that it has nothing to do with occurrent versus
+continuant.  Occurrents and continuants are fundamentally different
+both in 3-D and in 4-D.  Since an occurrent can't fit in a slice, 3-D
+needs relations across time to define occurrents.</P>
+
+<P><B>FL:</B> So here are
+the distinctions I say not to mix up:</P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">1.
+Occurrents versus Continuants.</P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">2.
+4-D spacetime model versus temporally-qualified 3-D space model.</P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">3.
+God's-eye time versus contextually-situated (tensed) time.</P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">4.
+Events as pure changes versus events as constellations consisting of
+changes and the participants changed.</P>
+<P CLASS="western" STYLE="margin-left: 0.5in; margin-bottom: 0in">5.
+Identity criteria decisions.</P>
+
+<P><B>PH:</B> To the first
+point, maybe it would help if you were to state what you take this
+distinction to mean. You seem to use these terms in a way that
+differs from their use by the people who introduced the terminology.</P>
+
+<P><B>PH:</B> A continuant
+is something that has no temporal parts, is wholly present when
+present, and endures through time, retaining its (logical) identity:
+so Pat is identically the same Pat at all times, even though his
+properties may change. An occurrent happens, rather than endures; it
+occupies time and may have temporal parts, which differ from one
+another. The relationship to time is fundamentally different for
+continuants and occurrents.  Continuants occupy no time; they endure
+through time, but they have no temporal dimensions or extents.
+Occurrents, in contrast, do occupy time, but do not endure. A
+temporal part of an occurrent has only a momentary existence, and
+once past, is wholly past. The only temporal residue, as it were,
+that an occurrent can pass into the future, is by virtue of the
+changes it produces in continuants, since only continuants endure, to
+provide any kind of connection between temporal parts of occurrents.
+(Think of the continuant players in a soccer match occurrent, for an
+example.)</P>
+
+<P><B>PH:</B> Pat is a
+continuant; Pat's lifetime (lifespan?) is an occurrent, which is
+ontologically a completely different kind of thing from Pat, even
+though it has the same spatiotemporal envelope when mapped into 4-D.
+You can see and talk to Pat, but you cannot see or talk to his
+lifetime. Pat has a liver, but his lifetime does not. His lifetime
+has a childhood, but Pat does not (any more).</P>
+
+<P><B>PH:</B> To an
+endurantist, the perdurantist view seems to be an attempt to
+assimilate continuants to occurrents. Indeed, it does make sense to
+speak of 'timeslices' of an occurrent, and one could argue that there
+is no more to an occurrent than the sum of its slices. But, the
+endurantist would protest, that provides no way to account for the
+rather persuasive intuition that some things - most notably, perhaps,
+we conscious beings - seem to be the <I>same</I> things as time
+passes; we are the same people we were yesterday. There seems to be
+something very basic missing from the 4-D picture, which is the very
+'things' that provide the thread to weave those slices together into
+coherent wholes; they are all slices of one thing. And, an
+endurantist would claim, if you take this 'one thing' seriously, it
+has to be something more than a mere occurrent, defined by a
+spatiotemporal envelope, like a ball game or a thunderstorm; it has
+to <I>retain</I> its identity as time passes; it has to <I>endure</I>.
+ Without the these enduring threads, there are no principled ways to
+state temporal 'identity criteria', whatever that is supposed to mean
+exactly.  But there is nothing in the 4-D picture that can perform
+this essential ontological service; all there are are occurrents,
+sliced however thick or thin. That is like trying to make a necklace
+with beads but no string.</P>
+
+<P><B>PH:</B> I agree
+about distinguishing points two through four, and not getting them
+mixed up. However, they are related, in that if one takes talks about
+4-D spacetime then one is obliged to take the gods-eye view, for
+example; and the continuant/occurrent distinction, if treated with
+the respect intended by its inventors, is <I>incoherent</I> in the
+gods-eye view.</P>
+
+<P><B>PH:</B> As to point
+five, I continue to be slightly mystified by what exactly this is
+supposed to mean, to be honest.</P>
+
+<P><B>CW:</B> I've been
+thinking about this a bit more, I wonder if it might not be clearer
+if Pat would just give us a simple example of how to represent one of
+his 4d worms in logic.  How do you represent the 4-D Pat?</P>
+
+<P><B>PH:</B> Well, there
+are any number of ways to do it. How would <I>you</I> represent 3-D
+things? Generalize from there. For example, all the 'standard'
+part/whole theories, mereologies, etc., all apply directly to 4-D
+entities just as well as they do to 3-D ones, or for that matter to
+75-d ones. 
+</P>
+
+<P><B>CW:</B> So, then,
+what's the difference?  Why is object/event different in a 4-D view
+and a 3-D view? 
+</P>
+
+<P><B>PH:</B> I can't
+answer a nonsequiteur. What do you mean? The fact that a single
+theory applies to two cases does not imply that the cases are
+indistinguishable, only that the theories are weak.</P>
+
+<P><B>CW:</B> One claim is
+that logic is insufficient for represent a 4-D world, due to its
+ontological promiscuity.  Only sets can handle it.  All there is are
+objects and sets, that's the ontological commitment you need.</P>
+
+<P><B>PH:</B> I think this
+is completely confused. Logic has quite literally got nothing to do
+with dimensionality: of course 4-D can be described in logic. One can
+describe Hausdorff spaces (Porter, 1987) in logic, for God's sake,
+and they are infinite-dimensional.</P>
+
+<P><B>PH:</B> In fact,
+most axiomatic theories of 'space' are not tied to any particular
+dimensionality, and can be interpreted directly as 4-D theories. A
+4-D hole parallel to the time-axis, for example, is a 3-D hole maybe
+changing in size or properties. 
+</P>
+
+<P><B>CW:</B> You said
+&quot;change!&quot;  Fritz, he said &quot;change!&quot;</P>
+
+<P><B>PH:</B> I was using
+the term intuitively here. Right, we are all talking about intuitive
+change.</P>
+
+<P><B>CW:</B> So why can't
+these little moments be occurents (oh, call them what you like).</P>
+
+<P><B>PH:</B> To an
+endurantist they would indeed be occurrents. The chief issue is that
+there is nothing in the perdurantist framework that corresponds to
+continuants.</P>
+
+<P><B>PH:</B> A 4-D hole
+perpendicular to the time-axis might be for example a dent appearing
+in a surface, enlarging, then contracting back to nothing.</P>
+
+<P><B>CW:</B> I don't have
+any problem &quot;visualizing&quot; (or understanding, or whatever)
+4-D worms and what they correspond to.  I simply have trouble seeing
+that there is any difference at all.   What you call &quot;slices&quot;
+I call time variables.</P>
+
+<P><B>PH:</B> You can
+translate back and forth, of course. But the fact that you can
+translate between English and French doesn't make them <I>identical</I>.</P>
+
+<P><B>PH:</B> In the
+&ldquo;Na&iuml;ve Physics manifesto&rdquo; (Hayes, 1985:1, 1985:2) I
+used quantification over 4-D 'histories' (what Fritz calls worms or
+salami) and functions called 'where' and 'when' (from an old English
+political protest song), so that when(h) is the time-interval got by
+projecting h onto the time-axis, and where(h) the spatial region got
+by projecting perpendicular to time, and the basic function (written
+as an infix) @ which takes a timeslice of a history with regards to
+an interval, so h@t is the t-section of h. To talk about a movement,
+for example, you would say that where(h@t1) =/= where(h@t2). Then for
+example where(h@[t1,t2]) is the spatial envelope of h as it moves
+during the interval [t1, t2] (eg the path of the storm). There were
+other functions for things like spatiotemporal boundaries (the
+histories of the spatial boundaries) and how they were related to the
+histories themselves, and obvious things like being connected across
+such boundaries (e.g. if you put a block on a table then take it off
+again, then one part of the spatiotemporal boundary of the block is
+shared with a part of the spatiotemporal boundary of the table, and
+the when of that part is the interval), and so on.</P>
+
+<P><B>PH:</B> Almost all
+the work in qualitative physics has been done in some variant of this
+framework, for example.</P>
+
+<P><B>PH:</B> One cute
+thing about thinking in 4-D is that, after a while, one simply stops
+worrying about things like change, temporal modalities, and so on.
+Its all just shape and topology; from the ontological point of view,
+4-D space is very much like 3-D space. What a relief!</P>
+
+<P><B>CW:</B> I don't see
+that this is such a relief - you still have to deal with it if you
+want to explain the world to people.  <I>We</I> see change. &quot;Hey
+Pat, you've changed!&quot;  You still need to map this into your
+morphology.  
+</P>
+
+<P><B>PH:</B> Oh, I can,
+no problem. In fact, I can reason about all kinds of things, such as
+the track left in the surface of a plank left by a nick in the edge
+of the blade of the plane, or the guttering of a flame being caused
+by pressure instabilities resulting from feedback in the gas pressure
+control system, or the process by which liquid flows from one
+container into another, which I would be very hard pressed to even
+describe, let alone account for, in a rigidly stratified endurantist
+framework.</P>
+
+<P><B>CW:</B> You still
+need an endless catalog of things like &quot;a 4-D hole perpendicular
+to the time-axis might be for example a dent appearing in a surface,
+enlarging, then contracting back to nothing.&quot;</P>
+
+<P><B>PH:</B> No, you
+don't. The reasoning itself does not even mention terms like 'dent' .
+It just reasons about the processes and their geometry and their
+relationships. English words and concepts only come up on input and
+output, and maybe not even then in all cases. Much of what one is
+thinking about cannot even be properly said in English. I don't think
+I could articulate in English more than a tiny fraction of all the
+things that constitute my own 'common sense' knowledge of the world.
+(Have you ever made up a double bed, and opened a sheet by flicking
+it across the bed so that it settles slowly onto the bed, spread
+evenly? You know <I>how </I>to do that, but you could not possibly
+tell someone how to do it. Now think of breaking an egg into a bowl,
+of walking, of taking a shower, of lifting a cup to your lips, of
+holding and opening a book, etc.)</P>
+
+<P><B>CW:</B> So have you
+gained anything?</P>
+
+<P><B>PH:</B> What you
+gain is precisely that it isn't a catalog any more: one has the power
+to describe the <I>dynamic geometry </I>and to reason about the
+causal and other relationships that are present; the temporal aspects
+are just as geometric as the spatial ones, and there are all kinds of
+other 'mixed' relationships that cut across the rigid object/event
+classification. In the 'liquids' paper (Hayes, 1985:1) I used some of
+them.</P>
+
+<P><B>CW:</B> And back to
+the original point, what is preventing someone from defining
+continuants and occurrents (other than the sanctity of the altar
+cloth) in both?</P>
+
+<P><B>PH:</B> The notion
+of continuant is logically incoherent in the 4-D ontology. The
+nearest thing to it is its corresponding occurrent, the 'worm' or
+'history' or 'salami' of the continuant. Pats lifetime, rather than
+Pat. But speaking as a perdurantist, I don't <I>want</I> to define
+continuants. I don't even believe in continuants, myself. And I
+certainly do not want to be obliged to make a rigid high-level
+classification of everything into one of two equally useless
+categories, just to keep the ghost of Husserl happy.</P>
+
+<P><B>CW:</B> I see your
+point regarding the terminology - everything is an occurrent for you,
+right?</P>
+
+<P><B>PH:</B> Well, no;
+for me, speaking now as a perdurantist, the distinction has no
+particular meaning or utility. If someone wants to say that is the
+same as saying that everything is an occurrent, then fine, as long as
+I am free to ignore this as meaningless.</P>
+
+<P><B>CW:</B> Fine, fine. 
+But there is still a distinction between special parts of a worm that
+represent &quot;intuitive change&quot; and the worms themselves.</P>
+
+<P><B>PH:</B> That is what
+Fritz says, and what I still have trouble following. Actually I have
+trouble following what it means. Stick to 3-D for a moment and think
+of curved roads. You two seem to want to say that if a road goes
+around a corner, then there are two things; the road, which it itself
+is merely a kind of undifferentiated road-thing; and the curve, which
+is something <I>else</I>, which when in some sense 'added' to the
+road, produces a road with a curve in it. I find this
+incomprehensible. Roads, like many fairly rigid 3-D solid things,
+have a shape, and being curved at a certain place is one aspect of
+the shape of something. But the shape isn't <I>part</I> of the thing,
+or a component of it in some sense; it is a <I>property</I> of it. So
+if someone were to get puzzled about how to distinguish the road from
+the curve, I would be puzzled by their puzzlement. What <I>kind </I>of
+distinction can you possibly be seeking?  This is either trivial or
+meaningless, seems to me.</P>
+
+<P><B>CW:</B> Well, here I
+give you the same medicine you gave me.  There is plenty written
+about these &quot;moments&quot; (Smith, 1982):</P>
+
+<P><B>CW:</B> They are
+neither trivial nor meaningless.  People talk about &quot;the edge&quot;
+and &quot;the bend&quot; (lets use bend instead of curve, I think
+curve has several subtle meanings that are confusing the point). 
+They are talking about parts of an object that, as you observe, are
+identified by their shape, mainly.  But they are special.  
+</P>
+
+<P><B>PH:</B> But are they
+special <I>as a category</I>, i.e. is there anything useful to be
+said about them as a whole, that wouldn't be better stated as being
+about edges, bends, etc.? Maybe there is, but I would like to see
+that <I>emerge</I> from the particular axiomatizations, rather than
+being assumed on a priori philosophical grounds.</P>
+
+<P><B>CW:</B> The blade of
+a knife has a shape, too, it is usually roughly triangular (pointed
+knives). But we don't talk about it as &quot;the triangle&quot; of
+the knife.</P>
+
+<P><B>PH:</B> What it does
+it matter what we <I>talk</I> about it as? There are all kinds of
+words for parts of knives: blade, tang, rivet, handle, back, point,
+edge, serration, guard, and pommel. Seems more use to see if we can
+say what these <I>mean</I> rather than catalog them or try to draw
+conclusions from the particular lexical forms being used.</P>
+
+<P><B>CW:</B> And, in
+fact, in your 4-D view some of them correspond to something that, at
+least from a common sense and from a linguistic standpoint, is very
+important: events.</P>
+
+<P><B>PH:</B> Right, but
+those events are not like the events described in the situation
+calculus. or other 'state-based' event descriptions They are
+spatially located, for example.</P>
+
+<P><B>PH:</B> Exactly the
+same seems to apply in 4-D. Histories have shapes, just as 3-D solids
+do; more complicated kinds of shape are possible, of course, in
+higher dimensions, but the basic ideas seem to survive the move from
+3 to 4. 
+</P>
+
+<P><B>CW:</B> Isn't that
+our point?</P>
+
+<P><B>PH:</B> It may be
+<I>your </I>point, but it&rsquo;s not the endurantist's point. The
+whole idea of 4-D shape or 4-D parts would be anathema to an
+endurantist. I'm not sure what position you are arguing in this
+debate, to be honest, or what your point actually is.</P>
+
+<P><B>PH:</B> So for
+example the history of a ball bouncing on a solid surface has a
+characteristic 4-D shape, and many other kinds of events or processes
+have characteristic 4-D 'shape' features by which they may be
+recognized, in fact. Some of these aspects of 4-D shape are surface-
+or line- or point-like, and therefore hard to 'isolate', but there is
+nothing odder about that in 4-D than in 3-D or even 2-d for that
+matter. (They are often locations of surface discontinuities, for
+example, which are in fact rather easy to describe geometrically)</P>
+
+<P><B>CW:</B> This sounds
+exactly like the point we're trying to make.  Are you capitulating,
+or do you think you are saying something different?</P>
+
+<P><B>PH:</B> I am
+certainly not capitulating. I'm not sure who &quot;we&quot; are, or
+what their point is, but this isn't what an endurantist would say,
+since he or she would deny the validity of the 4-D framework.</P>
+
+<P><B>PH:</B> (You never
+thought that a 4-D space didn't contain 3-D spaces, did you?)</P>
+
+<P><B>CW:</B> You
+acknowledge that bends, edges, etc. exist, and that 4-D worms have
+them.  You acknowledge that they are parts.  
+</P>
+
+<P><B>PH:</B> No, I don't
+acknowledge that. Some of them seem to be parts, some of them do not.
+They do not seem to form a coherent class, in fact, given the
+examples I've seen so far (for example, things like edges, bends and
+corners seem to obviously go together (and are maybe best not called
+parts, though they could be parts of surfaces) but I wouldn't put
+holes or colors into the same category). 
+</P>
+
+<P><B>CW:</B> Nor would I.
+That's fine.</P>
+
+<P><B>PH:</B> Nobody has
+yet come up with a definition or even an explanation of what
+'moments' are supposed to be that would enable me to tell whether any
+given thing was or was not one of them with any degree of confidence.</P>
+
+<P><B>CW:</B> Maybe Fritz
+can, it's been a while for me.  But they are things &quot;like&quot;
+edges, corners, surfaces, etc.</P>
+
+<P><B>PH:</B> Already I
+can form no sensible category to include all these. I don't know what
+that &quot;like&quot; could possibly mean.</P>
+
+<P><B>PH:</B> (This is a
+common problem I have with this kind of philosophy, by the way. We
+start with the common-sense world, most of the entities in which I
+feel that I have a pretty good intuitive grasp of: I can recognize
+and describe tables, chairs, carpets, chisels, etc. etc. Then someone
+comes along and, by way of providing an <I>analysis</I> of these
+everyday terms, asks me to use terms that I have absolutely no idea
+how to define or characterize: sortals, moments, tropes, necessities,
+God knows what. Is this supposed to be progress, in some obscure way?
+It sure doesn't feel like progress.)</P>
+
+<P><B>FL:</B> The reason
+for making good distinctions near the top is to get a few, reliable
+inferences that apply to huge classes of things.  For example, Pat
+said that a work like Moby Dick is not a character string; nor is it
+a physical object; nor is a a straightforward event. (See (Reicher,
+1998))  If we say chapter 6 is a &quot;part&quot; of it, what should
+an automatic reasoner conclude? That it comes &quot;after&quot;
+chapter 5?  Yes.  But temporally?  Well, yes if read aloud in the
+conventional order.  We speak loosely about these things because the
+context tells us what's meant  - say, by &quot;Moby Dick is a lot
+bigger than Anna Karenina.&quot; - but a computer needs to get it
+right for mundane reasoning purposes.  This and lots of other things
+(&quot;Repealing a statue.&quot; in natural language) depend on
+near-top-level distinctions.</P>
+
+<P><B>PH:</B> Sure, I have
+no gripe with top-level distinctions. But I want them to arise from
+actual use, not be imposed by someone's philosophical agenda. Moby
+Dick is indeed a good example to worry about, but I don't see
+'moments' being much use there. My rhetorical point in the above
+paragraph is that 'moments vs nonmoments' is in fact, as far as I can
+tell, a rather bad top-level distinction.</P>
+
+<P><B>CW:</B> The
+top-level utility of moments is probably also a separate and
+tangential argument.  I believe &quot;moments&quot; were thrown in by
+Fritz as a way of accounting for change in the 4-D view.  At one
+point in the past, Pat said something that both Fritz and I took to
+mean, &quot;there is no change in 4d&quot;.  Fritz countered that,
+for example, a &quot;bend&quot; in a worm would correspond to a
+change, and that you could isolate these bends using moments.  Some
+of these moments would be events, or at least caused by them.</P>
+
+<P><B>FL:</B> I think Pat
+is mistaken to suggest that these top-level distinctions lack
+practical value.  
+</P>
+
+<P><B>PH:</B> Let me
+suggest a pragmatic guide. Any high-seeming distinction should only
+even be contemplated if the person suggesting it can give about 10
+things that need to be said that involve making the distinction, ie
+that cannot readily be said without it. That immediately would
+suggest a concrete(physical, spatiotemporal)/abstract distinction,
+for example, and might also justify an animate/inanimate one, and
+would suggest introducing surface/edge/solid kinds of distinctions,
+and thing/stuff distinctions, and with a little thought would also
+justify type/token distinctions in textual abstractions. But I don't
+see it providing a basis for choosing among mereologies, or for
+introducing moments or tropes as classifications, or for wanting to
+distinguish sortals from nonsortals.</P>
+
+<P><B>CW:</B> This is a
+fine upper level.  Note that sortal/nonsortal is a meta-level
+distinction, in that &quot;being a sortal&quot; is a property of a
+property.</P>
+
+<P><B>CW:</B> But anyway,
+the point is that my upper level includes events.  This seems not
+only reasonable, but very common-sensical.  I'm not asking you to <I>put</I>
+them in your upper level, even that debate is a separate one. I just
+want events.  Can you give any reason why someone who wants events
+can't use 4-D?</P>
+
+<P><B>FL:</B> They should
+not occupy us endlessly (except for fun) - we should decide and move
+on.  I agree that, by far, most of the inferential power comes from
+axioms at middle levels, not those at the top.</P>
+
+<P><B>CW:</B> Oh come on,
+surely Philosophy is not the only field guilty of that. Look at us. 
+Look at &quot;ontology&quot; - this was only ever intended as a fancy
+new word for something old so that people wouldn't associate it with
+expert systems.  In every single &quot;real-world&quot; &quot;ontology&quot;
+project I've ever worked on, we always found ourselves foundering
+when it came to assigning terms to the highest level categories we
+identified.  Usually we resorted to the dictionary or some philosophy
+textbook, just to find a suitable term, and usually it wasn't a term
+most people were familiar with.</P>
+
+<P><B>PH:</B> I wasn't
+meaning to complain about the vocabulary being used, but about the
+actual concepts involved. The notions of moment, trope and logical
+necessity seem to have no utility in the world I inhabit. I live my
+life surrounded by very complicated stuff that I would love to be
+able to describe axiomatically, but I swear on a pile of Bibles that
+I have never, in all my born days, once laid eyes on, or even thought
+about, a trope or a moment, until I met a philosopher.</P>
+
+<P><B>CW:</B> The
+suggestion is that these special parts be called events (that's not
+strictly correct, but I think is ok for now).</P>
+
+<P><B>PH:</B> My
+suggestion is that classifications like 'event', 'object', and so on
+are largely useless, and often in fact actively confusing, since many
+things can be categorized either way. What is the point of calling
+these things, whatever they are, &quot;events&quot;? Suppose I were
+to agree to this: how would that move us forward one iota towards the
+goal of forming a useful, coherent, description of the world? What
+insight or utility would it provide? What useful axioms would it
+enable me to write, or what errors help me to avoid? Why is it worth
+spending even a centime's worth of mental effort arguing over? I
+don't want to waste time discussing how to decide how to classify
+something into some pre-defined categories that do not give any
+insight into the phenomena being described; it is a complete waste of
+time. It has a medieval flavor about it, like making catalogs of all
+the things in the universe before any actual science has been done.</P>
+
+<P><B>CW:</B> Well, take
+the large number of people who do want classifications like event and
+object.  
+</P>
+
+<P><B>PH:</B> I would
+respond: justify your choice of classification. We are talking here
+about formal ontological classifications, not intuitive, loose,
+everyday ones. So it&rsquo;s not enough to say 'it feels right to me'
+or 'my old granny talks that way'. One wants to see how this
+classification is going to enable one to write better axiomatic
+descriptions.</P>
+
+<P><B>CW:</B> The simple
+point we're trying to make is that, for such people, the 3-D vs. 4-D
+views do not prevent you from having them.</P>
+
+<P><B>PH:</B> Maybe you
+can say exactly what those 'views' are. If you mean the
+endurantist/perdurantist contrast, then they each, in their own way,
+can make the informal distinction (of course); but for the
+endurantist, it has been made into a basic, rigid partitioning of the
+entire physical universe into two exclusive categories; while for the
+perdurantist, it has kind of dissolved into an incidental matter, a
+distinction that can be made if you wish, but also can be ignored or
+even flaunted with impunity. Those are not compatible ontological
+strategies.</P>
+
+<P><B>CW:</B> Let me see
+if I can cast this right: how do you decide what makes a worm?  
+</P>
+
+<P><B>PH:</B> Everything
+in the spatiotemporal - physical, if you like - universe ihas a worm
+as its extent. These worms - I prefer the term 'history' - are the
+spatiotemporal extents of physical things. Think of the 3-D idea of a
+spatial extent. Worms are 4-D extents.</P>
+
+<P><B>PH:</B> If you like,
+you could say that continuants were the occupants of certain
+histories. That wouldn't sit well with an endurantist, however.
+However, I'll let you in on a dirty little secret: there is in fact
+no need to distinguish between a thing and its extent, for almost all
+purposes. We can identify things with the space-time regions they
+occupy. Its philosophically most unsatisfactory, but it works. Tough
+luck for philosophical satisfaction.</P>
+
+<P><B>CW:</B> How is a
+book a worm? 
+</P>
+
+<P><B>PH:</B> It takes up
+some space and lasts for a time, so it occupies a history.</P>
+
+<P><B>CW:</B> How do you
+decide what collections of matter to assign worm-ness to? 
+</P>
+
+<P><B>PH:</B> You do not
+need to. Histories need not contain any matter. One does not 'assign'
+anything. Existing is not something that needs to be assigned (except
+possibly by God?)</P>
+
+<P>[ed note: At this
+point, we end the dialog.  While neither side has prevailed, it is
+hoped that the wealth of references, examples, and explanations given
+has helped the reader to understand the issues, and the positions of
+the people in the dialog, more fully.]</P>
+<H1>References</H1>
+
+<P>Berg, J., (1962)
+<I>Bolzano's Logic</I>. Stockholm.</P>
+
+<P>Feldman, N., (1990)
+Cylindric algebra with terms. The Journal of Symbolic Logic,
+55(2):854-866.</P>
+
+<P>Genesereth, M. (1991).
+&ldquo;Knowledge Interchange Format,&rdquo; <I>Proceedings of the
+Second International Conference on the Principles of Knowledge
+Representation and Reasoning</I> (KR-91), J. Allen et al., (eds),
+Morgan Kaufman Publishers, 1991, 238-249. See also
+http://logic.stanford.edu/kif/kif.html.</P>
+
+<P>Hayes, P., (1985:1).
+Naive Physics I: Liquids, in J.R. Hobbs and R.C. Moore (Eds.) <I>Formal
+Theories of the Common Sense World</I> (Vol. 1).  Norwood, NJ: Ablex
+Publishing Company, 1985.[Reprinted in: <I>Readings in Cognitive
+Science</I>, ed. Collins and Smith,  1988.also in: <I>Readings in
+Qualitative Reasoning about Physical Systems</I>, ed. Weld and
+deKleer,  1989.]</P>
+
+<P>Hayes, P., (1985:2) The
+Second Naive Physics Manifesto, in J.R. Hobbs  and R.C. Moore (Eds.) <I>
+Formal Theories of the Common Sense World</I> (Vol. 1).  Norwood, NJ:
+Ablex Publishing Company.[Reprinted in:  <I>Readings in Knowledge
+Representation</I>, ed. Brachman and Levesque,  1986.also in: 
+<I>Readings in Qualitative Reasoning about Physical Systems</I>, ed.
+Weld and deKleer,  1989.also (abbreviated) in: <I>Computation and
+Intelligence: Collected readings</I>, ed. G.Luger, MIT Press 1995]</P>
+
+<P>Heidegger, M., (1927).
+<I>Sein und Zeit</I>. English Translation of <I>Being and Time</I> by
+Joan Stambaugh (1996) SUNY press.</P>
+
+<P>Kripke, S.A. 1971. 
+Identity and necessity.  In (M. Munitz, ed)<I> Identity and</I></P>
+<P><I>Individuation</I>.</P>
+
+<P>Lenat, D. (1995). &quot;Cyc:
+A Large-Scale Investment in Knowledge Infrastructure.&quot;
+Communications of the ACM 38, no. 11 (November).</P>
+
+<P>Loemker, L., (ed. and
+trans.) (1969), Leibniz, G. W., Philosophical Papers and Letters, 2nd
+ed., Dordrecht: D. Reidel.</P>
+
+<P>Loux, M., (1998).
+<I>Metaphysics: A Contemporary Introduction</I>, Routledge pub.</P>
+
+<P>McTaggart, J., (1908).
+The Unreality of Time, Mind, pp. 457-474.</P>
+
+<P>Peirce, C. S. 
+(1931-1958) Collected Papers of C. S. Peirce, ed. by C. Hartshorne,
+P. Weiss, &amp; A. Burks, 8 vols., Harvard University Press,
+Cambridge, MA.</P>
+
+<P>Porter, J., (1987)..
+<I>Extensions and Absolutes of Hausdorff Spaces</I>. New York:
+Springer-Verlag..</P>
+
+<P>Reicher, M., (1998).
+Works and Realizations, in: N. Guarino (ed.), Formal Ontology in
+Information Systems. Proceedings of the First International
+Conference (FOIS'98), Trento, Italy (June 6-8 1998), Amsterdam 1998
+(Frontiers in Artificial Intelligence and Applications 46), 121-132.</P>
+
+<P>Simons, P. (1987).
+<I>Parts: A Study in Ontology,</I> Oxford: Oxford University Press.</P>
+
+<P>Smith, B. (ed), (1982).<I>
+Parts and Moments Studies in Logic and Formal Ontology</I>
+Philosophia Verlag.</P>
+
+<P>Sowa, J. (2000)
+Knowledge Representation, Brooks/Cole, Pacific Grove, CA.</P>
+
+<P>Thompson, A. C. (1996).
+<I>Minkowski Geometry</I>. New York: Cambridge University Press.</P>
+
+<P>Whitehead, A., (1929)
+<I>Process and Reality</I>, New York: Macmillan.</P>
+
+<P>Zalta, E. (ed.), (2002)
+The Stanford Encyclopedia of Philosophy, <FONT COLOR="#0000ff"><U><A HREF="http://plato.stanford.edu/">http://plato.stanford.edu/</A></U></FONT>,
+The Metaphysics Research Lab at the Center for the Study of Language
+and Information, Stanford University, Stanford, CA, International
+Standard Serial Number: ISSN 1095-5054</P>
+

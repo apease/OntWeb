@@ -1,0 +1,343 @@
+<TITLE>Resolution Theorem Proving</TITLE>
+<META NAME="keywords" CONTENT="resolution theorem proving">
+<BODY BACKGROUND="images/border.gif">
+<UL>
+<B><font FACE="Arial, Helvetica" POINT-SIZE=24 WEIGHT=heavy STYLE="bold">Resolution Theorem Proving</font></B><P>
+
+[<A HREF="index.html">Home</A> |
+  <A HREF="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO">Browse</A> | 
+  <A HREF="https://github.com/ontologyportal/sumo" TITLE="Download ontology and lexicon source files">Download</A> | 
+  <A HREF="Pubs.html" TITLE="publications about SUMO">Publications</A> | 
+  <A HREF="http://ontologyportal.github.io/sigmakee/">Tools</A> | 
+  <A HREF="About.html">About</A>]<P>
+
+    <i>by Adam Pease and Chris Benzmueller</i><p>
+
+Resolution theorem proving is an approach to automated reasoning.  This document 
+explains the basic algorithm.<p>
+
+We will use TPTP notation (where upper case denotes a variable), but include SUO-KIF notation
+    as well to the right of each example.  After that we give pseudo-code for the algorithm.<p>
+
+    Imagine the following theory 
+    <pre>
+    <i>TPTP notation</i>                                                            <i>SUO-KIF notation</i>
+    p(X)=>q(X)          ;; every p is a q                                   (=> 
+                                                                              (instance ?X P) 
+                                                                              (instance ?X Q))
+
+    q(X)|r(X)=>t(X)     ;; if something is either                           (=> 
+                        ;; a q or an r it is also a t                         (or 
+                                                                                (instance ?X Q) 
+                                                                                (instance ?X R)) 
+                                                                              (instance ?X T))
+                        
+    p(a)                ;; a is a p                                         (instance A P)     
+    </pre>
+    and that we pose a query<br>
+    <pre>
+    t(a)|r(a)                                                               (or 
+                                                                              (instance A T) 
+                                                                              (instance A R))
+    </pre>
+
+    The first step is to put each axiom in Conjuctive Normal Form (which, rather
+    confusingly, means a conjunction (and) of disjunctions (or) ).  We use
+    Russell and Norvig's algorithm.  This gives us a
+    knowledge base of<br>
+    <pre>
+    -p(X)|q(X)                                                              (or 
+                                                                              (not 
+                                                                                (instance ?X P)) 
+                                                                              (instance ?X Q))
+
+    (-q(X)&-r(X))|t(X)  ;; needs more simplification                        (or 
+                                                                              (and 
+                                                                                (not 
+                                                                                  (instance ?X Q)) 
+                                                                                (not 
+                                                                                  (instance ?X R))) 
+                                                                              (instance ?X T))
+
+    p(a)                                                                    (instance A P)
+    </pre>
+    Resolution theorem proving is a proof by <i>refutation</i>, which means that we
+    assert the opposite of the query and then try to find a logical contradiction
+    between that statement and the rest of the knowledge base.  Negating the query
+    gives us<br>
+    <pre>
+    -t(a)&-r(a) ;; can be simplified                                        (and 
+                                                                              (not 
+                                                                                (instance A T)) 
+                                                                              (not 
+                                                                                (instance A R)))
+    </pre>
+    The second statement in the knowlege base is still not in CNF.  It becomes<br>
+
+    <pre>
+    (-q(X)|t(X))&(-r(X)|t(X))                                               (and 
+                                                                              (or 
+                                                                                (not 
+                                                                                  (instance ?X Q)) 
+                                                                                  (instance ?X T)) 
+                                                                              (or 
+                                                                                (not 
+                                                                                  (instance ?X R)) 
+                                                                                  (instance ?X T)))
+    </pre>
+    Statements that are conjunctions can be simplified into separate assertions in the
+    knowledge base, so the statement is simplified again into two statements:<br>
+
+    <pre>
+    -q(X)|t(X)                                                              (or 
+                                                                              (not 
+                                                                                (instance ?X Q)) 
+                                                                                (instance ?X T)) 
+
+    -r(X)|t(X)                                                              (or 
+                                                                              (not 
+                                                                                (instance ?X R)) 
+                                                                                (instance ?X T))
+    </pre>
+
+    Similarly for the negated query, it becomes two statements<br>
+
+    <pre>
+    -t(a)                                                                   (not 
+                                                                              (instance A T)) 
+
+    -r(a)                                                                   (not 
+                                                                              (instance A R))
+    </pre>
+
+    Now that we have canonicalized the statements, we can set up some indexes that allow
+    the knowledge base to be searched efficiently at run time.  For every term, we create
+    a set of pointers to every axiom in which the term appears<br>
+    <pre>
+    A --> p(a)                                                              (instance A P)
+
+    P --> -p(X)|q(X), p(a)                                                  (or 
+                                                                              (not 
+                                                                                (instance ?X P)) 
+                                                                              (instance ?X Q)), 
+
+                                                                            (instance A P)
+
+    Q --> -q(X)|t(X), -p(X)|q(X)                                            (or 
+                                                                              (not 
+                                                                                (instance ?X Q)) 
+                                                                              (instance ?X T)), 
+
+                                                                            (or 
+                                                                              (not 
+                                                                                (instance ?X P)) 
+                                                                              (instance ?X Q))
+
+    R --> -r(X)|t(X)                                                        (or 
+                                                                              (not 
+                                                                                (instance ?X R)) 
+                                                                              (instance ?X T))
+
+    T --> -q(X)|t(X), -r(X)|t(X)                                            (or 
+                                                                              (not 
+                                                                                (instance ?X Q)) 
+                                                                                (instance ?X T)), 
+
+                                                                            (or 
+                                                                              (not 
+                                                                                (instance ?X R)) 
+                                                                              (instance ?X T))
+    </pre>
+
+    With preliminaries done, we can now get down to business.  We create a list we might
+    call "To Be Used" (TBU).  We put the now two statements derived from the negated query
+    into that data structure<br>
+    <pre>
+    TBU --> {-t(a), -r(a)}                                                  (not 
+                                                                              (instance A T)), 
+
+                                                                            (not 
+                                                                              (instance A R))
+    </pre>
+
+    For each step of the resolution algorithm we remove a statement from TBU, find statements
+    in the knowledge base that it can be combined (unified) with and put the result into TBU.
+    We can start with -t(a).  It has two terms, t and a.  We use our term indexes to find three
+    statements which may be relevant.<br>
+
+    <pre>
+    Candidates for -t(a) --> {p(a), -q(X)|t(X), -r(X)|t(X)}                 (instance A P), 
+
+                                                                            (or 
+                                                                              (not 
+                                                                                (instance ?X Q)) 
+                                                                              (instance ?X T)), 
+
+                                                                            (or 
+                                                                              (not 
+                                                                                (instance ?X R)) 
+                                                                              (instance ?X T)) 
+    </pre>
+    p(a) cannot unify with t(a), since p and t are different terms.  The second succeeds.
+    a unifies with variable X and -t(a) and t(X) cancel each other out, leaving -q(a),
+    which then gets added to TBU.  Similarly -t(a) unifies with its opposite in the third
+    candidate statement, leaving -r(a).  Having removed -t(a) from TBU, we add it to
+    the knowledge base.  Now we have<br>
+
+    <pre>
+    TBU --> {-r(a), -q(a), -r(a)}                                           (not 
+                                                                              (instance A R)), 
+
+                                                                            (not 
+                                                                              (instance A Q)), 
+
+                                                                            (not 
+                                                                              (instance A R))
+    </pre>
+
+    However, it's pointless to add the second -r(a), so it is dropped, leaving<br>
+
+    <pre>
+    TBU --> {-r(a), -q(a)}                                                  (not 
+                                                                              (instance A R)), 
+
+                                                                            (not 
+                                                                              (instance A Q))
+    </pre>
+
+    We then pick another statement from TBU and perform the same process. Recall that
+    having removed -t(a) from TBU in the previous step, we added it to the knowledge
+    base, where it becomes available as a candidate resolver in future steps.<br>
+
+    <pre>
+    Candidates for -r(a) --> {p(a), -t(a), -r(X)|t(X)}                      (instance A P), 
+
+                                                                            (not 
+                                                                              (instance A T)), 
+
+                                                                            (or 
+                                                                              (not 
+                                                                                (instance ?X R)) 
+                                                                              (instance ?X T))
+    </pre>
+
+    No resolutions result from this step, since we have to find a positive clause r(X) to
+    unify with -r(a).  -r(a) is removed from TBU, and added to the knowledge base, leaving<br>
+
+    <pre>
+    TBU --> {-q(a)}                                                         (not 
+                                                                              (instance A Q))
+    </pre>
+
+    Selecting {-q(a)} we get<br>
+
+    <pre>
+    Candidates for -q(a) --> {p(a), -t(a), -r(a), -q(X)|t(X), -p(X)|q(X)}   (instance A P), 
+
+                                                                            (not 
+                                                                              (instance A T)),
+
+                                                                            (not 
+                                                                              (instance A R)),
+
+                                                                            (or 
+                                                                              (not 
+                                                                                (instance ?X Q)) 
+                                                                              (instance ?X T)), 
+
+                                                                            (or 
+                                                                              (not 
+                                                                                (instance ?X P)) 
+                                                                              (instance ?X Q))
+    </pre>
+
+    Only the statement with a positive clause for q can unify.  -q(a) matches
+    the clause q(X), with X=a leaving us with -q(a), which is added to TBU.<br>
+
+    <pre>
+    TBU --> {-p(a)}                                                         (not 
+                                                                              (instance A P))
+    </pre>
+
+    There's only one choice in TBU so we find the following candidates<br>
+
+    <pre>
+    Candidates for -p(a) --> {p(a), -t(a), -r(a), -q(a), -p(X)vq(X)}        (instance A P), 
+
+                                                                            (not
+                                                                              (instance A T)),
+
+                                                                            (not 
+                                                                              (instance A R)),
+
+                                                                            (not 
+                                                                              (instance A Q)),
+
+                                                                            (or 
+                                                                              (not 
+                                                                                (instance ?X P)) 
+                                                                              (instance ?X Q))
+    </pre>
+
+    Only one candidate has a positive clause for p, which matches exactly with
+    its opposite.  No clause is left over to be added to TBU.  We've found
+    an exact match and we're done. We've found a contradiction for the negation
+    of our query, thereby proving it to be true.<br>
+
+    <h2>Pseudo-Code</h2>
+    <pre>
+    Clausify()
+    BuildIndexes()
+    NegateQuery() - then put in TBU
+    while not empty(TBU)
+        remove statement S from TBU
+        find candidate resolvers for S
+        add S to knowledge base
+        for each candidate C
+            unify C and S
+            if empty clause
+                success!
+            else
+                assert remaining clause(s) to TBU
+    </pre>
+
+    That's all there is to it!  One minor challenge is preventing cycles.  We can
+    check for the situation of trying to prove something that has already been
+    attempted (whether with failure or success).  We can create a list we might
+    call AlreadyTried and add every statement we pull from TBU to that list.  If
+    we pull a statement from TBU that is already in AlreadyTried, we discard it and
+    move on.  One complication may come with function application, as a simple
+    syntactic check for an identical statement might not be enough [explain further here].<p>
+
+    The biggest complication is speed.  On a knowledge base of any size, the combinatorial
+    explosion inherent in this depth first search makes heuristics and optimizations essential.
+    One is to check to make sure that any clause added to TBU is not already subsumed by
+    one in TBU, or the knowledge base.  For example, if my knowledge base has p(X), there's
+    no point adding p(a) or r(X)vp(X) to TBU.<p>
+
+    Another small optimization is that we want to check as little as possible during run-time.
+    The more we can do up-front and once, at least for many applications, the better off
+    we'll be, as opposed to possibly doing the same operation several times, and at run time.
+    We might canonicalize all variables, so that p(X)vr(Y) becomes p(V1)vr(V2) and p(M)vR(M) 
+    also becomes p(V1)vr(V2), allowing us to do a simple string compare to see if they are
+    the same, since all variable names are local to their expressions.  p(X)vr(X) is also 
+    identical to r(X)vp(X), so we might sort clauses alphabetically, resulting in p(X)vr(X) in
+    both cases (the second assertion gets rearranged to the canonical order).<p>
+
+    We could also have more complicated indexing, for example, having two sets of pointers:
+    one in which the term appears in a positive clause, and another in which the term appears
+    in a negative clause, thereby giving us a better chance at returning only those statements
+    which have a chance to unify with the statement to be proven.<p>
+
+    <i>thanks to Geoff Sutcliffe for his help in correcting errors and making this clearer.</i><p>
+
+<A HREF="mailTo:apease at articulatesoftware dot com">Webmaster</A><P>
+
+<script>
+var theDate = ""
+theDate = document.lastModified
+document.writeln("Last modified: ");
+document.write(theDate);
+document.write();
+</script></p>
+

@@ -1,0 +1,365 @@
+
+<TITLE>Ontology Portal - FAQ</TITLE>
+
+<BODY BACKGROUND="images/border.gif">
+<UL>
+<B><font FACE="Arial, Helvetica" POINT-SIZE=24 WEIGHT=heavy STYLE="bold">FAQ</font></B><P>
+
+[<A HREF="index.html">Home</A> |
+  <A HREF="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO">Browse</A> | 
+  <A HREF="https://github.com/ontologyportal/sumo" TITLE="Download ontology and lexicon source files">Download</A> | 
+  <A HREF="Pubs.html" TITLE="publications about SUMO">Publications</A> | 
+  <A HREF="http://ontologyportal.github.io/sigmakee/">Tools</A> | 
+  <A HREF="WhatsNew.html">What&lsquo;s New</A> | 
+  <A HREF="About.html">About</A>]<P>
+
+  <UL>
+      <LI>General Issues
+          <UL>
+              <LI><A HREF="FAQ.html#gettingStarted">How do I get started using logic in general?</A>
+              <LI><A HREF="FAQ.html#gettingStarted">How do I get started using SUMO?</A>
+              <LI><A HREF="FAQ.html#conceptMissing">Why doesn't SUMO have the concept of X?</A>
+              <LI><A href="FAQ.html#methodology">What was the methodology used to develop SUMO?</A> 
+              <LI><A href="FAQ.html#FOLcomplex">Isn't first order logic too complicated to expect people to use it?</A>
+              <LI><A href="FAQ.html#semantics">Why do we need semantics?  Isn't XML good enough?</A>
+              <LI><A href="FAQ.html#slow">Isn't first order logic too slow to use?</A>
+              <LI><A href="FAQ.html#upper">X is/isn't an upper level concept.  Why is/isn't it in SUMO?</A>
+              <LI><A href="FAQ.html#right">How do you know SUMO is right?</A>
+              <LI><A href="FAQ.html#domainAndTask">How do you know SUMO is suitable for all domains or tasks?</A>
+              <LI><A href="FAQ.html#language">Is SUMO biased toward English, or western culture in general?</A>
+              <LI><A href="FAQ.html#done">Is SUMO done?</A>
+          </UL><P>
+      <LI>Technical Issues
+          <UL>
+              <LI><A href="FAQ.html#sorts">How are sorts defined in SUO-KIF and SUMO?</A>
+              <LI><A href="FAQ.html#hol">How does SUMO employ higher order logic?</A>
+          </UL>
+  </UL><P>
+
+<B><A Name="logic">How do I get started using logic in general?</A></B><P>
+
+Having a basic familiarity with logic and logical languages is a prerequisite
+for working with SUMO.  Having past experience with object modeling in UML
+or schema creation in XML will be helpful, but not sufficient.  One of the
+better books I've seen from the standpoint of getting up to speed on the practical
+issues of writing logic expressions is 
+<A href="http://www.amazon.com/exec/obidos/tg/detail/-/0070466491/qid=1111185896/sr=1-1/ref=sr_1_1/103-5340437-3235001?v=glance&s=books">Schaum's 
+Outline of Logic</A>.  On line, I suggest 
+<A href="http://people.hofstra.edu/faculty/Stefan_Waner/RealWorld/logic/logicintro.html">Waner 
+and Costanoble's</A> introduction or chapters 9 and 10 of an 
+<A HREF="http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-034Spring-2005/LectureNotes/index.htm">MIT 
+open course</A>.  You might also
+look at the following: 
+[<a HREF="http://www-g.eng.cam.ac.uk/mmg/teaching/artificialintelligence/nonflash/knowframenf.htm">1</A>,
+<A HREF="http://www.cs.wisc.edu/~dyer/cs540/notes/logic.html">2</A>]<P>
+
+
+<B><A Name="gettingStarted">How do I get started using SUMO?</A></B><P>
+
+The place to start is the introductory tutorial with audio, available on
+the ontology portal <A HREF="index.html">home page</A>.  
+If you are going to be
+creating your own ontology content, or even using some of the domain
+ontologies, you'll want to run the <A href="https://github.com/ontologyportal">Sigma browser</A>
+ locally, so you should
+download and 
+<A href="https://github.com/ontologyportal/sigmakee/blob/master/SigmaUserManual.pdf">install</A> 
+a copy.<P>
+
+<B><A Name="conceptMissing">Why doesn't SUMO have the concept of X?</A></B><P>
+
+It probably does have it, at least at some level of generality.  Try searching the WordNet mappings (enter a word
+in the <A href="http://sigma.ontologyportal.org:8080/sigma/WordNet.jsp?kb=SUMO">English 
+Word</A> box).  It is likely
+you're just searching SUMO and the name you expect for a concept doesn't          
+match the name that was used.  A related issue is that the name for a term
+is just a comment.  
+<A href="http://www.ongoing-tales.com/SERIALS/oldtime/STORIES/ALICE/LG06.html">A 
+term means what its axioms say it means; no more, no less</A>.  It may well be
+that a particular term doesn't accord with the meaning you might intend for its
+given name.  That doesn't mean that it is wrong, just that you might have
+named it differently.  Someone else might have named it differently still.
+There is no objective basis for deciding on a name.  Better to treat each
+name like an arbitrary symbol, such as GENSYM345432, if the term name doesn't seem
+evocative for you.  If you find a term in SUMO or MILO that is what you are 
+looking for, but too general, also try looking in one of the domain ontologies.<P>          
+
+<B><A Name="methodology">What was the methodology used to develop SUMO?</A></B><P>
+
+The development of SUMO has involved several approaches, in the rough sequence
+given below.  In philosophical terms, it is closest to "Naturalism".  It is
+both top-down and bottom-up (as well as middle-out).  We took a pragmatic and
+empirical approach by virtue of the domain ontology construction and WordNet
+mapping, but also a theoretical and philosophically informed approach by 
+working top-down from theories and principles from philosophy.  Any comprehensive
+ontology needs work from top-down and bottom up.  It must be cognizant of theory
+and yet focused on pragmatic practice and utility.  To take one viewpoint
+over the other is to ignore an influence that can help create a better product.
+Some of the steps taken were to:
+
+<oL>
+    <li>Collect all the available general purpose ontologies that have been
+    formalized in logic, including rules
+    <li>Merge those axioms into a common product
+    <li>Identify major areas of general knowledge that are not covered in
+    existing research projects
+    <li>Ontologize those areas
+    <li>Map SUMO to WordNet
+    <li>Augment SUMO with new ontological areas identified as missing in the
+    process of doing the WordNet mappings.  WordNet word meanings that do
+    not have a "home" at a reasonably specific level of SUMO indicate a
+    potential ontological gap.  Follow an arbitrary cutoff of 1000 terms in
+    SUMO, if the 1001st term is needed, put it in an appropriate domain
+    ontology, or the MId-Level Ontology.
+    <li>Develop domain ontologies as needed for a variety of
+    customers
+    <li>Add concepts to SUMO for domain specific content that isn't well
+    supported at the upper level
+    <li>Run a formal theorem prover on SUMO and the domain ontologies in 
+    order to find contradictions.  Correct contradictions and add additional
+    content as needed
+    <li>Conduct an effort to extend SUMO by identifying the more common
+    synsets in WordNet (those with an occurrance of greater than 3 in statistical
+    count with respect to the Brown Corpus, otherwise known as WordNet SemCor)
+    and create an equivalent concept if none already exists.
+    <LI>Repeat steps 7-9
+</OL><P>    
+
+<B><A Name="FOLcomplex">Isn't first order logic too complicated to expect people to use it?</A></B><P>
+
+The simple answer is that logic solves
+an essential problem that other approaches do not.  For one explanation
+of this issue, look at my article "<A href="http://www.xfront.com/why-use-owl.html">Why Use OWL?</A>".
+One version of the contrary argument is
+"<A href="http://www.fathom.com/feature/35108/">looking under the lamppost</A>".
+Taxonomies, object models, database schemata, controlled vocabularies and
+the like simply don't capture the meaning of concepts in an 
+unambiguous way.  Those approaches don't capture meaning in a way that
+computers can understand.  Current approaches don't address the need
+to capture meaning.  It's true that FOL is unfamilliar to many people.  So was Java when it was
+first introduced.  For that matter, so was assembly language.  If a 
+technology has value and can't reasonably be handled by a simpler 
+approach, people will learn it. An end user however should no more expect to see SUMO or
+KIF expressions than he should see the Java code underlying an application.<P>
+
+<B><A Name="semantics">Why do we need semantics?  Isn't XML good enough?</A></B><P>
+
+Here's a look at the issues that somewhat parallels my explanation from the article
+"<A href="http://www.xfront.com/why-use-owl.html">Why Use OWL?</A>".
+
+  In logic we might state
+
+<PRE>
+Isa(Y,X) ^ Isa(Z,Y)
+</PRE><P>
+
+"Y is a kind of X, and Z is a kind of Y"<P>
+
+The mathematics of logic allows us to conclude 
+
+<PRE>
+Isa(Z,X)
+</PRE>
+
+"Z is a kind of X"<P>
+
+This works in just the same way that 2 + 2 = 4.  "2 + 2" means "4".  It's 
+not just a procedure for stating a problem solving process in arithmetic.  
+It's not just a syntax, because we could change the symbols as long as we 
+defined them with a formal theory (like Russell & Whitehead's 
+Principia Mathematica).  "2 + 2" necessarily entails "4" whether I have 
+some system to state it or prove it or calculate it or not.<P>  
+
+XML syntax doesn't have that inherent property.  The following expression<P>
+
+<PRE>
+&lt;and&gt;
+  &lt;isa "Y" "X"&gt;
+  &lt;isa "Z" "Y"&gt;
+&lt;/and&gt;
+</PRE>
+
+doesn't mean anything, unless one defines the formal semantics behind 
+those statements.  In RDFS, there is some 
+<A HREF="http://www.w3.org/TR/rdf-mt/">semantics</A>, because there is a 
+formal theory of what the symbols mean.  So at least<P> 
+
+<PRE>
+&lt;rdfs:Class rdf:about="http://a.b.c/my-schema#Y"&gt;
+  &lt;rdfs:subClassOf rdf:resource="http://a.b.c/my-schema#X"/&gt;
+&lt;/rdfs:Class&gt;
+
+&lt;rdfs:Class rdf:about="http://a.b.c/my-schema#Z"&gt;
+  &lt;rdfs:subClassOf rdf:resource="http://a.b.c/my-schema#Y"/&gt;
+&lt;/rdfs:Class&gt;
+</PRE>
+
+logically entails<P>
+
+<PRE>
+&lt;rdfs:Class rdf:about="http://a.b.c/my-schema#Z"&gt;
+  &lt;rdfs:subClassOf rdf:resource="http://a.b.c/my-schema#X"/&gt;
+&lt;/rdfs:Class&gt;
+</PRE>
+
+Note that this has nothing to do with human interpretation or any 
+computational process, but is part of the mathematics of logical 
+entailment defined (or not defined) in these various languages.  
+It's always instructive to have someone take a theory that
+uses familiar symbols and replace the basic vocabulary with random
+strings.  If there is a proper semantics for the language of the theory,
+it will still be possible to give a definite meaning to the theory.<P>
+
+
+<B><A name="slow">Isn't first order logic too slow to use?</A></B><P>
+
+It is important not to confuse representation with implementation.
+Performing representation in the same language as the implementation
+risks using a language that makes it impossible (or at least very
+difficult or awkward) to capture certain kinds of information.  For example
+if your implementation language doesn't allow for stating if..then
+rules, then you won't be able to capture that kind of information.
+But such rules are almost certainly needed to define each term
+precisely.  A better approach is to capture the information and then
+decide how, and how much, of that knowledge can be expressed and 
+used efficiently in your application.  At least you'll have documented
+carefully what your concepts mean.  Just because implementations
+can't directly reason with English, doesn't mean we shouldn't have
+English definitions in our data dictionaries.<P>
+
+<B><A name="upper">X is/isn't an upper level concept.  Why is/isn't it in SUMO?</A></B><P>
+
+This is the sort of question that lacks any objective basis for fruitful
+discussion.  We set an arbitrary limit of 1000 terms in SUMO because
+much more is likely to be too hard to learn in a reasonable amount of
+time, and much less is likely not to cover a broad enough space of
+concepts to be useful by itself.  As to whether something belongs in
+SUMO or MILO, it's a judgement call on which reasonable people can
+disagree.<P>
+
+<B><A name="right">How do you know SUMO is right?</A></B><P>
+
+How do you know your operating system is "right"?  It's a combination
+of a priori formal methods to ensure internal consistency,        
+empirical tests of utility and coverage, and a lot of human
+testing and inspection.  There are no shortcuts here.  The
+specific tasks have been
+
+<OL>
+    <LI>Testing with a first order logic theorem prover to identify
+        logical contradictions.  While this is undecidable in the limit,
+        we did incremental testing with longer and longer search times.
+        First we tried to prove the negation of every statement with a 
+        30 second search bound.  We found a number of problems.  With
+        a few minutes limit we found a small number more.  We then
+        increased the limits so it was taking days to run through the
+        entirety of SUMO, without finding more problems.  It's possible
+        certainly that there are undiscovered problems, but unlikely.  More
+        likely is that some axioms may not be formulated in a way that
+        a conventional FOL prover can find all the problems.  A good example
+        of this is that the ListFn axioms need a procedureal attachment
+        in order to function properly.
+    <LI>Mapping to WordNet as an empirical test of coverage
+    <LI>Creation of domain ontologies as an empirical test of coverage
+    <LI>Release of every version of SUMO to the public, for peer review
+</OL><P>
+
+<B><A name="domainAndTask">How do you know SUMO is suitable for all domains or tasks?</A></B><P>
+
+We don't, exactly, but we don't have any concrete examples to the contrary
+either.  It's a reasonable conjecture that SUMO might not be optimal
+for some new task or domain, but that's only a conjecture until a
+pragmatic and specific example is found and formalized.  The range of
+domains to which SUMO has been applied gives us some empirical evidence
+to the contrary.  There are many ongoing debates in metaphysics about
+different ways of carving up the world at a high level, but the
+very existence of such debates should show that there are no
+critical flaws with the major positions.  A typical debate is on
+<A HREF="dialog-3d-4d.html">models 
+for action and change</A>.<P>
+
+<B><A name="language">Is SUMO biased toward English, or western culture in general?</A></B><P>
+
+SUMO is language independent.  The original SUMO term names are in English,
+but they are only often and coincidentally equivalent to English
+words.  SUMO terms have been translated into a variety of different languages,
+which are primary in some very different and non-western cultures.
+These languages include Hindi, Chinese and Czech.
+The ease with which these translations have been performed, and the
+extent to which SUMO is in regular use by non-English users, gives
+us considerable confidence that there is no deep-seated linguistic
+or cultural bias in SUMO, any more than there is linguistic or cultural
+bias in areas of mathematics discovered by the ancient Greeks or Chinese.<P>
+
+<B><A name="done">Is SUMO done?</A></B><P>
+
+It would be better to say that SUMO is stable.  The structure of SUMO has not
+changed appreciably in several years.  However, there are still many things
+which could be improved and elaborated.  From time to time we get reports of
+typos in rules, or other problems which although isolated, do need fixing.
+SUMO is likely to continue to evolve, especially as it gets wider usage
+in reasoning applications.  It's also likely that SUMO will not change much
+compared to the level of change and evolution of the domain ontologies.<P>
+
+<B><A name="sorts">How are sorts defined in SUO-KIF and SUMO?</A></B><P>
+
+In SUO-KIF variables are not typed.  In SUMO, all relations have defined 
+argument types.  SUMO uses
+<A href="http://sigma.ontologyportal.org:4010/sigma/Browse.jsp?lang=en&kb=SUMO&term=domain">domain</A> 
+and <a HREF="http://sigma.ontologyportal.org:4010/sigma/Browse.jsp?kb=SUMO&lang=en&term=domainSubclass">domainSubclass</A>
+(as well as 
+<A href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=en&term=range">range</A> and 
+<A href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=en&term=rangeSubclass">rangeSubclass</A>) 
+for this.  Some logical languages use an explicit syntax such as<BR>
+<PRE>
+(forall (?X:Object, ?Y:Process) ...)
+</PRE>
+One achieves the same effect in SUMO with
+<PRE>
+(forall (?X ?Y)
+  (and
+    (instance ?X Object)
+    (instance ?Y Process) 
+  ...))
+</PRE>
+or by just using the restrictions inherent in given relations.  For example
+<PRE>
+(forall (?X ?Y)
+  (and
+    (instrument ?Y ?X)
+    ...))
+</PRE>
+since "instrument" constrains its arguments to Process and Object, respectively.<P>
+
+<B><A name="hol">How does SUMO employ higher order logic?</A></B><P>
+
+This is a difficult issue, since higher order logic is very difficult to
+reason with efficiently, but very hard to do without from a representational        
+standpoint.  Higher order expressions are used when necessary in SUMO.        
+A practical reasoning system may also wish to define concepts which
+effectively incorporate modal or temporal parameters into domain        
+specific predicates.  The tradeoff though is that such predicates will be
+less reusable.  It is a delicate balance that must be maintained.  Specifically        
+SUMO does include a number of predicates that take formulae as arguments, such as        
+<A href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=en&term=holdsDuring">holdsDuring</A>,
+<A href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=en&term=believes">believes</A>, and
+<A href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=en&term=KappaFn">KappaFn</A>.
+In <A href="../professional/Pease-IJCAI2003.pdf">Sigma</A>, 
+we also perform a number of "tricks" which allow the user to state
+things which appears to be higher order, but which are in fact first order and
+have a simple syntactic transformation to standard first order form.
+We also integrate with the THF language to do real HOL with LEO-II and other
+HOL provers.<P>        
+
+<P>
+
+<A HREF="mailTo:apease at articulatesoftware dot com">Webmaster</A><P>
+
+<script>
+var theDate = ""
+theDate = document.lastModified
+document.writeln("Last modified: ");
+document.write(theDate);
+document.write();
+</script></p>
+

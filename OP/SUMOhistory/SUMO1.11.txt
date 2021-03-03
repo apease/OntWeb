@@ -1,0 +1,5148 @@
+;; This file is a perliminary merge of the SUO ontology sources.  The basis for 
+;; the merge is John Sowa's upper ontology (as described at 
+;; http://www.bestweb.net/~sowa/ontology/toplevel.htm and in Chapter 2 of his 
+;; book _Knowledge Representation_, Brooks/Cole, 2000).  The definitions and 
+;; axioms of the other SUO sources have been aligned with this ontology.  In 
+;; addition to Sowa's ontology, the merge incorporates Russell and Norvig's 
+;; ontology, Casati and Varzi's theory of holes, Allen's temporal axioms, the 
+;; relatively noncontroversial elements of Smith's and Guarino's respective 
+;; mereotopologies, the KIF formalization of the CPR (Core Plan Representation), 
+;; the ontologies available on the Ontolingua server maintained by Stanford 
+;; University's Knowledge Systems Laboratory, and the ontologies developed by 
+;; ITBM-CNR. 
+
+;; This ontology uses a first-order modal language, i.e., a first-order language 
+;; with the sentence operators "nec" (for "necessarily") and "poss" (for 
+;; "possibly").  The ontology contains both primitive and defined constants.  
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                            ;;
+;;                STRUCTURAL ONTOLOGY                         ;;
+;;                                                            ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; The Structural Ontology consists of definitions of certain syntactic 
+;; abbreviations that can be both heuristically useful and computationally 
+;; advantageous.
+
+(instance-of instance-of BinaryRelation)
+(nth-domain instance-of 1 Entity)
+(nth-domain instance-of 2 Class)
+(documentation instance-Of "An object is an instance-of a class if 
+it is a member of the set denoted by that class.  Instance-of is 
+useful for defining the second-order relations and classes that are 
+about class/instance networks.  
+   An individual may be an instance of many classes, some of which may 
+be subclasses of others.  Thus, there is no assumption in the meaning
+of instance-of about specificity or uniqueness.  See 
+'direct-instance-of'.")
+
+(instance-of subclass-of TransitiveRelation)
+(nth-domain subclass-of 1 Class)
+(nth-domain subclass-of 2 Class)
+(documentation subclass-of "Class C is a subclass of parent class P if and 
+only if every instance of C is also an instance of P.  A class may 
+have multiple superclasses and subclasses. Subclass-of is transitive: 
+if (subclass-of C1 C2) and (subclass-of C2 C3) then (subclass-of C1 C3).")
+
+(=> 
+   (subclass-of ?subclass ?class)
+   (forall (?x)
+      (=> 
+         (instance-of ?x ?subclass)
+         (instance-of ?x ?class))))
+
+(=>
+   (subclass-of ?subclass ?class)
+   (and
+      (valence ?subclass 1)
+      (valence ?class 1)))
+
+(instance-of subrelation-of BinaryRelation)
+(nth-domain subrelation-of 1 Relation)
+(nth-domain subrelation-of 2 Relation)
+(documentation subrelation-of "A relation R is a subrelation-of 
+relation R' if, viewed as sets, R is a subset of R'.  In other words, 
+every tuple of R is also a tuple of R'.  In some more words, if R 
+holds for some arguments arg_1, arg_2, ... arg_n, then R' holds for 
+the same arguments.  Thus, a relation and its subrelation must have the 
+same arity, which could be undefined. In CycL, 'subrelation-of' is 
+called #$genls.")
+
+(=>
+   (subrelation-of ?predicate1 ?predicate2)
+   (exists (?X)
+      (and
+         (valence ?predicate1 ?X)
+         (valence ?predicate2 ?X))))
+
+(instance-of nth-domain TernaryRelation)
+(nth-domain nth-domain 1 Predicate)
+(nth-domain nth-domain 2 PositiveInteger)
+(nth-domain nth-domain 3 Class)
+(documentation nth-domain "Provides a computationally and heuristically
+convenient mechanism for declaring the intended types of the argument places 
+of a given relation.  The formula (nth-domain rel 3 type-class) says that 
+the 3rd element of each tuple in the relation REL is an instance of type-class.  
+Specifying the types of argument places is very helpful in maintaining ontologies.  
+Representation systems can use these specifications to classify terms and check 
+integrity constraints.  If the restriction on the range of the relation is not 
+captured by a named class, one can specify the constraint with a predicate 
+that defines the class implicitly, coerced into a class.  For example,
+  (kappa (?x) (and (instance-of ?x PrimeNumber) (lessThan ?x 100))) 
+denotes the class of prime numbers under 100.
+It is important to note that'nth-domain' cannot be considered a
+genuine predicate in a standard first-order language as it takes
+first-order predicates as arguments.  Furthermore, it also takes
+numerals as arguments, which are not part of first-order languages
+generally.  However, it can be understood formally as an 
+abbreviation as follows.
+   Let REL be any n-place predicate, and let M be the numeral for the
+positive integer m, where m is less than or equal to n.  Then we
+let
+  (nth-domain REL M CLASS)
+
+serve as an abbreviation for
+
+  (forall (VAR_1 ... VAR_n)
+          (=> (REL VAR_1 ... VAR_n)
+              (instance-of VAR_m CLASS)))
+
+More generally, let M_1, ..., M_i be the numerals for positive
+integers m_1, ..., m_i, ordered by size, all less than or equal to
+n.  Then, in general, we let
+
+  (nth-domain REL M_1 CLASS_1 ... M_i CLASS_i) 
+
+abbreviate 
+ 
+  (forall (VAR_1 ... VAR_n)
+          (=> (REL VAR_1 ... VAR_n)
+              (and (instance-of VAR_m_1 CLASS_1)
+                   ...
+                   (instance-of VAR_m_i CLASS_i))))    ")
+
+(instance-of nth-domain-subclass TernaryRelation)
+(nth-domain nth-domain-subclass 1 Predicate)
+(nth-domain nth-domain-subclass 2 PositiveInteger)
+(nth-domain nth-domain-subclass 3 Class)
+(documentation nth-domain-subclass "Predicate used to specify selectional restrictions
+of predicates.  The formula (nth-domain-subclass rel 3 type-class) says that the 3rd 
+element of each tuple in the relation REL is a subclass of type-class.")
+
+(instance-of range BinaryRelation)
+(nth-domain range 1 Function)
+(nth-domain range 2 Class)
+(documentation range "range is short for 'range restriction.'  Specifying 
+a range restriction of a function is a way to constrain the class of objects 
+which participate as the result of the function.  Range restrictions are 
+very helpful in maintaining ontologies.  One can think of a range restriction 
+as a type constraint on the value of a function.  Representation systems can 
+use these specifications to classify terms and check integrity constraints.  
+If the restriction on the range of the relation is not captured by a named 
+class, one can use specify the constraint with a predicate that defines the 
+class implicitly, coerced into a class.  For example,
+  (KappaFn ?x (and (instance-of ?x PrimeNumber) (lessThan ?x 100))) 
+denotes the class of prime numbers under 100.")
+  
+(instance-of range-subclass BinaryRelation)
+(nth-domain range-subclass 1 Function)
+(nth-domain range-subclass 2 Class)
+(documentation range-subclass "(range-subclass function class) means that 
+the value returned by function is a subclass of class.")
+
+(instance-of valence BinaryRelation)
+(nth-domain valence 1 Relation)
+(nth-domain valence 2 PositiveInteger)
+(singleValued valence 2)
+(documentation valence "Specifies the number of arguments that a 
+relation can take.  If a relation can take an arbitrary number of 
+arguments, it does not have a valence and it is an instance of 
+'VariableArityRelation' or 'VariableArityFunction'.  For example, 
+'holds' is a VariableArityRelation.  The arity of a function is one 
+more than the number of arguments it can take, in keeping with the 
+unified treatment of functions and relations.  The arity of the empty 
+relation (i.e., the one with no tuples) is undefined.")
+
+(instance-of documentation BinaryRelation)
+(nth-domain documentation 1 Entity)
+(nth-domain documentation 2 String)
+(documentation documentation "A relation between objects in the domain 
+of discourse and strings of natural language text.  The domain of 
+'documentation' is not constants (names), but the objects themselves.  
+This means that one does not quote the names when associating them with 
+their documentation.")
+
+(instance-of disjoint BinaryRelation)
+(nth-domain disjoint 1 SetOrClass)
+(nth-domain disjoint 2 SetOrClass)
+(documentation disjoint "Classes/Sets X and Y are disjoint iff they share no 
+instances.")
+
+(<=> 
+	(disjoint ?class1 ?class2)
+      	(forall (?X)
+		(not
+			(and 
+				(instance-of ?X ?class1)
+                        	(instance-of ?X ?class2)))))
+
+(instance-of exhaustiveDecomposition BinaryRelation)
+(nth-domain exhaustiveDecomposition 1 Class)
+(nth-domain exhaustiveDecomposition 2 Set)
+(documentation exhaustiveDecomposition "An exhaustive decomposition of a 
+class C is a set of subclasses of C such that every subclass of C either 
+is a member of the set or is a subclass of a member of the set.  Note: 
+this does not necessarily mean that the elements of the set are disjoint 
+(see partition - a partition is a disjoint exhaustive decomposition.)")
+
+(instance-of disjointDecomposition BinaryRelation)
+(nth-domain disjointDecomposition 1 Class)
+(nth-domain disjointDecomposition 2 Set)
+(documentation Disjoint-Decomposition "A disjoint-decomposition of a class 
+C is a set of subclasses of C that are mutually disjoint.  (Used to be called 
+Subclass-Partition).")
+
+(subrelation-of partition exhaustiveDecomposition)
+(subrelation-of partition disjointDecomposition)
+(documentation Partition "A partition of a class C is a set of 
+mutually-disjoint classes (a subclass partition) which covers C.  
+Every instance of C is is an instance of exactly one of the subclasses 
+in the partition.  (Used to be called Exhaustive-Subclass-Partition)")
+
+(instance-of singleValued BinaryRelation)
+(nth-domain singleValued 1 Predicate)
+(nth-domain singleValued 2 Integer)
+(documentation singleValued "(singleValued <PREDICATE> <INTEGER>) means 
+that the argument position of <PREDICATE> corresponding to <INTEGER> is 
+single-valued, i.e. an assignment of values to the other argument 
+positions determines a unique value for the argument position corresponding 
+to <INTEGER>.") 
+
+(instance-of all-instances BinaryRelation)
+(nth-domain all-instances 1 Class)
+(nth-domain all-instances 2 Set)
+(documentation all-instances "The instances of some classes may be 
+specified extensionally.  That is, one can list all of the instances 
+of the class by definition.  For this case we say (= (all-instances C) 
+(SetEnumerationFn V_1 V_2 ...  V_n)), where C is a class and the V_i are its 
+instances.
+  The predicate 'all-instances' imposes a monotonic constraint. Any 
+subclass of C cannot have any instances outside of the set related to C 
+by the 'all-instances' predicate.  Note that this is not indexical or 
+modal: whether something is in all-instances is a property of the modeled 
+world and does not depend on the facts currently stored in some knowledge 
+base.")
+
+(instance-of KappaFn BinaryFunction)
+(nth-domain KappaFn 1 Variable)
+(nth-domain KappaFn 2 Formula)
+(range KappaFn Class)
+(documentation KappaFn "A class-forming operator that takes two arguments:  
+a variable and a formula containing at least one unbound occurrence of the 
+variable.  The result of applying KappaFn to a variable and a formula is the 
+class of things that satisfy the formula.  For example, 
+   (KappaFn ?x (and (instance-of ?x PrimeNumber) (lessThan ?x 100))) 
+denotes the class of prime numbers under 100.")
+
+(instance-of SetFn BinaryFunction)
+(nth-domain SetFn 1 Variable)
+(nth-domain SetFn 2 Formula)
+(range SetFn Set)
+(documentation SetFn "A set-forming operator that takes two arguments:  
+a variable and a formula containing at least one unbound occurrence of the 
+variable.  The result of applying SetFn to a variable and a formula is the 
+set of things that satisfy the formula.  For example, we could define the 
+set of primary colors using SetFn, as follows:  
+   (SetFn ?X (or  (instance-of ?X Red) 
+                  (instance-of ?X Green)
+                  (instance-of ?X Blue))).")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                                                                   ;;
+;;                         ONTOLOGY PROPER                           ;;
+;;                                                                   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;   GENERAL CLASSES   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; The following hierarchy incorporates content from Sowa, Russell & Norvig, 
+;; and the top-level ontology from ITBM-CNR. 
+
+(subclass-of Individual Entity)
+(documentation Individual "An Individual is something that isn't a set, 
+but that can be a member of a set.  All classes of things that are not 
+sets are subclasses of Individual.")
+(subclass-of Relation Entity)
+(subclass-of Physical Entity)
+(subclass-of Abstract Entity)
+(subclass-of ContinuantType Entity)
+(subclass-of OccurrentType Entity)
+
+(subclass-of Object Physical)
+(instance-of Object ContinuantType)
+(subclass-of Region Physical)
+(instance-of Region ContinuantType)
+(disjoint Region Object)
+(documentation Region "A region is the only entity which can be located at 
+itself.")
+(subclass-of PhysicalProperty Physical)
+(subclass-of PhysicalProperty OccurrentType)
+(documentation PhysicalProperty "The category of physical states and physical 
+categories such as color, density, volume, etc.")
+(subclass-of ContentBearingObject Abstract)
+(subclass-of ContentBearingObject Object)
+(subclass-of Process Physical)
+(instance-of Process OccurrentType)
+(subclass-of Structure Abstract)
+(instance-of Structure ContinuantType)
+(subclass-of Situation Abstract)
+(instance-of Situation OccurrentType)
+
+(subclass-of NaturalProcess Process)
+(documentation NaturalProcess "A phenomenon or process that occurs irrespective 
+of the activities of human beings or other animals.")
+(subclass-of BiologicalProcess NaturalProcess)
+(documentation BiologicalProcess "A natural process embodied in a biological object.")
+
+(=>
+   (instance-of ?X BiologicalProcess)
+   (exists (?Y)
+      (and
+         (instance-of ?Y OrganicObject)
+         (located-at ?X ?Y))))
+
+(subclass-of Behavior Process)
+(documentation Behavior "Any of the activities of humans or animals that can be observed directly by 
+others or can be made systematically observable by the use of special strategies.")
+(subclass-of IndividualBehavior Behavior)
+(documentation IndividualBehavior "Behavior exhibited by a human or an animal that is not a direct result of interaction with other members of the species, but which may have an effect on others.")
+(subclass-of SocialBehavior Behavior)
+(documentation SocialBehavior "Behavior that is a direct result or function of the interaction of 
+humans or animals with their fellows.")
+       
+(subclass-of HumanCausedProcess Process)
+
+(=>
+   (instance-of ?X HumanCausedProcess)
+   (exists (?Y)
+      (and
+         (effector-of ?X ?Y)
+         (instance-of ?Y Human))))
+
+(documentation HumanCausedProcess "A phenomenon or process that is a result of 
+the activities of human beings.") 
+(disjoint NaturalProcess HumanCausedProcess)
+
+(=>
+   (instance-of ?X HumanCausedProcess)
+   (exists (?Y)
+      (and
+         (effector-of ?X ?Y)
+         (instance-of ?Y Human))))
+
+(subclass-of Action HumanCausedProcess)
+
+(=>
+   (instance-of ?X Action)
+   (forall (?Y)
+      (=>
+         (effector-of ?X ?Y)
+         (agent ?X ?Y))))
+
+(subclass-of PurposiveAction Action)
+(documentation PurposiveAction "The class of actions that are intended to be 
+concluded, say 'conclusive' and with a purpose, say 'telic'.")
+
+(=> 
+   (instance-of ?X PurposiveAction)
+   (exists (?Y)
+      (hasPurpose ?X ?Y)))
+
+(subclass-of Activity Action)
+(documentation Activity "The class of actions that are typically carried 
+out for an extended time and in some way are 'institutionalized' or at 
+least customary or conventional.")
+
+(subclass-of RecreationalActivity Activity)
+(documentation RecreationalActivity "An activity that is carried out for the purpose of recreation.")
+(subclass-of ExerciseActivity Activity)
+(documentation ExerciseActivity "An activity that is carried out for the purpose of exercise.")
+(subclass-of EducationalActivity Activity)
+(documentation EducationalActivity "An activity related to the organization and provision of education.")
+(subclass-of OccupationalActivity Activity)
+(documentation OccupationalActivity "An activity carried out as part of an occupation or job.")
+
+
+(=>
+   (instance-of ?X OccupationalActivity)
+   (exists (?Y)
+      (and
+         (conventionalWithin ?X ?Y)
+         (instance-of ?Y Occupation))))
+
+(subclass-of InstitutionalActivity Activity)
+
+(=>
+   (instance-of ?X InstitutionalActivity)
+   (exists (?Y)
+      (and
+         (agent ?X ?Y)
+         (instance-of ?Y Institution))))
+
+(subclass-of RegulatoryActivity InstitutionalActivity)
+(documentation RegulatoryActivity "An activity carried out by officially constituted governments, or an activity related to the creation or enforcement of the rules or regulations governing some field of endeavor.")
+
+(subclass-of Transaction Action)
+(subclass-of FinancialTransaction Transaction)
+(subclass-of Buying FinancialTransaction)
+(subclass-of Selling FinancialTransaction)
+
+(subclass-of GeographicArea Region)
+(documentation GeographicArea "A geographic location, generally having 
+definite boundaries.")
+(subclass-of Address GeographicArea)
+(documentation Address "A topographic location, generally having definite boundaries. 
+This concept is enough to represent the state of 'being at an address'. The relation for 
+'having an address' is a more complex issue, since having an address does not imply 
+being at that address all the time (or a default amount of time). Instead having an 
+address implies a social and legal responsibility for being retrievable,
+receiving mail, being contacted, having own estates localized, etc.
+Example issues: physical persons are wholly located at an address, but that address is 
+temporary at the interesting temporal granularity, while organizations are usually 
+partly located at a main or default address, but that address is permanent at the 
+interesting granularity. On the other hand, consider that from some social and
+legal aspects actual presence is not required (mailing, messages, estates, ...).")
+
+(subclass-of Sign ContentBearingObject)
+(subclass-of Procedure Situation)
+(subclass-of ContinuousObject Object)
+(subclass-of OrganicSubstance ContinuousObject)
+(subclass-of InorganicSubstance ContinuousObject)
+(subclass-of CorpuscularObject Object)
+(subclass-of Collection Object)
+(documentation Collection "Common sense wholes having an elementary uniform 
+compositional structure, but parts are distinguished only with respect to each 
+other, not to the whole (gerstl-Pribbenow96).")
+(disjoint ContinuousObject CorpuscularObject)
+(subclass-of OrganicObject CorpuscularObject)
+(subclass-of Organism OrganicObject)
+(documentation Organism "Generally, a living individual, including all plants 
+and animals.")
+(subclass-of AnatomicalStructure OrganicObject)
+(disjoint Organism AnatomicalStructure)
+(subclass-of InorganicObject CorpuscularObject)
+(subclass-of Artifact InorganicObject)
+(documentation Artifact "An object with separable parts that is manufactured by
+humans.")
+(disjoint OrganicObject Artifact)
+(subclass-of SubmolecularObject InorganicObject)
+(subclass-of Molecule InorganicObject)
+
+(=>
+   (instance-of ?X Molecule)
+   (exists (?Y ?Z)
+      (and
+         (instance-of ?Y Atom)
+         (instance-of ?Z Atom)
+         (part-of ?Y ?X)
+         (part-of ?Z ?X)
+         (not
+            (equal ?Y ?Z)))))
+
+(subclass-of Atom SubmolecularObject)
+
+(=>
+   (instance-of ?X Atom)
+   (exists (?Y)
+      (and
+         (part-of ?Y ?X)
+         (instance-of ?Y Particle))))
+
+(subclass-of Radical SubmolecularObject)
+(subclass-of Particle SubmolecularObject)
+(subclass-of Electron Particle)
+(subclass-of Positron Particle)
+(subclass-of Neutron Particle)
+
+(=>
+   (instance-of ?X Particle)
+   (exists (?Y)
+      (and
+         (instance-of ?Y Atom)
+         (part-of ?X ?Y))))
+
+(=>
+   (instance-of ?X Artifact)
+   (exists (?Y)
+      (and
+         (instance-of ?Y Activity)
+         (result ?Y ?X))))
+
+;; The following ground facts incorporate the 'Agent' hierarchy from the 
+;; corresponding ontology on the Ontolingua server.  It also includes predicates
+;; defined in the ITBM-CNR ontology "Actors".
+
+(subclass-of Agent Object)
+(documentation Agent "An agent is something or someone that can act on its
+own and produce changes in the world.")
+
+(<=>
+	(instance-of ?X Agent)
+	(exists (?Y)
+		(agent ?Y ?X)))
+
+(subclass-of Person Agent)
+(subclass-of Organization Agent)
+(documentation Organization "An organization is a corporate or similar 
+institution, distinguished from persons and other agents.  It is typically 
+the result of uniting for a common purpose or function. The continued existence 
+of an organization is not dependent on any of its members, its location, or 
+particular facility.  Components or subparts of organizations should not be 
+included here, unless they are organizations as well.")
+(subclass-of Corporation Institution)
+(documentation Corporation "A company.")
+(subclass-of Publisher Corporation)
+(documentation Publisher "A publisher is a corporation that publishes.  
+The owner of a publishing company may be a person, 
+and the name of the publisher may be the name of a person.")
+(subclass-of Institution Organization)
+(subclass-of Government Institution)
+(subclass-of University Institution)
+(documentation University "A university is an institute of higher learning that 
+offers a graduate research program.  Of importance here is the fact that
+universities sponsor the publication of dissertations.  Any organization
+that has been accredited to grant graduate degrees and is recognized
+in libraries to be a publisher of dissertations can be called a
+university.  Some places that call themselves colleges fall under this
+category.")
+(disjoint Person Organization)
+
+(subclass-of ChemicalSubstance InorganicSubstance)
+(subclass-of ChemicalElement ChemicalSubstance)
+(subclass-of ChemicalCompound ChemicalSubstance)
+(subclass-of SetOrClass Abstract)
+(subclass-of Set SetOrClass)
+(documentation Set "A set is a collection of objects, both individuals and sets of
+various sorts.  It is a KIF primitive.")
+(subclass-of FiniteSet Set)
+(subclass-of Class SetOrClass)
+(documentation Class "A class can be thought of as a collection of 
+individuals.  Formally, a class is a unary relation, a set of tuples 
+(lists) of length one.  Each tuple contains an object which is said 
+to be an instance of the class.  An individual, or object, is any 
+identifiable entity in the universe of discourse (anything that can be 
+denoted by a object constant in KIF), including classes themselves.
+  The notion of 'Class' is introduced in addition to the relation
+vocabulary because of the importance of classes and types in knowledge
+representation practice.  Classes serve the role of `sorts' and `types', 
+but here is no first-order distinction between classes and unary
+relations.  
+  The fact that an object i is an instance of class C is denoted by
+the sentence (C i) (instance-of i C).  This is not equivalent to 
+(member i C).  An instance of a class is not a set-ontologetic
+member of the class; rather, the tuple containing the instance is a
+element of the set of tuples which is a relation.
+  The definition of a class is a predicate over a single free
+variable, such that the predicate holds for instances of the class.
+In other words, classes are defined _intensionally_.  Two
+separately-defined classes may have the same extension (in this case
+they are = to each other).  It is possible to define a class by
+enumerating its instances.  For example, 
+(<=>
+   (instance-of ?color PrimaryColor)
+   (member ?color (SetFn ?X (or  (instance-of ?X Red) 
+                                 (instance-of ?X Yellow)
+                                 (instance-of ?X Blue))))).")
+
+(subclass-of Standard Abstract)
+(subclass-of Requirement Standard)
+(subclass-of Proposition Abstract)
+(subclass-of Sentence ContentBearingObject)
+(subclass-of KIF-Formula Sentence)
+
+(instance-of contraryProperty SymmetricRelation)
+(instance-of contraryProperty TransitiveRelation)
+(instance-of contraryProperty IrreflexiveRelation)
+(nth-domain contraryProperty 1 PhysicalProperty)
+(nth-domain contraryProperty 2 PhysicalProperty)
+(documentation contraryProperty "Means that the two arguments are properties 
+that are opposed to one another, e.g. Cold verus Hot or Elastic versus Rigid.")
+
+(=>
+   (and
+      (attribute-of ?X ?Y)
+      (contraryProperty ?Y ?Z))
+   (not
+      (attribute-of ?X ?Z)))
+
+(subclass-of PhysicalState PhysicalProperty)
+(instance-of Solid PhysicalState)
+(instance-of Liquid PhysicalState)
+(instance-of Gas PhysicalState)
+(subclass-of TemperatureProperty PhysicalProperty)
+(instance-of Cold TemperatureProperty)
+(instance-of Hot TemperatureProperty)
+(contraryProperty Cold Hot)
+(subclass-of ColorProperty PhysicalProperty)
+(subclass-of PrimaryColor ColorProperty)
+(instance-of Red PrimaryColor)
+(instance-of Blue PrimaryColor)
+(instance-of Yellow PrimaryColor)
+(instance-of Monochromatic ColorProperty)
+(instance-of Polychromatic ColorProperty)
+(contraryProperty Monochromatic Polychromatic)
+(subclass-of ConsistencyProperty PhysicalProperty)
+(subclass-of ConcentrationProperty PhysicalProperty)
+(subclass-of SizeProperty PhysicalProperty)
+(instance-of Thickness SizeProperty)
+(instance-of Volume SizeProperty)
+(instance-of Weight SizeProperty)
+(instance-of Density ConcentrationProperty)
+(instance-of Elastic ConsistencyProperty)
+(instance-of Rigid ConsistencyProperty)
+(contraryProperty Elastic Rigid)
+(instance-of Smooth ConsistencyProperty)
+(instance-of Rough ConsistencyProperty)
+(contraryProperty Smooth Rough)
+
+;; The following definitions of 'AbstractionFn' and 'ExtensionFn', which, 
+;; respectively, convert classes into their corresponding attributes and vice 
+;; versa, are suggested by some of Robert E. Kent's work.
+
+(instance-of AbstractionFn UnaryFunction)
+(nth-domain AbstractionFn 1 Class)
+(range AbstractionFn Abstract)
+
+(instance-of ExtensionFn UnaryFunction)
+(nth-domain ExtensionFn 1 Abstract)
+(range ExtensionFn Class)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;   DOCUMENTATION OF GENERAL CLASSES   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(documentation Abstract "Properties or qualities as distinguished from any 
+particular embodiment of the properties/qualities in a physical medium.  
+Instances of Abstract can be said to exist in the same sense as mathematical 
+objects such as sets and relations, but they cannot exist at a particular 
+place and time without some physical encoding or embodiment.")
+
+(documentation CaseRole "The class of predicates relating the spatially 
+distinguished parts of an occurrent. Case roles include the agent, patient or 
+recipient of an action, the flammable substance in a burning process, or the 
+water that falls in rain.")
+
+(documentation ContinuantType " Intuitively, an object-like type as 
+opposed to an event-like type; classes of things that endure rather than 
+happen. A continuant is thought of as continuing 
+through time, but at any particular time is all there is at that time, 
+in contrast to something that is thought of as being divided into 
+stages (contrast "OccurrentType"). Examples include normal physical 
+objects, geographical regions, things like corporations or nations, 
+and locations of occurrents. The formal definition is that all the 
+parts of a continuant are present at the same time that the 
+continuant is; in other words, a continuant cannot have 'parts' which 
+are separated in time, such as the first and second halves of a 
+football game.  Note that the parts of a continuant may change from time 
+to time, and that every continuant occupies exactly the same space and 
+time as an occurrent (its lifetime).  In a 4-d ontology, a continuant is 
+something whose spatiotemporal extent is thought of as dividing into 
+spatial parts roughly parallel to the time-axis.  See 
+Occurrent/Continuant-contrast-note.  This documentation is due to Pat 
+Hayes.")
+
+(documentation ContinuousObject "A ContinuousObject is an object in which every part is 
+similar to every other in every relevant respect.  More precisely, something 
+is a ContinuousObject when it has only arbitrary pieces as parts; ie any parts have 
+similar properties.Note that a ContinuousObject may nonetheless have physical properties 
+that vary.  For example, the temperature, chemical constitution, density, etc. may change 
+from one part to another.  An example would be a large body of water such as the ocean.")
+
+(documentation CorpuscularObject "An Object that has separable parts.")
+
+(documentation Entity "The universal class of individuals.  This is the root 
+node of the ontology.")
+
+(documentation Individual "An entity that can be characterized independently of 
+any relationships it may have to other entities.")
+
+(documentation Object "A Physical Continuant which retains its identity over 
+some interval of time. Although no physical entity is ever permanent, an object 
+can have stable properties over its lifespan. The type Object corresponds roughtly
+to the class of ordinary physical objects.")
+
+(documentation OccurrentType "Intuitively, an event-like type as opposed 
+to an object-type; classes of things that happen rather than endure. 
+An occurrent is thought of as having temporal parts or 
+stages, and so it cannot have all these parts together at one time 
+(contrast "ContinuantType"). Examples include extended 'events' such as a 
+football match or a race, processes of various kinds, states of 
+motion and lifetimes of continuants, which occupy the same space 
+and time but are thought of as having stages instead of parts. The 
+formal definition is: anything that lasts for a time but is not a 
+continuant.  Note that an occurrent may have participants 'inside' it which 
+are continuants, such as the players in a football match.
+In a 4-d ontology, a continuant is something whose spatiotemporal 
+extent is thought of as dividing into temporal stages roughly 
+perpendicular to the time-axis.  See 
+Occurrent/Continuant-contrast-note.  This documentation is due to Pat Hayes.")
+
+(documentation OrganicObject "A CorpuscularObject such as a tree or flower that 
+has parts that are not completely separable, even though there are 
+discontinuities.")
+
+(documentation Physical "An entity that has a location in space-time.  Note that 
+points of space and time are themselves understood to have a location in space-time")
+
+(documentation Procedure "A sequence-dependent specification of actions and events.  
+Some examples are computer programs, finite-state machines, cooking recipes, musical 
+scores, conference schedules, driving directions, and the scripts of actions and 
+dialog in plays and movies.")
+
+(documentation Process "A Physical Occurrent during the interval of interest. 
+Depending on the time scale and level of detail, the same actual entity may be 
+viewed as a stable object or a dynamic process. Even an entity as stable as a 
+diamond could be considered a process when viewed over a long time period or at 
+the atomic level of vibrating particles.")
+
+(documentation Proposition "A subclass of Abstract. In logic, the assertion of a 
+proposition is a claim that the abstraction corresponds to some aspect or 
+configuration of the entity or entities involved. As an example, the statement 
+cat(Yojo) expresses a proposition that Cat characterizes the entity named 
+Yojo.")
+
+(documentation Relation "An entity in a relationship to some other entity.")
+
+(documentation Sign "A Sign is something that is intended by one agent to represent 
+something to another agent or agents.  Note that this definition excludes natural 
+phenomena and their interpretation, e.g. a cloud formation that resembles a physical 
+object.") 
+
+(documentation Situation "An Abstract entity considered as an Occurrent. A 
+situation relates the participants in some process, whose stages may involve 
+different participants at different times.")
+
+(documentation Structure "An Abstract entity considered as a Continuant. A 
+structure relates multiple objects whose connections constitute the structure.")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;     SET THEORY      ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; The following part of the ontology covers set-theoretic predicates and 
+;; functions.  Most of the content here is taken from the kif-sets ontology 
+;; (available on the Ontolingua server).
+
+(instance-of subset BinaryRelation)
+(nth-domain subset 1 Set)
+(nth-domain subset 2 Set)
+(documentation subset "The formula (subset ?SET1 ?SET2) is true if
+and only if ?SET1 and ?SET2 are sets and the objects in the set
+denoted by ?SET1 are contained in the set denoted by ?SET2.")
+
+(instance-of member BinaryRelation)
+(nth-domain member 1 Entity)
+(nth-domain member 2 Set)
+(documentation member "The formula (member ?ENTITY ?SET) is true if and only if 
+the object denoted by ?ENTITY is contained in the set denoted by ?SET.  An 
+object can be a member of another object only if the latter is a set.")
+
+(=>
+   (forall (?X)
+         (<=>
+            (member ?X ?S1)
+            (member ?Y ?S2)))
+   (equal ?S1 ?S2))
+
+(instance-of UnionFn BinaryFunction)
+(nth-domain UnionFn 1 Set)
+(nth-domain UnionFn 2 Set)
+(range UnionFn Set)
+(documentation UnionFn "A function whose arguments are two sets and whose result 
+is the set-theoretic union of these sets, i.e. the set of all elements which are 
+members of either the first or second set.")
+
+(equal
+   (UnionFn ?S1 ?S2)
+   (SetFn ?X
+      (or
+         (member ?X ?S1)
+         (member ?X ?S2))))
+
+(instance-of IntersectionFn BinaryFunction)
+(nth-domain IntersectionFn 1 Set)
+(nth-domain IntersectionFn 2 Set)
+(range IntersectionFn Set)
+(documentation IntersectionFn "A function whose arguments are two sets and whose 
+result is the set-theoretic intersection of these sets, i.e. the set of all 
+elements which are members of both the first and the second sets.")
+
+(equal
+   (IntersectionFn ?S1 ?S2)
+   (SetFn ?X
+      (and
+         (member ?X ?S1)
+         (member ?X ?S2))))
+
+(instance-of DifferenceFn BinaryFunction)
+(nth-domain DifferenceFn 1 Set)
+(nth-domain DifferenceFn 2 Set)
+(range DifferenceFn Set)
+(documentation DifferenceFn "A function whose arguments are two sets and whose 
+result is the set-theoretic difference of these sets, i.e. the set of all 
+elements which are members the first set and not of the second set.")
+
+(equal
+   (DifferenceFn ?S1 ?S2)
+   (SetFn ?X
+      (and
+         (member ?X ?S1)
+         (not
+	      (member ?X ?S2)))))
+
+(instance-of ComplementFn UnaryFunction)
+(nth-domain ComplementFn 1 Set)
+(range ComplementFn Set)
+(documentation ComplementFn "The complement of a given set S is the set of all 
+elements that are not members of S.")
+
+(equal
+   (ComplementFn ?S)
+   (SetFn ?X
+      (not (member ?X ?S))))
+
+(instance-of GeneralizedUnionFn UnaryFunction)
+(nth-domain-subclass GeneralizedUnionFn 1 Set)
+(range GeneralizedUnionFn Set)
+(documentation GeneralizedUnionFn "This function takes a set of sets as its single 
+argument and returns a set which is the merge of all of the sets in the original 
+set, i.e. the set containing just those elements which are members of an element 
+of the original set.")
+
+(equal 
+   (GeneralizedUnionFn ?S)
+   (SetFn ?X
+      (exists (?Y)
+         (and
+            (member ?Y ?S)
+            (member ?X ?Y)))))
+
+(instance-of GeneralizedIntersectionFn UnaryFunction)
+(nth-domain-subclass GeneralizedIntersectionFn 1 Set)
+(range GeneralizedIntersectionFn Set)
+(documentation GeneralizedIntersectionFn "This function takes a set of sets as 
+its single argument and returns a set which contains just those elements which 
+are members of all of the elements of the original set.")
+
+(equal 
+   (GeneralizedIntersectionFn ?S)
+   (SetFn ?X
+      (forall (?Y)
+         (=>
+            (member ?Y ?S)
+            (member ?X ?Y)))))
+
+(instance-of EmptySet Set)
+(documentation EmptySet "The set that contains no members.")
+
+
+(<=>
+   (equal ?X EmptySet)
+   (not
+      (exists (?Y)
+         (member ?Y ?X))))
+
+(subclass-of PairwiseDisjointSet Set)
+(documentation PairwiseDisjointSet "A set of sets is PairwiseDisjoint just in case 
+every element of the set is either equal to or disjoint from every other element 
+of the set.")
+
+(=>
+   (instance-of ?X PairwiseDisjointSet)
+   (forall (?Y ?Z)
+      (=>
+         (and
+            (member ?Y ?X)
+            (member ?Z ?X))
+         (or
+            (equal ?Y ?Z)
+            (disjoint ?Y ?Z)))))
+
+(subclass-of MutuallyDisjointSet Set)
+(documentation MutuallyDisjointSet "A set of sets is a MutuallyDisjointSet 
+just in case there exists no element of an element of the original set which 
+is an element of all of the elements of the original set.")
+
+(=>
+   (instance-of ?S MutuallyDisjoint)
+   (equal (GeneralizedIntersectionFn ?S) EmptySet))
+
+(instance-of holds VariableArityRelation)
+(nth-domain holds 1 Predicate)
+(documentation holds "(holds P N1 ... NK) is true if and only if 
+the ordered set of objects denoted by N1,..., NK is a member of 
+the predicate P.")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;     RELATION TYPES      ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; The following part of the ontology covers the various classes under 
+;; 'Relation'.  Most of the content here is taken from frame-ontology, 
+;; abstract-algebra, kif-relations, and kif-extensions (ontologies available 
+;; on the Ontolingua server).
+
+(subclass-of Predicate Relation)
+(documentation Predicate "A predicate is a set of tuples that represents 
+a relationship among objects in the universe of discourse.  Each tuple 
+is a finite, ordered sequence (i.e., list) of objects.  A relation is 
+also an object itself, namely, the set of tuples.  
+   Predicates are denoted by relation constants in KIF.  A fact that a 
+particular tuple is a member of a predicate is denoted
+by (<relation-name> arg_1 arg_2 .. arg_n), where the arg_i are the 
+objects in the tuple.  In the case of binary relations, the fact can
+be read as `arg_1 is <relation-name> arg_2' or `a <relation-name> of
+arg_1 is arg_2.'  The relation constant is a term as well, which
+denotes the set of tuples.")
+
+(subclass-of Function Relation)
+(documentation Function "A function is a mapping from a domain to a range 
+that associates a domain element with exactly one range element.  The 
+elements of the domain are tuples, as in relations.  The range is a class 
+-- a set of singleton tuples -- and each element of the range is an 
+instance of the class.  Functions are also first-class objects in the same 
+sense that relations are objects: namely, functions can be viewed as sets of
+tuples.")
+
+(subclass-of UnaryFunction Function)
+(subclass-of BinaryFunction Function)
+(subclass-of TernaryFunction Function)
+(subclass-of VariableArityFunction Function)
+(subclass-of ContinuousFunction Function)
+(documentation ContinuousFunction "Functions which are continuous.  This concept 
+is taken as primitive until representations for limits are generated.")
+
+(subclass-of BinaryRelation Predicate)
+(documentation BinaryRelation "A binary relation is a non-empty relation 
+in which all lists have exactly two items.  A binary relation maps 
+instances of a class to instances of another class.  Its valence is 2.  
+Binary relations are often shown as slots in frame systems.")
+
+(subclass-of TernaryRelation Predicate)
+(subclass-of VariableArityRelation Predicate)
+(subclass-of CaseRole BinaryRelation)
+(subclass-of ProbabilityRelation Relation)
+(documentation ProbabilityRelation "A generic category which embeds relations 
+for talking of something which allows an assessment of probability of an event 
+or situation.")
+(subclass-of SpatialRelation Relation)
+(documentation SpatialRelation "The very general category including spatial 
+schematic concepts in a wide sense: mereology, topology, localization, in both 
+material and abstract layers.")
+(subclass-of TemporalRelation Relation)
+(documentation TemporalRelation "The category of temporal concepts: notions of 
+(temporal) topology of intervals, (temporal) schemata, (temporal) extension.")
+
+(subclass-of IntentionalRelation Relation)
+(subclass-of PropositionalAttitude IntentionalRelation)
+(subclass-of ObjectAttitude IntentionalRelation)
+
+(instance-of AssignmentFn VariableArityFunction)
+(nth-domain AssignmentFn 1 Function)
+(range AssignmentFn Entity)
+(documentation AssignmentFn "If F denotes a function with a value 
+for the objects denoted by N1,..., NK, then the term 
+(AssignmentFn F N1 ... NK) denotes the value of applying that function 
+to the objects denoted by N1,..., NK.  Otherwise, the value is undefined.")
+
+(subclass-of RelationExtendedToQuantities Relation)
+(documentation RelationExtendedToQuantities "A RelationExtendedToQuantities 
+is a relation that, when it is true on a sequence of arguments that are real 
+numbers, then it is also true on a sequence of constant quantites with those
+magnitudes in some units.  For example, the lessThan relation is extended to 
+quantities.  That means that for all pairs of quantities q1 and q2, 
+(lessThan q1 q2) if and only  if, for some ?n and ?m, q1 = (MeasureFn ?n ?u), 
+q2 = (MeasureFn ?m ?u), and (lessThan ?n ?m), for all units ?u on which q1 
+and q2 can be measured.  There may be relations that are not instances of 
+this class that nonetheless hold for quantity arguments.  To be a 
+RelationExtendedToQuantities means that the relation holds when all the 
+arguments are of the same physical dimension.")
+
+(=>
+   (and
+      (instance-of ?R RelationExtendedToQuantities)
+      (instance-of ?R BinaryFunction)
+      (instance-of ?N RealNumber)
+      (instance-of ?M RealNumber)
+      (equal (AssignmentFn ?R ?N ?M) ?P))
+   (forall (?U)
+      (=>
+         (instance-of ?U Unit-Of-Measure)
+         (equal (AssignmentFn ?R (MeasureFn ?N ?U) (MeasureFn ?M ?U)) (MeasureFn ?P ?U)))))
+
+(=>
+   (and
+      (instance-of ?R RelationExtendedToQuantities)
+      (instance-of ?R BinaryRelation)
+      (instance-of ?N RealNumber)
+      (instance-of ?M RealNumber)
+      (holds ?R ?N ?M))
+   (forall (?U)
+      (=>
+         (instance-of ?U Unit-Of-Measure)
+         (holds ?R (MeasureFn ?N ?U) (MeasureFn ?M ?U)))))
+
+(instance-of binary-operator-on BinaryRelation)
+(nth-domain binary-operator-on 1 BinaryFunction)
+(range binary-operator-on Class)
+(documentation Binary-Operator-On "A function is a binary operator 
+on a domain if it is closed on the domain, that is, it is defined 
+for all pairs of objects that are instances of the domain and its 
+value on all such pairs is an instance of the domain.")
+
+(=>
+   (binary-operator-on ?function ?domain)
+   (forall (?x ?y)
+      (=> 
+         (and 
+            (instance-of ?x ?domain) 
+            (instance-of ?y ?domain))
+         (instance-of (AssignmentFn ?function ?x ?y) ?domain))))
+
+(subclass-of AssociativeFunction BinaryFunction)
+
+(=>
+   (instance-of ?OP AssociativeFunction)
+   (forall (?X ?Y ?Z)
+      (equal (AssignmentFn ?OP ?X (AssignmentFn ?OP ?Y ?Z))
+             (AssignmentFn ?OP (AssignmentFn ?OP ?X ?Y) ?Z))))
+
+(subclass-of CommutativeFunction BinaryFunction)
+
+(=>
+   (instance-of ?OP CommutativeFunction)
+   (forall (?X ?Y)
+      (equal (AssignmentFn ?OP ?X ?Y) 
+             (AssignmentFn ?OP ?Y ?X))))
+
+(instance-of distributes BinaryRelation)
+(nth-domain distributes 1 BinaryFunction)
+(nth-domain distributes 2 BinaryFunction)
+
+(=>
+   (distributes ?OP ?G)
+   (forall (?X ?Y ?Z)
+      (equal (AssignmentFn ?OP (AssignmentFn ?G ?X ?Y) ?Z)
+             (AssignmentFn ?G (AssignmentFn ?OP ?X ?Z) (AssignmentFn ?OP ?Y ?Z)))))
+
+(instance-of identity-element BinaryRelation)
+(nth-domain identity-element 1 BinaryFunction)
+(nth-domain identity-element 2 Entity)
+(documentation identity-element "An object ?id is the identity element 
+for binary operator ?o iff for every instance ?x of ?d, applying ?o
+to ?x and ?id results in ?x.")
+
+(=>
+   (identity-element ?OP ?ID)
+   (forall (?X)
+      (equal (AssignmentFn ?OP ?ID ?X) ?X)))
+
+(subclass-of ReflexiveRelation BinaryRelation)
+(documentation ReflexiveRelation "Relation R is reflexive if R(x,x) 
+for all x in the domain of R.")
+
+(=>
+   (instance-of ?R ReflexiveRelation)
+   (forall (?X)
+      (holds ?R ?X ?X)))
+
+(subclass-of IrreflexiveRelation BinaryRelation)
+(documentation Irreflexive-Relation "Relation R is irreflexive if 
+R(a,a) never holds.")
+
+(=>
+   (instance-of ?R IrreflexiveRelation)
+   (forall (?X)
+      (not 
+         (holds ?R ?X ?X))))
+
+(subclass-of SymmetricRelation BinaryRelation)
+(documentation SymmetricRelation "Relation R is symmetric if R(x,y) 
+implies R(y,x).")
+
+(=>
+   (instance-of ?R SymmetricRelation)
+   (forall (?X ?Y)
+      (=>
+         (holds ?R ?X ?Y)
+         (holds ?R ?Y ?X))))
+
+(subclass-of AsymmetricRelation IrreflexiveRelation)
+(subclass-of AsymmetricRelation AntisymmetricRelation)
+(documentation AsymmetricRelation "A binary relation is asymmetric if it 
+is antisymmetric and irreflexive over its exact-domain.")
+
+(=>
+   (instance-of ?R AsymmetricRelation)
+   (forall (?X ?Y)
+      (=>
+         (holds ?R ?X ?Y)
+         (not
+            (holds ?R ?Y ?X)))))
+
+(subclass-of AntisymmetricRelation BinaryRelation)
+(documentation AntisymmetricRelation "Relation R is an 
+AntisymmetricRelation if for distinct x and y, R(x,y) implies 
+not R(y,x).  In other words, for all x,y, R(x,y) and R(y,x) => x=y.  
+R(x,x) is still possible.")
+
+(=>
+   (instance-of ?R AntisymmetricRelation)
+   (forall (?X ?Y)
+      (=>
+         (and
+            (holds ?R ?X ?Y)
+            (holds ?R ?Y ?X))
+         (equal ?X ?Y))))
+
+(subclass-of TrichotomizingRelation BinaryRelation)
+
+(=>
+   (instance-of ?R TrichotomizingRelation)
+   (forall (?X ?Y)
+      (or
+         (holds ?R ?X ?Y) 
+         (equal ?X ?Y) 
+         (holds ?R ?Y ?X))))
+
+(subclass-of TransitiveRelation BinaryRelation)
+(documentation TransitiveRelation "Relation R is transitive 
+if R(x,y) and R(y,z) implies R(x,z).")
+
+(=>
+   (instance-of ?R TransitiveRelation)
+   (forall (?X ?Y ?Z)
+      (=>
+         (and
+            (holds ?R ?X ?Y)
+            (holds ?R ?Y ?Z))
+         (holds ?R ?X ?Z))))
+
+(subclass-of PartialOrderingRelation TransitiveRelation)
+(subclass-of PartialOrderingRelation AsymmetricRelation)
+(subclass-of PartialOrderingRelation ReflexiveRelation)
+(documentation PartialOrderingRelation "A relation is a partial ordering 
+if it is reflexive, asymmetric, and transitive.")
+
+(subclass-of TotalOrderingRelation PartialOrderingRelation)
+(documentation TotalOrderingRelation  "A relation R is a 
+TotalOrderingRelation if it is a PartialOrderingRelation 
+for which either R(x,y) or R(y,x) for every x or y in its 
+exact-domain.")
+
+(=>
+   (instance-of ?R TotalOrderingRelation)
+   (forall (?X ?Y)
+      (or
+         (holds ?R ?X ?Y)
+         (holds ?R ?Y ?X))))
+
+(subclass-of LinearOrderingRelation PartialOrderingRelation)
+(subclass-of LinearOrderingRelation TrichotomizingRelation)
+
+(subclass-of EquivalenceRelation TransitiveRelation)
+(subclass-of EquivalenceRelation SymmetricRelation)
+(subclass-of EquivalenceRelation ReflexiveRelation)
+(documentation EquivalenceRelation "A relation is an equivalence 
+relation if it is reflexive, symmetric, and transitive.")
+
+(instance-of inverse SymmetricRelation)
+(nth-domain inverse 1 (SetFn ?X (or (instance-of ?X BinaryRelation) (instance-of ?X UnaryFunction))))
+(nth-domain inverse 2 (SetFn ?X (or (instance-of ?X BinaryRelation) (instance-of ?X UnaryFunction))))
+(documentation inverse "The inverse of a binary relation is a binary 
+relation with all tuples reversed.  In other words, one binary relation 
+is the inverse of another if they are equivalent when their arguments 
+are swapped.")
+
+
+(=>
+   (inverse ?R ?P)
+   (forall (?X ?Y)
+      (<=>
+         (holds ?P ?X ?Y)
+         (holds ?R ?Y ?X))))
+
+(instance-of cardinality BinaryRelation)
+(nth-domain cardinality 1 Set)
+(nth-domain cardinality 2 NonnegativeInteger)
+(documentation cardinality "(cardinality ?SET ?NUMBER) means that 
+there are ?NUMBER elements of ?SET.")  
+
+(instance-of IdentityFn UnaryFunction)
+(nth-domain IdentityFn 1 Entity)
+(range IdentityFn Entity)
+(documentation IdentityFn "The value of the identity function is 
+just its argument.")
+
+(equal (IdentityFn ?X) ?X)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;   DEFINITIONS OF BASIC BINARY RELATIONS     ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(instance-of agent CaseRole)
+(nth-domain agent 1 Process)
+(nth-domain agent 2 Agent)
+(documentation agent "(agent ?ACTION ?AGENT) means that the active animate 
+entity ?AGENT voluntarily initiates ?ACTION.  Example: Eve bit an apple.")
+
+(subrelation-of attribute-of property-of)
+(nth-domain attribute-of 1 Object)
+(nth-domain attribute-of 2 PhysicalProperty)
+(documentation attribute-of "(attribute-of ?OBJECT ?PROPERTY) means that 
+?PROPERTY is a PhysicalProperty of ?OBJECT.")
+
+(instance-of authors BinaryRelation)
+(nth-domain authors 1 Agent)
+(nth-domain authors 2 ContentBearingObject)
+
+(=>
+     (authors ?X ?Y)
+     (exists (?Z)
+          (and
+               (agent ?Z ?Y)
+               (result ?Z ?X))))
+
+(instance-of beneficiary CaseRole)
+(nth-domain beneficiary 1 Process)
+(nth-domain beneficiary 2 Agent)
+(documentation beneficiary "(beneficiary ?EVENT ?RECIPIENT) means that 
+?RECIPIENT derives a benefit from the successful completion of ?EVENT.  Example: 
+Diamonds were given to Ruby.")
+
+(instance-of completion CaseRole)
+(nth-domain completion 1 Process)
+(nth-domain completion 2 Entity)
+(documentation completion "(completion ?EVENT ?GOAL) means that ?GOAL is the 
+goal of the temporal process ?EVENT.  Example: Mary waited until noon. ")
+
+(subrelation-of component-of part-of)
+(nth-domain component-of 1 CorpuscularObject)
+(nth-domain component-of 2 CorpuscularObject)
+(documentation component-of "A specialized common sense notion of part for 
+heterogeneous parts of complexes. (component-of ?COMPONENT ?WHOLE) means that 
+?COMPONENT is a component of ?WHOLE. Examples of component include the doors 
+and walls of a house, the states or provinces of a country, or the limbs and 
+organs of an animal.  Compare 'constituent-material-of' and 'piece-of'.")
+
+(subrelation-of constituent-material part-of)
+(nth-domain constituent-material 1 ContinuousObject)
+(nth-domain constituent-material 2 CorpuscularObject)
+(documentation constituentMaterial "Is structurally made up of in whole or in 
+part of some material or matter. This includes composed of, made of, and formed 
+of.  Compare 'component-of' and 'piece-of'.")
+
+(instance-of constraintOfProcedure BinaryRelation)
+(nth-domain constraintOfProcedure 1 Procedure)
+(nth-domain constraintOfProcedure 2 Requirement)
+
+(subrelation-of consumableResource matter)
+
+(instance-of containsInformation BinaryRelation)
+(nth-domain containsInformation 1 ContentBearingObject)
+(nth-domain containsInformation 2 Proposition)
+
+(instance-of destination CaseRole)
+(nth-domain destination 1 Process)
+(nth-domain destination 2 Entity)
+(documentation destination "(destination ?EVENT ?GOAL) means that ?GOAL is the 
+goal of the spatial process ?EVENT.  Example: Bob went to Danbury.")
+
+(instance-of duration CaseRole)
+(nth-domain duration 1 Process)
+(nth-domain duration TimeMeasure-Duration)
+(documentation duration "(duration ?EVENT ?TIME) means that the TimeMeasure 
+?Time is a resource of the temporal process ?EVENT.  Example: The truck was 
+serviced for 5 hours.")
+
+(instance-of effector-of CaseRole)
+(nth-domain effector-of 1 Process)
+(nth-domain effector-of 2 Object)
+(documentation effector-of "(effector-of ?ACTION ?ENTITY) means that ?ENTITY is 
+an active determinant source, either animate or inanimate, that initiates 
+?ACTION, with or without voluntary intention.  Example: The tree produced new 
+leaves.")
+
+(instance-of exists-at TemporalRelation)
+(instance-of exists-at BinaryRelation)
+(nth-domain exists-at 1 Physical)
+(nth-domain exists-at 2 TimePoint)
+(documentation exists-at "exists-at is defined in the PSL temporal ontology, 
+which axiomatizes 'timepoint'.  This relation holds between an entity and a 
+timepoint just in case the temporal lifespan of the former includes the latter.  
+The constants located-at and exists-at are spatial and temporal predicates, 
+respectively.")
+
+(instance-of WhenFn TemporalRelation)
+(instance-of WhenFn UnaryFunction)
+(nth-domain WhenFn 1 Object)
+(range WhenFn TimeInterval)
+(documentation WhenFn "Maps an object to the time interval during which it exists.")
+
+(instance-of experiencer CaseRole)
+(nth-domain experiencer 1 Process)
+(nth-domain experiencer 2 Agent)
+(documentation experiencer "(experiencer ?EVENT ?ENTITY) means that ?ENTITY is 
+an active animate goal of the experience ?EVENT.  Example: Yojo sees the fish.")
+
+(instance-of exploits BinaryRelation)
+(nth-domain exploits 1 Object)
+(nth-domain exploits 2 Agent)
+
+(=>
+     (exploits ?X ?Y)
+     (exists (?Z)
+          (and
+               (agent ?Z ?Y)
+               (matter ?Z ?X)))) 
+
+(instance-of hasAnnotation BinaryRelation)
+(nth-domain hasAnnotation 1 Object)
+(nth-domain hasAnnotation 2 ContentBearingObject)
+
+(instance-of hasPurpose BinaryRelation)
+(nth-domain hasPurpose 1 Process)
+(nth-domain hasPurpose 2 Abstract)
+
+(instance-of implementsProcedure BinaryRelation)
+(nth-domain implementsProcedure 1 Process)
+(nth-domain implementsProcedure 2 Procedure)
+
+(instance-of instrument CaseRole)
+(nth-domain instrument 1 Process)
+(nth-domain instrument 2 Object)
+(documentation instrument "(instrument ?EVENT ?RESOURCE) means that ?RESOURCE is 
+a resource that is not changed by ?EVENT.  Example: The key opened the door.")
+
+(instance-of located-at SpatialRelation)
+(instance-of located-at BinaryRelation)
+(nth-domain located-at 1 Object)
+(nth-domain located-at 2 Region)
+(documentation located-at "A very general predicate.  (located-at ?X ?Y) means 
+that ?X is situated at ?Y, in some sense.  Example: Vehicles arrive at a 
+station.  The constants located-at and exists-at are spatial and temporal 
+predicates, respectively.")
+
+(instance-of partly-located-at SpatialRelation)
+(instance-of partly-located-at BinaryRelation)
+(nth-domain partly-located-at 1 Object)
+(nth-domain partly-located-at 2 Region)
+(documentation partly-located-at "The partial localization: Istanbul is partly in Asia.") 
+
+(=>
+   (partly-located-at ?X ?Y)
+   (exists (?Z)
+      (and
+         (part-of ?Z ?X)
+         (exactly-located-at ?Z ?Y))))
+
+(subrelation-of exactly-located-at located-at)
+(documentation exactly-located-at "The actual, minimal localization, where the range is 
+necessarily a region. A more specialized notion of 'location'.")
+
+(=>
+   (exactly-located-at ?X ?Y)
+   (not
+      (exists (?Z)
+         (and
+            (exactly-located-at ?Z ?Y)
+            (not
+               (equal ?Z ?X))))))
+
+(instance-of WhereFn SpatialRelation)
+(instance-of WhereFn BinaryFunction)
+(nth-domain WhereFn 1 Object)
+(nth-domain WhereFn 2 TimePoint)
+(range WhereFn Region)
+(documentation WhereFn "Maps an object and a point in time at which the object exists to the location where the object existed at that point in time.")
+
+(=>
+   (equal (WhereFn ?X ?Y) ?Z)
+   (exactly-located-at ?X ?Z))
+
+(subrelation-of manner-of property-of)
+(nth-domain manner-of 1 Process)
+(nth-domain manner-of 2 Abstract)
+(documentation manner-of "(manner-of ?PROCESS ?MANNER) means that the occurrent 
+?PROCESS is qualified by the manner ?MANNER.  Manners are usually described by 
+adverbs and include things like the speed of the wind, the style of a dance, or 
+the intensity of a sports competition.")
+
+(instance-of matter CaseRole)
+(nth-domain matter 1 Process)
+(nth-domain matter 2 Object)
+(documentation matter "(matter ?EVENT ?RESOURCE) means that the resource 
+?RESOURCE is changed by the event ?EVENT.  Example: The gun was carved out of 
+soap.")
+
+(instance-of medium CaseRole)
+(nth-domain medium 1 Process)
+(nth-domain medium 2 Process)
+(documentation medium "(medium ?EVENT ?RESOURCE) means that ?RESOURCE is a 
+physical resource for the information transfer event ?EVENT.  Two examples of 
+such resources are the sound of speech and the electromagnetic signals that 
+transmit data.  Example: Bill told Boris by phone.")
+
+(instance-of mereologicalMember SpatialRelation)
+(nth-domain mereologicalMember 1 Object)
+(nth-domain mereologicalMember 2 Collection)
+(documentation mereologicalMember "A specialized common sense notion of part for uniform 
+parts of collections. Quasi-synonyms: item, member.")
+
+(=>
+   (and
+      (mereologicalMember ?X ?Y)
+      (mereologicalMember ?Z ?Y))
+   (not
+         (overlaps ?X ?Z)))
+
+(instance-of method CaseRole)
+(nth-domain method 1 Process)
+(nth-domain method 2 Procedure)
+(documentation method "The manner and sequence of events in performing an
+act or procedure. The domain must be some abstract object, usually a text, which
+specifies a set of instructions.")
+
+(instance-of origin CaseRole)
+(nth-domain origin 1 Process)
+(nth-domain origin 2 Physical)
+(documentation origin "(origin ?EVENT ?SOURCE) means that ?SOURCE is a passive 
+determinant source of the spatial or ambient nexus represented by ?EVENT.  
+Example: The chapter begins on page 20.")
+
+(instance-of part-of SpatialRelation)
+(instance-of part-of ReflexiveRelation)
+(instance-of part-of AntisymmetricRelation)
+(instance-of part-of TransitiveRelation)
+(nth-domain part-of 1 Physical)
+(nth-domain part-of 2 Physical)
+(documentation part-of "The primitive mereological relation.  All other 
+mereological relations are defined in terms of this.  (part-of ?PART ?WHOLE) 
+implies that the existence of  ?PART is independent of the existence of 
+?WHOLE.")
+
+(instance-of path CaseRole)
+(nth-domain path 1 Process)
+(nth-domain path 2 Object)
+(documentation path "(path ?EVENT ?RESOURCE) means that ?RESOURCE is a resource 
+of the spatial nexus ?EVENT.  Example: The pizza was shipped via Albany and 
+Buffalo.")
+
+(instance-of patient CaseRole)
+(nth-domain patient 1 Process)
+(nth-domain patient 2 Object)
+(documentation patient "(patient ?EVENT ?ENTITY) means that ?ENTITY is an 
+essential participant that undergoes some structural change as a result of 
+?EVENT.  Example: The cat swallowed the canary.")
+
+(subrelation-of piece-of part-of)
+(nth-domain piece-of 1 ContinuousObject)
+(nth-domain piece-of 2 ContinuousObject)
+(documentation "A specialized common sense notion of part for arbitrary 
+parts of masses, usually characterized by quantitative measure (either in 
+a numerical or an analogic scale). It is transitive. Quasi-synonyms: chunk, 
+quantity, amount.  Compare 'component-of' and 'constituent-material-of'.")
+
+(=>
+   (piece-of ?X ?Y)
+   (forall (?Z)
+      (=>
+         (instance-of ?Y ?Z)
+         (instance-of ?X ?Z))))
+
+(instance-of property-of BinaryRelation)
+(nth-domain property-of 1 Physical)
+(nth-domain property-of 2 Abstract)
+(documentation property-of "This relation holds between an object and 
+something which cannot exist without some substrate.  Two subpredicates of 
+property-of are attribute-of and manner-of.")
+
+(instance-of recipient CaseRole)
+(nth-domain recipient 1 Process)
+(nth-domain recipient 2 Agent)
+(documentation recipient "(recipient ?ACTION ?ENTITY) means that ?ENTITY is an 
+animate goal of ?ACTION.  Example: Sue sent the gift to Bob.")
+
+(instance-of result CaseRole)
+(nth-domain result 1 Process)
+(nth-domain result 2 Object)
+(documentation result "(result ?ACTION ?GOAL) means that ?GOAL is an inanimate 
+goal of ?ACTION.  Example: Eric built a house.")
+
+(instance-of source-of CaseRole)
+(nth-domain source-of 1 Process)
+(nth-domain source-of 2 Object) 
+(documentation source-of "(source-of ?EVENT ?ENTITY) implies that ?ENTITY is 
+present at the beginning of the process, but need not participate throughout the 
+process.")
+
+(subrelation-of stage-of part-of)
+(nth-domain stage-of 1 Process)
+(nth-domain stage-of 2 Process)
+(documentation stage-of "The temporally distinguished parts of an occurrent are 
+called stages. In the life of a human being, for example, the stages would 
+include infancy, childhood, adolescence, and adulthood. Other possibly 
+overlapping stages would include education, motherhood, business career, and 
+retirement.")
+
+(instance-of standardFor BinaryRelation)
+(nth-domain standardFor 1 Standard)
+(nth-domain standardFor 2 Object)
+
+(instance-of subProcedure BinaryRelation)
+(nth-domain subProcedure 1 Procedure)
+(nth-domain subProcedure 2 Procedure)
+
+(instance-of subProcess BinaryRelation)
+(nth-domain subProcess 1 Process)
+(nth-domain subProcess 2 Process)
+
+(instance-of subPurpose BinaryRelation)
+(nth-domain subPurpose 1 Abstract)
+(nth-domain subPurpose 2 Abstract)
+
+(instance-of theme CaseRole)
+(nth-domain theme 1 Process)
+(nth-domain theme 2 Object)
+(documentation theme "(theme ?EVENT ?ENTITY) means that ?ENTITY is an essential 
+participant that may be moved, said, or experienced, but is not structurally 
+changed.  Example: Billy likes the Beer.")
+
+(instance-of uses BinaryRelation)
+(nth-domain uses 1 Object)
+(nth-domain uses 2 Agent)
+
+(=>
+     (uses ?X ?Y)
+     (exists (?Z)
+          (and
+               (agent ?Z ?Y)
+               (instrument ?Z ?X))))
+
+;; The following relations are taken from the ITBM-CNR ontology 'Assessment'.
+
+(subrelation-of approves evaluates)
+(nth-domain approves 1 Agent)
+(nth-domain approves 2 Entity)
+(documentation approves "The approval of an entity e is the 
+acknowledgement of e made by an expert or a reliable entity.")
+
+(instance-of reports BinaryRelation)
+(nth-domain reports 1 ContentBearingObject)
+(nth-domain reports 2 Entity)
+(documentation reports "The reporting of a given situation s is 
+the description of s made in a text.")
+
+
+;;;;;;;;;;;;;;;;;;;;
+;; GENERAL AXIOMS ;;
+;;;;;;;;;;;;;;;;;;;;
+
+
+;; Most of these axioms relate to constants comprising the tip of Sowa's upper 
+;; ontology.
+
+;; Everything is an entity (due to Robert E. Kent).
+
+(forall (?X) (instance-of ?X Entity))
+
+;; There are entities.  (In standard FOPC, this axiom is redundant, since it is 
+;; implied by the one above.  However, it is included here in case a "free 
+;; logic" or similar, nonstandard interpretation of the ontology is adopted).
+
+(exists (?X) (instance-of ?X Entity))
+
+;; Several variations of the same essential axiom have been proposed.  These 
+;; variations include "Everything is either a class or an entity" (John Sowa) 
+;; and "Everything is either an individual or a class" (Robert E. Kent).  This 
+;; axiom has not been included here, because it seems very controversial.  Where 
+;; are sets to be located, for example?
+
+
+(=> 
+	(instance-of ?x Entity)
+      	(not 
+			(and
+				(instance-of ?x Class)
+				(instance-of ?x Set))))
+
+;; Only entities are instances of classes, and only classes have instances  
+;; (This is due to both John Sowa and Robert E. Kent).
+
+(=> 
+	(instance-of ?instance ?class)
+      	(and 
+		(instance-of ?instance Entity)
+              	(instance-of ?class Class)))
+
+;; Every class is a subclass of Entity.
+
+(=> 
+	(instance-of ?c Class)
+       	(subclass-of ?c Entity))
+
+;; Abstract is a class.
+
+(instance-of Abstract Class)
+
+;; Something is Abstract just in case it has neither a spatial nor temporal 
+;; location.
+
+(<=> 
+	(instance-of ?x Abstract)
+      	(not 
+			(exists (?y) 
+                               (or 
+					(located-at ?x ?y)
+                                   	(exists-at ?x ?y)))))
+                               
+;; Something is Physical just in case it exists at some location at some time.
+
+(<=> 
+	(instance-of ?x Physical)
+	(exists (?y)
+     		(and 
+			(located-at ?x ?y)
+                  	(exists-at ?x ?z))))
+
+;; Abstract and Physical are disjoint. 
+
+(disjoint Abstract Physical)
+
+;; A continuant is an object that exists (and, hence, retains its identity) over 
+;; time, i.e., an object that exists at every point over some interval of time.
+
+(=> 
+    (and
+       (instance-of ?y ContinuantType)
+       (instance-of ?x ?y))
+    (exists (?t1 ?t2)
+       (and 
+          (instance-of ?t1 TimePoint) 
+          (instance-of ?t2 TimePoint) 
+          (before ?t1 ?t2)
+          (forall (?t)
+             (=> 
+	        (and 
+		   (beforeEq ?t1 ?t) 
+                   (beforeEq ?t ?t2))
+                (exists-at ?x ?t))))))
+
+;; Continuant and Occurrent are disjoint.
+
+(disjoint ContinuantType OccurrentType)
+
+;; Each temporal part of an occurrent exists at some timepoint.
+
+;; ISSUE: Can stages (i.e., temporal parts of occurrents) exist at
+;; more than one timepoint; in particular, can they they exist across
+;; intervals of time?
+
+(=> 
+	(and 
+            (instance-of ?y OccurrentType)
+		(instance-of ?occ ?y) 
+            (stage-of ?x ?occ))
+     	(exists (?t)
+      		(exists-at ?x ?t)))
+        
+;; Occurrents have temporal parts.
+
+(=> 
+      (and
+           (instance-of ?y OccurrentType)
+	     (instance-of ?occ ?y))
+      (exists (?x)
+        	(stage-of ?x ?occ)))
+  
+;; Occurrents have spatial parts.
+
+(=> 
+      (and
+           (instance-of ?y OccurrentType)
+	     (instance-of ?occ ?y))
+      (exists (?x)
+        	(spatial-part-of ?x ?occ)))
+
+;; Individual and Relation are disjoint.
+
+(disjoint Individual Relation)
+
+;; part-of and stage-of cannot be satisfied by the same ordered pair.
+
+(<=>
+	(part-of ?X ?Y)
+	(not
+		(stage-of ?X ?Y)))
+
+;; attribute-of and manner-of cannot be satisfied by the same ordered pair.
+
+(<=>
+	(attribute-of ?X ?Y)
+	(not
+		(manner-of ?X ?Y)))
+
+;; The following axiom is from CPR.
+
+(=>
+     (subProcess ?Act1 ?Act2)
+     (during ?Act1 ?Act2))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  ARTIFACT HIERARCHY  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; This section of the ontology will eventually encompass all artifacts.  For the 
+;; time being, it is mostly restricted to the content of the Ontolingua ontology 
+;; component-assemblies, which covers the types of engineering elements used to 
+;; construct systems.
+
+(subclass-of Device Artifact)
+(subclass-of Machine Device)
+
+(=>
+   (instance-of ?X Device)
+   (exists (?Y)
+      (and
+         (instance-of ?Y Activity)
+         (instrument ?Y ?X))))
+
+(subclass-of EngineeringElement Artifact)
+(documentation EngineeringElement "An EngineeringElement is any element that is 
+used to build up a system with structure.")
+
+(=>
+   (instance-of ?X EngineeringElement)
+   (exists (?Y)
+      (and
+         (instance-of ?Y Artifact)
+         (part-of ?X ?Y))))
+
+(subclass-of EngineeringComponent EngineeringElement)
+(documentation EngineeringComponent "An EngineeringComponent is a structure that 
+can have parts and connections.  An EngineeringComponent as a defined in this 
+ontology is a fundamental abstraction that applies in many engineering domains.  
+Component structures need not correspond to physically whole objects such as 
+standard parts from a catalog.  The class of component, as defined here, may also 
+be used to represent nonphysical objects such as modules in a software program, 
+functions in a functional description, and model fragments in a model library.
+This is a primitive concept; what makes an object a component is how it is 
+connected and a part of other objects.")
+
+(=>
+   (instance-of ?X EngineeringComponent)
+   (exists (?Y)
+      (and
+         (instance-of ?Y Artifact)
+         (component-of ?X ?Y))))
+
+(subclass-of Junction EngineeringElement)
+(subclass-of Terminal EngineeringElement)
+
+(instance-of engineeringSubcomponent AntisymmetricRelation)
+(instance-of engineeringSubcomponent IrreflexiveRelation)
+(nth-domain engineeringSubcomponent 2 EngineeringComponent)
+(nth-domain engineeringSubcomponent 1 EngineeringComponent)
+(documentation engineeringSubcomponent "(engineeringSubcomponent ?sub ?super)
+means that the component ?sub is structurally a part of component ?super.  A 
+component cannot be a subcomponent of itself (irrreflexivity) and two components
+cannot be subcomponents of each other (antisymmetrity).  Note that 
+engineeringSubcomponent is not a transitive relation.  A main difference betweeen 
+engineering components and arbitrary globs of matter is that engineering 
+components are object-like in a modeling sense; thus, an engineering subcomponent 
+is not an arbtrary subregion, but a part of a system with a stable identity as 
+its part.  If engineeringSubcomponent were transitive, then there would be no 
+level boundaries between a component and its subcomponents and their 
+subcomponents; for modularity reasons, the system modeler describes the 
+subcomponents of a component as black boxes, rather than as arbitrary regions.")
+
+(instance-of connectedEngineeringComponents SymmetricRelation)
+(instance-of connectedEngineeringComponents IrreflexiveRelation)
+(nth-domain connectedEngineeringComponents 2 Component)
+(nth-domain connectedEngineeringComponents 1 Component)
+(documentation ConnectedEngineeringComponents "This is the most general binary 
+connection relation between components.  If (connectedEngineeringComponents ?X ?Y), 
+then ?X and ?Y must be engineering components and neither can be a engineering 
+subcomponent of the other.  The relation connectedEngineeringComponents is 
+symmetric; there is no information in the direction of connection between two 
+components.  It is also irreflexive; a component cannot be connected to itself.
+This is an abstract relationship.  There is no commitment that the two
+components much touch physically.  Even in the case of a connection between
+physical components, the connection can represent abstract properties of the
+interaction of the two components.  Note this relation does not associate a 
+name or type with the connection.  One may specify that with other binary 
+relations (e.g., thermally-connected).")
+
+(=>
+   (connectedEngineeringComponents ?X ?Y)
+   (and
+      (not
+         (engineeringSubcomponent ?X ?Y))
+      (not
+         (engineeringSubcomponent ?Y ?X))))
+
+(=> 
+   (connectedEngineeringComponents ?X ?Y)
+   (and 
+      (not 
+         (instance-of ?X EngineeringConnection)) 
+      (not 
+         (instance-of ?Y EngineeringConnection))))
+
+(<=>
+   (connectedEngineeringComponents ?X ?Y)
+   (exists (?Z)
+      (connectsEngineeringComponents ?Z ?X ?Y))) 
+         
+(instance-of EngineeringComponentFn UnaryFunction)
+(inverse EngineeringComponentFn TerminalFn)
+(nth-domain EngineeringComponentFn 1 Terminal)
+(range EngineeringComponentFn EngineeringComponent)
+
+(instance-of TerminalFn UnaryFunction)
+(inverse TerminalFn EngineeringComponentFn)
+(nth-domain TerminalFn 1 EngineeringComponent)
+(range TerminalFn Terminal)
+
+(instance-of JunctionFn UnaryFunction)
+(nth-domain JunctionFn 1 Terminal)
+(range JunctionFn Junction)
+
+(subclass-of EngineeringConnection EngineeringComponent)
+
+(=>
+   (instance-of ?X EngineeringConnection)
+   (exists (?Y ?Z)
+      (connectsEngineeringComponents ?X ?Y ?Z)))
+
+(documentation EngineeringConnection "An EngineeringConnection is an 
+EngineeringComponent that represents a connection relationship between two 
+other components.  It is a reification of the predicate 
+connectedEngineeringComponents.  That means that whenever this relation 
+holds between two components, there exists a connection component.
+This is logical existence; this connection object may not be
+present in the memory of a representation system.  Conversely,
+if a representation system has allocated a data structure for
+a connection object, it doesn't mean that it must explicitly
+represent the implied connectedEngineeringComponents relationship.
+The practical reason for reifying a relationship is to be
+able to attached other information about it. For example, one
+might want to say that a particular connection is associated with
+some shared parameters, or that it is of a particular type.  Connection 
+objects are components and can therefore be subcomponents of other
+components.  However, to provide for modular regularity in component systems, 
+connection components cannot be connected.  For each pair of components 
+related by connectedEngineeringComponents, there exists at least one connection 
+object.  However, that object may not be unique, and the same connection object 
+may be associated with several pairs of connected components.")
+
+(instance-of connectsEngineeringComponents TernaryRelation)
+(nth-domain connectsEngineeringComponents 1 EngineeringConnection)
+(nth-domain connectsEngineeringComponents 2 EngineeringComponent)
+(nth-domain connectsEngineeringComponents 3 EngineeringComponent)
+(documentation connectsEngineeringComponents "connectsEngineeringComponents is a 
+predicate that maps from a connection object to the engineering components it 
+connects.  Since components cannot be connected to themselves, and there cannot 
+be a connection object without a connectedEngineeringComponents relationship, 
+the second and third arguments of any connectsEngineeringComponents relationship 
+will always be distinct for any given first argument.")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  NUMBER HIERARCHY   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; The following ground facts incorporate the Number hierarchy from the ontology 
+;; 'kif-numbers' on the Ontolingua server.
+
+(subclass-of RealNumber Number)
+(subclass-of ImaginaryNumber Number)
+(subclass-of RationalNumber RealNumber)
+(subclass-of PositiveRealNumber RealNumber)
+(subclass-of NegativeRealNumber RealNumber)
+(subclass-of NonnegativeRealNumber RealNumber)
+(subclass-of Integer RationalNumber)
+(subclass-of EvenInteger Integer)
+(subclass-of OddInteger Integer)
+(subclass-of PrimeNumber Integer)
+(subclass-of NonnegativeInteger Integer)
+(subclass-of NonnegativeInteger NonnegativeRealNumber)
+(documentation NonnegativeInteger "An integer greater than or equal to zero.")
+(subclass-of NegativeInteger Integer)
+(subclass-of NegativeInteger NegativeRealNumber)
+(subclass-of PositiveInteger Integer)
+(subclass-of PositiveInteger PositiveRealNumber)
+(documentation PositiveInteger "An integer greater than zero, not including 
+zero.  A less ambiguous name for KIF's NATURAL.")
+(subclass-of BinaryNumber Number)
+(subclass-of PositiveNumber Number)
+(subclass-of NegativeNumber Number)
+(subclass-of ComplexNumber Number)
+
+(=>
+   (instance-of ?X PositiveRealNumber)
+   (greaterThan ?X 0))
+
+(=>
+   (instance-of ?X NegativeRealNumber)
+   (lessThan ?X 0))
+
+(=>
+   (instance-of ?X NonnegativeRealNumber)
+   (or
+      (greaterThan ?X 0)
+      (equal ?X 0)))
+
+(=>
+   (instance-of ?X EvenInteger)
+   (exists (?Y)
+      (and
+         (instance-of ?Y Integer)
+         (equal (DivisionFn ?X 2) ?Y))))
+
+(=>
+   (instance-of ?X OddInteger)
+   (not 
+      (exists (?Y)
+         (and
+            (instance-of ?Y Integer)
+            (equal (DivisionFn ?X 2) ?Y)))))
+
+(instance-of logBit BinaryRelation)
+(nth-domain logBit 1 BinaryNumber) 
+(nth-domain logBit 2 Integer) 
+(documentation logBit "The formula (logbit ?X ?Y) is true if bit ?Y of ?X is 
+1.")
+
+(instance-of logTest BinaryRelation)
+(nth-domain logTest 1 Integer)
+(nth-domain logTest 2 Integer)
+(documentation logTest "The formula (logtest ?X ?Y) is true if the logical and 
+of the two's-complement representation of the integers ?X and ?Y is not zero.")
+
+(instance-of MultiplicationFn VariableArityFunction)
+(instance-of MultiplicationFn RelationExtendedToQuantities)
+(range MultiplicationFn RealNumber)
+(documentation MultiplicationFn "If ?X, ?Y, ..., ?N denote numbers, then the 
+term (MultiplicationFn ?X ?Y ... ?N) denotes the product of those numbers.")
+
+(instance-of AdditionFn VariableArityFunction)
+(instance-of AdditionFn RelationExtendedToQuantities)
+(range AdditionFn RealNumber)
+(documentation AdditionFn "If ?X, ?Y, ..., ?N are numerical constants, then the 
+term (AdditionFn ?X ?Y ... ?N) denotes the sum of the numbers corresponding to those 
+constants.")
+ 
+(instance-of SubtractionFn VariableArityFunction)
+(instance-of SubtractionFn RelationExtendedToQuantities)
+(range SubtractionFn RealNumber)
+(documentation SubtractionFn "If ?X, ?Y, ..., ?N denote numbers, then the term 
+(SubtractionFn ?X ?Y ... ?N) denotes the difference between the number denoted 
+by ?X and the numbers denoted by ?Y through ?N.  An exception occurs when ?Y ... 
+?N = 0, in which case the term denotes the negation of the number denoted by 
+?X.")
+
+(instance-of DivisionFn VariableArityFunction)
+(range DivisionFn RealNumber)
+(documentation DivisionFn "If ?X, ?Y, ..., ?N are numbers, then the term
+(DivisionFn ?X ?Y ... ?N) denotes the result obtained by dividing the 
+number denoted by ?X by the numbers denoted by ?Y through ?N.  An exception 
+occurs when ?Y ... ?N = 1, in which case the term denotes the reciprocal 
+?X of the number denoted by ?Y ... ?N.")
+
+(instance-of AbsoluteValueFn UnaryFunction)
+(nth-domain AbsoluteValueFn 1 RealNumber)
+(range AbsoluteValueFn PositiveNumber)
+(documentation AbsoluteValueFn "The term (AbsoluteValueFn ?X) denotes the 
+absolute value of the object denoted by ?X.")
+
+(instance-of ArcCosineFn UnaryFunction)
+(nth-domain ArcCosineFn 1 RealNumber)
+(range ArcCosine RealNumber)
+(documentation ArcCosineFn "If ?X denotes a number, then the term (ArcCosineFn 
+?X) denotes the arc cosine of that number (in radians).")
+
+(instance-of ArithmeticalShiftFn BinaryFunction)
+(nth-domain ArithmeticalShiftFn 1 RealNumber)
+(nth-domain ArithmeticalShiftFn 2 PositiveInteger)
+(range ArithmeticalShiftFn RealNumber)
+(documentation ArithmeticalShiftFn "The term (ArithmeticalShiftFn ?X ?Y) denotes 
+the result of arithmetically shifting the object denoted by ?X by the number of 
+bits denoted by ?Y (left or right shifting depending on the sign of ?Y).")
+
+(instance-of ArcSineFn UnaryFunction)
+(nth-domain ArcSineFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range ArcSineFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation ArcSineFn "The term (ArcSineFn ?X) denotes the arc sine of the 
+object denoted by ?X (in radians).")
+
+(instance-of HyperbolicArcSineFn UnaryFunction)
+(nth-domain HyperbolicArcSineFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range HyperbolicArcSineFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation HyperbolicArcSine "The term (HyperbolicArcSine ?X) denotes the 
+hyperbolic arc sine of the object denoted by ?X (in radians).")
+
+(instance-of ArcTangentFn UnaryFunction)
+(nth-domain ArcTangentFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range ArcTangentFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation ArcTangentFn "The term (ArcTangentFn ?X) denotes the arc tangent 
+of the object denoted by ?X (in radians).")
+
+(instance-of HyperbolicArcTangentFn UnaryFunction)
+(nth-domain HyperbolicArcTangentFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range HyperbolicArcTangentFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation HyperbolicArcTangentFn "The term (HyperbolicArcTangent ?X) 
+denotes the hyperbolic arc tangent of the object denoted by ?X (in radians).")
+
+(instance-of CeilingFn UnaryFunction)
+(nth-domain CeilingFn 1 RealNumber)
+(range CeilingFn Integer)
+(documentation CeilingFn "If ?X denotes a real number, then the term (CeilingFn 
+?X) denotes the smallest integer greater than or equal to the number denoted by 
+?X.")
+
+(instance-of CosineFn UnaryFunction)
+(nth-domain CosineFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range CosineFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation CosineFn "The term (CosineFn ?X) denotes the cosine of the object
+denoted by ?X (in radians).")
+
+(instance-of HyperbolicCosineFn UnaryFunction)
+(nth-domain HyperbolicCosineFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range HyperbolicCosineFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation HyperbolicCosineFn "The term (HyperbolicCosineFn ?X) denotes the 
+hyperbolic cosine of the object denoted by ?X (in radians).")
+
+(instance-of DenominatorFn UnaryFunction)
+(nth-domain DenominatorFn 1 RealNumber)
+(range DenominatorFn Integer)
+(documentation DenominatorFn "The term (DenominatorFn ?X) denotes the 
+denominator of the canonical reduced form of the object denoted by ?X.")
+
+(instance-of ExponentiationFn BinaryFunction)
+(instance-of ExponentiationFn RelationExtendedToQuantities)
+(nth-domain ExponentiationFn 1 RealNumber)
+(nth-domain ExponentiationFn 2 Integer)
+(range ExponentiationFn RealNumber)
+(documentation ExponentiationFn "The term (Exponentiation ?X ?Y) denotes ?X 
+raised to the power of the object denoted by ?Y.")
+
+(instance-of ReciprocalFn UnaryFunction)
+(instance-of ReciprocalFn RelationExtendedToQuantities)
+(nth-domain ReciprocalFn 1 RealNumber)
+(range ReciprocalFn RealNumber)
+(documentation ReciprocalFn "(ReciprocalFn ?x) is the reciprocal element 
+of element ?x with respect to the multiplication operator.  For a number 
+x the reciprocal would be 1/x.  Not all numbers will have a reciprocal 
+element defined.  The number 0 for instance will not have a reciprocal.  
+If a parameter x has a reciprocal y, then the product of x and y will be 
+an identity element of some sort, such as '1' for numbers, 3*1/3 = 1.  
+The reciprocal of an element is equivalent to exponentiation of the
+element to the power -1.")
+
+(equal (ReciprocalFn ?X)
+       (ExponentiationFn ?X -1))
+
+(instance-of FloatingCeilingFn UnaryFunction)
+(nth-domain FloatingCeilingFn 1 RealNumber)
+(range FloatingCeilingFn Integer)
+(documentation FloatingCeilingFn "The term (FloatingCeilingFn ?X) denotes the 
+smallest integer (as a floating point number) greater than the object denoted by 
+?X.")
+
+(instance-of FloatingFloorFn UnaryFunction)
+(nth-domain FloatingFloorFn 1 RealNumber)
+(range FloatingFloorFn Integer)
+(documentation FloatingFloorFn "The term (FloatingFloorFn ?X) denotes the 
+largest integer (as a floating point number) less than the object denoted by 
+?X.")
+
+(instance-of FloatingPointNumberFn UnaryFunction)
+(nth-domain FloatingPointNumberFn 1 RealNumber)
+(range FloatingPointNumberFn RealNumber)
+(documentation FloatingPointNumberFn "The term (FloatingPointNumberFn ?X) 
+denotes the floating point number equal to the object denoted by ?X.")
+
+(instance-of FloatingDigitFn UnaryFunction)
+(nth-domain FloatingDigitFn 1 RealNumber)
+(range FloatingDigitFn NonnegativeInteger) 
+(documentation FloatingDigitFn "The term (FloatingDigitFn ?X) denotes the number 
+of digits used in the representation of a floating point number denoted by ?X.")
+
+(instance-of FloatingPrecisionFn UnaryFunction)
+(nth-domain FloatingPrecisionFn 1 RealNumber)
+(range FloatingPrecisionFn NonnegativeInteger) 
+(documentation FloatingPrecisionFn "The term (FloatingPrecisionFn ?X) denotes 
+the number of significant digits in the floating point number denoted by ?X.")
+
+(instance-of FloatingRadixFn UnaryFunction)
+(nth-domain FloatingRadixFn 1 RealNumber)
+(range FloatingRadixFn NaturalNumber)
+(documentation FloatingRadixFn "The term (FloatingRadixFn ?X) denotes the radix 
+of the floating point number denoted by ?X. The most common values are 2
+and 16.")
+
+(instance-of FloatingSignFn BinaryFunction)
+(nth-domain FloatingSignFn 1 RealNumber)
+(nth-domain FloatingSignFn 2 RealNumber)
+(range FloatingSignFn RealNumber)
+(documentation FloatingSignFn "The term (FloatingSignFn ?X ?Y) denotes a 
+floating-point number with the same sign as the object denoted by ?X and
+the same absolute value as the object denoted by ?Y.")
+
+(instance-of FloorFn UnaryFunction)
+(nth-domain FloorFn 1 RealNumber)
+(range FloorFn Integer)
+(documentation FloorFn "The term (FloorFn ?X) denotes the largest integer less
+than the object denoted by ?X.")
+
+(instance-of FloatingTruncateFn UnaryFunction)
+(nth-domain FloatingTruncateFn 1 RealNumber)
+(range FloatingTruncateFn Integer)
+(documentation FloatingTruncateFn "The term (FloatingTruncateFn ?X) denotes 
+the largest integer (as a floating point number) less than the object 
+denoted by ?X.")
+
+(instance-of GreatestCommonDivisorFn VariableArityFunction)
+(range GreatestCommonDivisorFn Integer)
+(documentation GreatestCommonDivisorFn "The term (GreatestCommonDivisorFn ?X ?Y 
+... ?N) denotes the greatest common divisor of the objects denoted by ?X through 
+?N.")
+
+(instance-of ImaginaryPartFn UnaryFunction)
+(nth-domain ImaginaryPartFn 1 ComplexNumber)
+(range ImaginaryPartFn ImaginaryNumber)
+(documentation ImaginaryPartFn "The term (ImaginaryPartFn ?X) denotes the 
+imaginary part of the object denoted by ?X.")
+
+(instance-of IntegerDecodeFloatFn UnaryFunction)
+(nth-domain IntegerDecodeFloatFn 1 RealNumber)
+(range IntegerDecodeFloatFn Integer)
+(documentation IntegerDecodeFloatFn "The term (IntegerDecodeFloatFn ?X) denotes 
+the significand of the object denoted by ?X.")
+
+(instance-of IntegerLengthFn UnaryFunction)
+(nth-domain IntegerLengthFn 1 RealNumber) 
+(range IntegerLengthFn NonnegativeInteger)
+(documentation IntegerLengthFn "The term (IntegerLengthFn ?X) denotes the 
+number of bits required to store the absolute magnitude of the object denoted 
+by ?X.")
+
+(instance-of IntegerSquareRootFn UnaryFunction)
+(nth-domain IntegerSquareRootFn 1 RealNumber)
+(range IntegerSquareRootFn NonnegativeInteger)
+(documentation IntegerSquareRootFn "The term (IntegerSquareRootFn ?X) denotes 
+the integer square root of the object denoted by ?X.")
+     
+(instance-of LeastCommonMultipleFn VariableArityFunction)
+(range LeastCommonMultipleFn Integer)
+(documentation LeastCommonMultipleFn "The term (LeastCommonMultipleFn ?X ?Y ... 
+?N) denotes the least common multiple of the objects denoted by ?X, ?Y, ... 
+?N.")
+
+(instance-of LogFn BinaryFunction)
+(nth-domain LogFn 1 RealNumber)
+(nth-domain LogFn 2 PositiveInteger)
+(range LogFn RealNumber)
+(documentation LogFn "The term (LogFn ?X ?Y) denotes the logarithm of the
+object denoted by ?X in the base denoted by ?Y.")
+
+(instance-of MaxFn VariableArityFunction)
+(instance-of MaxFn RelationExtendedToQuantities)
+(range MaxFn RealNumber)
+(documentation MaxFn "The term (MaxFn ?X ?Y ... ?N) denotes the largest object
+denoted by ?X, ?Y, ... , ?N.")
+
+(instance-of MinFn VariableArityFunction)
+(instance-of MinFn RelationExtendedToQuantities)
+(range MinFn RealNumber)
+(documentation MinFn "The term (MinFn ?X ?Y ... ?N) denotes the smallest object
+denoted by ?X, ?Y, ... , ?N.")
+
+(instance-of ModuloFn BinaryFunction)
+(instance-of ModuloFn RelationExtendedToQuantities)
+(nth-domain ModuloFn 1 RealNumber)
+(nth-domain ModuloFn 2 RealNumber)
+(range ModuloFn RealNumber)
+(documentation ModuloFn "The term (ModuloFn ?X ?Y) denotes the root of the 
+object denoted by ?X modulo the object denoted by ?Y.  The result will have the 
+same sign as denoted by ?X.")
+
+(instance-of NumeratorFn UnaryFunction)
+(nth-domain NumeratorFn 1 RealNumber)
+(range NumeratorFn Integer)
+(documentation NumeratorFn "The term (NumeratorFn ?X) denotes the numerator of 
+the canonical reduced form of the object denoted by ?X.")
+
+(instance-of Pi-TheNumber RealNumber)
+(documentation Pi-TheNumber "Pi-TheNumber is the real number that is the ratio 
+of the perimeter of a circle to its diameter.  It is approximately equal to 
+3.141592653589793.")
+
+(instance-of Zero-TheNumber NonnegativeInteger)
+(documentation "Zero is the number which, when multiplied by any other number, results in the number Zero.")
+
+(instance-of RationalNumberFn UnaryFunction)
+(nth-domain RationalNumberFn 1 Number)
+(range RationalNumberFn RationalNumber)
+(documentation RationalNumberFn "The term (RationalNumberFn ?X) denotes the 
+rational representation of the object denoted by ?X.")
+
+(instance-of RealNumberFn UnaryFunction)
+(nth-domain RealNumberFn 1 Number)
+(range RealNumberFn RealNumber)
+(documentation RealNumberFn "The term (RealNumberFn ?X) denotes the real part of 
+the object denoted by ?X.")
+
+(instance-of RemainderFn BinaryFunction)
+(instance-of RemainderFn RelationExtendedToQuantities)
+(nth-domain RemainderFn 1 RealNumber)
+(nth-domain RemainderFn 2 RealNumber)
+(range RemainderFn RealNumber)
+(documentation RemainderFn "The term (RemainderFn ?NUMBER ?DIVISOR) denotes the 
+remainder of the object denoted by ?NUMBER divided by the object denoted by 
+?DIVISOR.  The result has the same sign as the object denoted by ?DIVISOR.")
+
+(instance-of RoundFn UnaryFunction)
+(instance-of RoundFn RelationExtendedToQuantities)
+(nth-domain RoundFn 1 RealNumber)
+(range RoundFn Integer)
+(documentation RoundFn "The term (RoundFn ?X) denotes the integer nearest to 
+the object denoted by ?X.  If the object denoted by ?X is halfway between two 
+integers (for example 3.5), it denotes the nearest integer divisible by 2.")
+
+(instance-of ScaleFloatFn BinaryFunction)
+(nth-domain ScaleFloatFn 1 RealNumber)
+(nth-domain ScaleFloatFn 2 Integer)
+(range ScaleFloatFn RealNumber)
+(documentation ScaleFloatFn "The term (ScaleFloatFn ?X ?Y) denotes a floating-
+point number that is the representational radix of the object denoted by ?X 
+raised to the integer denoted by ?Y.")
+
+(instance-of SignumFn UnaryFunction)
+(nth-domain SignumFn 1 RealNumber)
+(range SignumFn Integer)
+(documentation SignumFn "The term (SignumFn ?X) denotes the sign of the object
+denoted by ?X.  This is one of -1, 1, or 0.")
+
+(instance-of SineFn UnaryFunction)
+(nth-domain SineFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range SineFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation SineFn "The term (SineFn ?X) denotes the sine of the object 
+denoted by ?X (in radians).")
+
+(instance-of HyperbolicSineFn UnaryFunction)
+(nth-domain HyperbolicSineFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range HyperbolicSineFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation HyperbolicSineFn "The term (HyperbolicSineFn ?X) denotes the 
+hyperbolic sine of the object denoted by ?X (in radians).")
+
+(instance-of SquareRootFn UnaryFunction)
+(nth-domain SquareRootFn 1 RealNumber)
+(range SquareRootFn RealNumber)
+(documentation SquareRootFn "The term (SquareRootFn ?X) denotes the principal 
+square root of the object denoted by ?X.")
+
+(instance-of TangentFn UnaryFunction)
+(nth-domain TangentFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range TangentFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation TangentFn "The term (TangentFn ?X) denotes the tangent of the 
+object denoted by ?X (in radians).")
+
+(instance-of HyperbolicTangentFn UnaryFunction)
+(nth-domain HyperbolicTangentFn 1 (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(range HyperbolicTangentFn (SetFn ?X (exists (?Y) (equal ?X (MeasureFn ?Y Radian)))))
+(documentation HyperbolicTangentFn "The term (HyperbolicTangentFn ?X) denotes 
+the hyperbolic tangent of the object denoted by ?X (in radians).")
+
+(instance-of TruncateFn UnaryFunction)
+(instance-of TruncateFn RelationExtendedToQuantities)
+(nth-domain TruncateFn 1 RealNumber)
+(range TruncateFn Integer)
+(documentation TruncateFn "The term (TruncateFn ?X) denotes the largest integer 
+less than the object denoted by ?X.")
+
+(instance-of lessThan BinaryRelation)
+(instance-of lessThan RelationExtendedToQuantities)
+(nth-domain lessThan 1 RealNumber)
+(nth-domain lessThan 2 RealNumber)
+(documentation lessThan "The formula (lessThan ?X ?Y) is true if and only if
+the number denoted by ?X is less than the number denoted by ?Y.")
+
+(instance-of greaterThan BinaryRelation)
+(instance-of greaterThan RelationExtendedToQuantities)
+(nth-domain greaterThan 1 RealNumber)
+(nth-domain greaterThan 2 RealNumber)
+(documentation greaterThan "The formula (greaterThan ?X ?Y) is true if and only 
+if the number denoted by ?X is greater than the number denoted by ?Y.")
+
+(instance-of lessThanOrEqualTo BinaryRelation)
+(instance-of lessThanOrEqualTo RelationExtendedToQuantities)
+(nth-domain lessThanOrEqualTo 1 RealNumber)
+(nth-domain lessThanOrEqualTo 2 RealNumber)
+(documentation lessThanOrEqualTo "The formula (lessThan ?X ?Y) is true 
+if and only if the number denoted by ?X is less than or equal to the number 
+denoted by ?Y.")
+
+(instance-of greaterThanOrEqualTo BinaryRelation)
+(instance-of greaterThanOrEqualTo RelationExtendedToQuantities)
+(nth-domain greaterThanOrEqualTo 1 RealNumber)
+(nth-domain greaterThanOrEqualTo 2 RealNumber)
+(documentation greaterThanOrEqualTo "The formula (greaterThan ?X ?Y) is true 
+if and only if the number denoted by ?X is greater than the number denoted 
+by ?Y.")
+
+(instance-of equal BinaryRelation)
+(instance-of equal RelationExtendedToQuantities)
+(nth-domain equal 1 Entity)
+(nth-domain equal 2 Entity)
+(documentation equal "The formula (equal ?X ?Y) is true if and only if ?X is 
+identical with ?Y.")
+
+(=>
+	(instance-of ?X EvenInteger)
+	(= (DivisionFn ?X 2) 0))
+
+(=>
+	(instance-of ?X OddInteger)
+	(= (DivisionFn ?X 2) 1))
+
+(<=>
+	(instance-of ?X NaturalNumber)
+	(and
+		(greaterThan ?X 0)
+		(instance-of ?X Integer)))
+
+(=>
+	(instance-of ?X NonnegativeInteger)
+	(or
+		(greaterThan ?X 0)
+		(= ?X 0)))
+
+(=>
+	(instance-of ?X PositiveNumber)
+	(greaterThan ?X 0))
+
+(=>
+	(instance-of ?X NegativeNumber)
+	(greaterThan 0 ?X))
+
+(<=>  
+	(lessThan ?X ?Y)
+	(greaterThan ?Y ?X))
+
+(<=>
+	(lessThanOrEqualTo ?X ?Y)
+	(or
+		(equal ?X ?Y)
+		(lessThan ?X ?Y)))
+
+(<=>
+	(greaterThanOrEqualTo ?X ?Y)
+	(or
+		(equal ?X ?Y)
+		(greaterThan ?X ?Y)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  QUANTITIES AND UNITS OF MEASURE   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; The following formulas incorporate the relations in the Quantities ontology 
+;; (developed by ITBM-CNR) and the units of measure in the "Standard 
+;; Units" and "Standard Dimensions" ontologies on the Ontolingua server.
+
+;; This section has been extensively revised by Helena Sofia Pinto of the Instituto
+;; Superior Tecnico in Portugal.  The sources for these revisions were 
+;; - Barry Taylor, NIST Special Publication 811, Guide for the Use of the
+;;   International System of Units (SI), 1995.
+;; - Encyclopaedia Britannica (on-line version at http://www.britannica.com)
+
+(subclass-of Quantity Abstract)
+(subclass-of PhysicalQuantity Quantity)
+(partition PhysicalQuantity (SetFn ?X (or (member ?X ConstantQuantity) (member ?X FunctionQuantity))))
+(documentation PhysicalQuantity "A physical quantity is a measure of some quantifiable 
+aspect of the modeled world, such as 'the earth's diameter' (a constant length) and 
+'the stress in a loaded deformable solid' (a measure of stress, which is a function of 
+three spatial coordinates).  The first type is called constant quantity and the second 
+type is called function quantity.  All physical quantities are either constant quantities 
+or function quantities.  Although the name and definition of this concept is inspired from 
+physics, physical quantities need not be material.  For example, amounts of money are 
+physical quantities.  In fact, all real numbers and numeric-valued tensors are special 
+cases of physical quantities.  In engineering textbooks, quantities are often called 
+variables.
+   Physical quantities are distinguished from purely numeric entities
+like a real numbers by their physical dimensions.  A
+physical dimension is a property that distinguishes types of
+quantities.  Every physical quantity has exactly one associated
+physical dimension.  In physics, we talk about dimensions such as
+length, time, and velocity; again, nonphysical dimensions such as
+currency are also possible.
+   The 'value' of a physical quantity depends on its type.  The value of
+a constant quantity is dependent on a unit-of-measure.  Physical quantities 
+of the type FunctionQuantity are functions that map quantities to other
+quantities (e.g., time-dependent quantities are function quantities).")
+
+(subclass-of ConstantQuantity PhysicalQuantity)
+(documentation ConstantQuantity "A ConstantQuantity is a constant value of 
+some PhysicalQuantity, like 3 meters or 55 miles per hour. Constant quantities 
+are distinguished from function quantities, which map some quantities to other 
+quantities.  For example, the velocity of a particle over some range of time 
+would be represented by a function quantity mapping values of time (which are
+constant quantities) to velocity vectors (also constant quantities).  All 
+constant quantites can be expressed as the product of some number and a unit 
+of measure.  This is what it means to say a quantity `has a magnitude'.  For 
+example, 3 meters can be expressed as (MeasureFn 3 Meter), where meter is 
+defined as a unit of measure for length.")
+
+(subclass-of FunctionQuantity PhysicalQuantity)
+(subclass-of FunctionQuantity Function)
+(documentation FunctionQuantity "A FunctionQuantity is a function that maps 
+from one or more constant-quantities to a constant-quantity.  The function 
+must have a fixed arity of at least 1.  All elements of the range (ie, values 
+of the function) have the same physical-dimension, which is the dimension of
+the function-quantity itself.")
+
+(subclass-of ScalarQuantity ConstantQuantity)
+(documentation Scalar-Quantity "A ScalarQuantity is a ConstantQuantity whose 
+magnitude is a real number.  An important property of scalar quantities is that 
+they form a field with respect to addition and multiplication (with proper
+subclass restrictions).  The class of scalar quantities forms a partial order 
+with the lessThan relation, since lessThan is a RelationExtendedToQuantities 
+and lessThan is defined over the real numbers.  The lessThan relation is not a 
+total order over the class of scalar quantity since elements from some subclasses 
+such as length quantities are incomparable to elements from other subclasses such 
+as mass quantities.")
+
+(subclass-of UnaryScalarFunctionQuantity FunctionQuantity)
+(subclass-of UnaryScalarFunctionQuantity UnaryFunction)
+(documentation UnaryScalarFunctionQuantity "A unary function that maps from a scalar 
+quantity to a scalar quantity.")
+
+
+(=>
+   (instance-of ?X UnaryScalarFunctionQuantity)
+   (and
+      (nth-domain ?X 1 ScalarQuantity)
+      (range ?X ScalarQuantity)))
+
+(subclass-of TimeDependentQuantity UnaryScalarFunctionQuantity)
+(subclass-of TimeDependentQuantity ContinuousFunction)
+(documentation TimeDependentQuantity "A unary scalar function of continuous time.  
+Maps a time quantity into another scalar quantity such as a temperature.  For 
+example, a quantity that denotes 'the temperature of the top of the Empire State 
+Building' is a time dependent quantity since its value depends on the time.")
+
+(=>
+   (instance-of ?X TimeDependentQuantity)
+   (nth-domain ?X 1 TimeMeasure))
+
+(subclass-of Unit-Of-Measure PhysicalQuantity)
+(documentation Unit-Of-Measure "A unit-of-measure serves as
+a standard of measurement for some dimension. For example, the meter is 
+a unit-of-measure for the length-dimension, as is the inch.  There is no 
+intrisic property of a unit that makes it primitive or fundamental; rather, 
+a system-of-units defines a set of orthogonal dimensions and assigns units 
+for each.  Therefore, there is no distinguished class for fundamental unit 
+of measure.  The magnitude of a unit-of-measure is always a positive real 
+number, using any comparable unit.  Units are not scales, which have 
+reference origins and can have negative values. Units are like distances 
+between points on scales.  Any composition of units and reals using the 
+MeasureFn functions is also a unit-of-measure.") 
+(subclass-of Number Quantity)
+
+(subclass-of SystemeInternationalUnit Unit-Of-Measure)
+(documentation SystemeInternationalUnit "The class of Systeme International (SI)
+units.")
+
+(subclass-of LengthMeasure Quantity)
+(subclass-of MassMeasure Quantity)
+(subclass-of TimeMeasure Quantity)
+(subclass-of ElectricCurrentMeasure Quantity)
+(subclass-of ThermodynamicTemperatureMeasure Quantity)
+(subclass-of LuminousIntensityMeasure Quantity)
+(subclass-of AmountOfSubstanceMeasure Quantity)
+
+; A necessary physical quantity for the previously known as supplementary
+; units in the SI system 
+
+(subclass-of IdentityMeasure Quantity)
+
+; Derived physical quantities that have units with special names and
+; symbols in SI the system
+
+(subclass-of PlaneAngleMeasure IdentityMeasure)
+(subclass-of SolidAngleMeasure IdentityMeasure)
+(subclass-of FrequencyMeasure Quantity)
+(subclass-of ForceMeasure Quantity)
+(subclass-of PressureMeasure Quantity)
+(subclass-of EnergyMeasure Quantity)
+(subclass-of PowerMeasure Quantity)
+(subclass-of ElectricChargeMeasure Quantity) 
+(subclass-of ElectricPotentialMeasure Quantity)
+(subclass-of CapacitanceMeasure Quantity)
+(subclass-of ElectricResistanceMeasure Quantity)
+(subclass-of ElectricConductanceMeasure Quantity)
+(subclass-of MagneticFluxMeasure Quantity)
+(subclass-of MagneticFluxDensityMeasure Quantity)
+(subclass-of InductanceMeasure Quantity)
+(subclass-of LuminousFluxMeasure Quantity)
+(subclass-of IlluminanceMeasure Quantity)
+(subclass-of ActivityMeasure Quantity)
+(subclass-of AbsorbedDoseMeasure Quantity)
+(subclass-of DoseEquivalentMeasure Quantity)
+(subclass-of CatalyticActivityMeasure Quantity)
+
+; Other physical quantities of interest outside SI
+
+(subclass-of CurrencyMeasure Quantity)
+(subclass-of InformationMeasure Quantity)
+
+(instance-of MeasureFn BinaryFunction)
+(nth-domain MeasureFn 1 RealNumber)
+(nth-domain MeasureFn 2 Unit-Of-Measure)
+(range MeasureFn ConstantQuantity)
+(documentation MeasureFn "This function maps a real number and a unit of measure 
+to that number of units.")
+
+(instance-of MagnitudeFn BinaryFunction)
+(nth-domain MagnitudeFn  1 ScalarQuantity)
+(nth-domain MagnitudeFn 2 Unit-Of-Measure)
+(range MagnitudeFn 3 RealNumber)
+(documentation Magnitude "The magnitude of a constant quantity is a 
+numeric value for the quantity given in terms of some unit-of-measure.  
+For example, the magnitude of the quantity 2 kilometers in the 
+unit-of-measure meter is the real number 2000.  The
+unit-of-measure and quantity must be of the same physical dimension,
+and the resulting value is a Quantity.  The type of the
+resulting Number is dependent on the type of the original quantity.
+The magnitude of a scalar quantity is a real number, and the magnitude
+of a vector quantity is a numeric vector.  In general, the
+magnitude function converts a quantity with dimension into a normal
+mathematical object.
+   Units of measure are scalar quantities, and magnitude is defined in
+terms of scalar multiplication.  The magnitude of a quantity in a
+given unit times that unit is equal to the original quantity.  This
+holds for all kinds of tensors, including real-numbers and vectors.
+For scalar quantities, one can think of the magnitude as the ratio of
+a quantity to the unit quantity.  
+   There is no magnitude for a function quantity.  Instead, the value
+of a function-quantity on some input is a quantity which may in turn be
+a constant-quantity for which the magnitude function is defined.")
+
+(=>
+   (and
+      (equal (MeasureFn ?X ?Y) ?Z)
+      (subclass-of ?Y ?P)
+      (not (equal ?P Unit-Of-Measure)))
+   (subclass-of ?Z ?P))
+
+; Now the units of measure:
+
+; First base units for the SI system. No conversion functions are
+; provided for these units. 
+
+; Length Base Unit
+
+(instance-of Meter LengthMeasure)
+(instance-of Meter SystemeInternationalUnit)
+(documentation Meter "SI length unit. symbol:  m. It is one of the
+base units in SI. Its definition has evolved over time.
+It is currently defined as: The meter is the length of the path
+traveled by light in vacuum during a time interval of 1/299792458
+of a second.")
+
+; Mass Base Unit
+
+(instance-of Kilogram MassMeasure)
+(instance-of Kilogram SystemeInternationalUnit)
+(documentation Kilogram "SI mass unit. symbol: kg. It is one of the
+base units in SI (it is also the basic unit of mass in the MKS system).
+It is defined as: The kilogram is the unit of mass;
+it is equal to the mass of the international prototype of the kilogram.")
+
+(equal
+	(MeasureFn ?X Kilogram)
+	(MeasureFn (MultiplicationFn ?X 1000) Gram))
+
+; Time Base Unit
+
+(instance-of Second-Duration TimeMeasure-Duration)
+(instance-of Second-Duration SystemeInternationalUnit)
+(documentation Second-Duration "SI time unit. symbol: s. It is one of the
+base units in SI. Its definition has evolved over time.
+It is currently defined as: The second is the duration of 
+9192631770 periods of the radiation corresponding to the transition
+between the two hyperfine levels of the ground state of the cesium 133
+atom." )
+
+; Electric Current Base Unit
+
+(instance-of Ampere ElectricCurrentMeasure)
+(instance-of Ampere SystemeInternationalUnit)
+(documentation Ampere "SI electrical current unit. symbol: A. It is one of the
+base units in SI. It is defined as: The ampere is that constant current
+which, if maintained in two straight parallel conductors of infinite
+length, of negligible circular cross-section, and placed 1 meter apart
+in vacuum, would produce between these conductors a force equal to
+2*10^(-7) newton per meter of length.") 
+
+; Thermodynamic Temperature Base Unit
+
+(instance-of Kelvin ThermodynamicTemperatureMeasure)
+(instance-of Kelvin SystemeInternationalUnit)
+(documentation Kelvin "SI thermodynamic temperature unit. symbol: K. It
+is one of the base units in SI (it is also a unit in the ITS system). 
+It is defined as: The kelvin, unit of thermodynamic
+temperature, is the fraction 1/273.16 of the thermodynamic temperature
+of the triple point of water.")
+
+; Amount Of Substance Base Unit
+
+(instance-of Mole AmountOfSubstanceMeasure)
+(instance-of Mole SystemeInternationalUnit)
+(documentation Mole "SI amout of substance unit. symbol: mol. It is
+one of the base units in SI. It is defined as: 1. The mole is the amount of
+substance of a system which contains as many elementary entities as
+there are atoms in 0.012 kilogram of carbon 12; its symbol is mol.
+2. When the mole is used, the elementary entities must be specified
+and may be atoms, molecules, ions, electrons, other particles, or
+specified groups of such particles.")
+
+; Luminosity Intensity Base Unit
+
+(instance-of Candela LuminosityIntensityMeasure)
+(instance-of Candela SystemeInternationalUnit)
+(documentation Candela "SI luminous intensity unit. symbol: cd. It is
+one of the base units in SI. Its definition has evolved over time.
+It is defined as: The candela is the luminous intensity, in a given
+direction, of a source that emits monochromatic radiation of
+frequency 540*10^12 hertz and that has a radiant intensity in that
+direction of 1/683 watt per steradian.")
+
+; Now SI units for these quantities that are also
+; accepted. They are multiples and submultiples of base units.
+
+(instance-of Centimeter LengthMeasure)
+(instance-of Centimeter Unit-Of-Measure)
+(documentation Centimeter "submultiple of meter. symbol: cm. It is the 100th part of a meter")
+
+(equal
+        (MeasureFn ?X Centimeter)
+        (MeasureFn (MultiplicationFn ?X 0.01) Meter))
+
+(instance-of Kilometer LengthMeasure)
+(instance-of Kilometer Unit-Of-Measure)
+(documentation Kilometer "multiple of meter. symbol: km. 1 km = 1000 m")
+
+(equal
+	(MeasureFn ?X Kilometer)
+	(MeasureFn (MultiplicationFn ?X 1000) Meter))
+
+(instance-of Gram MassMeasure)
+(instance-of Gram Unit-Of-Measure)
+(documentation Gram "submultiple of kilogram. symbol: g. 1 kg = 1000 g")
+
+(equal
+	(MeasureFn ?X Gram)
+	(MeasureFn (MultiplicationFn ?X 0.001) Kilogram))
+
+(instance-of Nano-Second TimeMeasure)
+(instance-of Nano-Second Unit-Of-Measure)
+(documentation Nano-Second "submultiple of second. symbol: ns. A unit of measure equal to one
+billionth of a second.")
+
+(equal
+	(MeasureFn ?X Nano-Second)
+	(MeasureFn (MultiplicationFn ?X 1.0E-9) Second))
+
+
+(instance-of Pico-Second TimeMeasure-Duration)
+(instance-of Pico-Second Unit-Of-Measure)
+(documentation Pico-Second "submultiple of second. symbol: ps. A unit
+of measure equal to one trillionth of an second")
+
+(equal
+	(MeasureFn ?X Pico-Second)
+	(MeasureFn (Multiplication ?X 1.0E-12) Second-Duration))
+
+(instance-of Milli-Ampere ElectricCurrentMeasure)
+(instance-of Milli-Ampere Unit-Of-Measure)
+(documentation Milli-Ampere "submultiple of ampere. symbol: mA. A unit of electrical current
+equal to one thousandth of an ampere.")
+
+(equal
+	(MeasureFn ?X Milli-Ampere)
+	(MeasureFn (MultiplicationFn ?X .001) Ampere))
+
+(instance-of Nano-Ampere ElectricCurrentMeasure)
+(documentation Nano-Ampere "submultiple of ampere. symbol: nA. A unit of electrical current
+equal to one billionth of an ampere.")
+
+(equal
+	(MeasureFn ?X Nano-Ampere)
+	(MeasureFn (MultiplicationFn ?X 1.0E-9) Ampere))
+
+(instance-of Pico-Ampere ElectricCurrentMeasure)
+(instance-of Pico-Ampere Unit-Of-Measure)
+(documentation Pico-Ampere "submultiple of ampere. symbol: pA. A unit of electrical current
+equal to one trillionth of an ampere.")
+
+(equal
+	(MeasureFn ?X Pico-AmpereFn)
+	(MeasureFn (MultiplicationFn ?X 1.0E-12) Ampere))
+
+; Now, derived SI units with special names and symbols
+; including some prefixed units (multiples and submultiples are together 
+; since they represent quantities of the same kind).
+
+; Plane angle unit
+
+(instance-of Radian PlaneAngleMeasure)
+(instance-of Radian SystemeInternationalUnit)
+(documentation Radian "SI plane angle measurement unit. symbol: rad.
+It is angle of a circle subtended by an arc equal in length to the
+circle's radius. Another definition can be: the plane angle between
+two radii of a circle which cut off on the circumference an arc equal
+in length to the radius.  radian = m/m = 1")
+
+; Solid angle unit
+
+(instance-of Steradian SolidAngleMeasure)
+(instance-of Steradian SystemeInternationalUnit)
+(documentation Steradian "SI solid angle measurement unit. symbol: sr.
+It is the solid angle of a sphere subtended by a portion of the surface whose 
+area is equal to the square of the sphere's radius. Another definition
+can be: the solid angle which, having its vertex in the center of the
+sphere, cuts off an area of the surface of the sphere equal to that of
+a square with sides of length equal to the radius of the sphere.
+steradian = m^2/m^2 = 1")
+
+; Frequency units
+
+(instance-of Hertz FrequencyMeasure)
+(instance-of Hertz SystemeInternationalUnit)
+(documentation Hertz "SI fequency unit. symbol: Hz. It is the number
+of cycles per second.  hertz = s^(-1)")
+
+; NOTE: Herzt does not have a conversion function.
+
+(instance-of Giga-Hertz FrequencyMeasure)
+(instance-of Giga-Hertz Unit-Of-Measure)
+(documentation Giga-Hertz "multiple of hertz. symbol: GHz. A unit of frequency equal to
+one billion times per second. 
+1 gigahertz = 10^9 Hz")
+
+(equal 
+	(MeasureFn ?X Giga-Hertz)
+	(MeasureFn (MultiplicationFn ?X 1.0E9) Hertz))
+
+(instance-of Kilo-Hertz FrequencyMeasure)
+(instance-of Kilo-Hertz Unit-Of-Measure)
+(documentation Kilo-Hertz "multiple of hertz. symbol: kHz. A unit of frequency equal to
+one thousand times per second.  1 kilohertz = 10^3 Hz")
+
+(equal
+	(MeasureFn ?X Kilo-Hertz)
+	(MeasureFn (MultiplicationFn ?X 1000) Hertz))
+
+(instance-of Mega-Hertz FrequencyMeasure)
+(instance-of Mega-Hertz Unit-Of-Measure)
+(documentation Mega-Hertz "multiple of hertz. symbol: MHz. A unit of frequency equal to
+one million times per second.  1 megahertz = 10^6 Hz")
+
+(equal
+        (MeasureFn ?X Mega-Hertz)
+        (MeasureFn (MultiplicationFn ?X 1.0E6) Hertz))
+
+; Force Unit
+
+(instance-of Newton ForceMeasure)
+(instance-of Newton SystemeInternationalUnit)
+(documentation Newton "SI force unit. symbol: N. It is that force which gives to
+a mass of 1 kilogram an acceleration of 1 meter per second. 
+newton = m*kg*s^(-2)")
+
+; Pressure unit
+
+(instance-of Pascal PressureMeasure)
+(instance-of Pascal SystemeInternationalUnit)
+(documentation Pascal "SI pressure unit. symbol:Pa. It is the pressure
+of one newton per square meter. 
+pascal = N/m^2 = m^(-1)*kg*s^(-2)")
+
+(instance-of Mega-Pascal PressureMeasure) 
+(instance-of Mega-Pascal Unit-Of-Measure)
+(documentation Mega-Pascal "multiple of pascal. symbol: MPa. A unit of
+pressure equal to one million pascal.
+1 megapascal = 10^6 Pa")
+
+(equal
+	(MeasureFn ?X Mega-Pascal)
+	(MeasureFn (MultiplicationFn ?X 1.0E6) Pascal))
+
+; Energy Unit
+
+(instance-of Joule EnergyMeasure)
+(instance-of Joule SystemeInternationalUnit)
+(documentation Joule "SI energy unit. symbol: J. It is the work done when the
+point of application of 1 newton is displaced a distance of 1 meter in
+the direction of the force. 
+joule = N*m = m^2*kg*s^(-2)")
+
+; Power Units
+
+(instance-of Watt PowerMeasure)
+(instance-of Watt SystemeInternationalUnit)
+(documentation Watt "SI power unit. symbol: W. A unit that measures power, 
+ie energy produced or expended divided by unit of time. It is the power
+which gives rise to the production of energy (or work) at the rate of one joule 
+per second. 
+watt = J/s = m^2*kg*s^(-3)")
+
+;;; Note: According to SI one should not use the expression "per unit of" 
+
+(instance-of Kilo-Watt PowerMeasure)
+(instance-of Kilo-Watt Unit-Of-Measure)
+(documentation Kilo-Watt "multiple of watt. symbol: kW. A unit that measures power, ie
+energy produced by unit of time. It is one thousand watts.
+1 kilo-watt = 1000 W")
+
+(equal
+	(MeasureFn ?X Kilo-Watt)
+	(MeasureFn (MultiplicationFn ?X 1000) Watt))
+
+; Electric Charge Units
+
+(instance-of Coulomb ElectricChargeMeasure)
+(instance-of Coulomb SystemeInternationalUnit)
+(documentation Coulomb "SI charge unit. symbol: C. It is the quantity of
+electric charge transported through a cross section of a conductor 
+in an electric circuit during each second by a current of 1 ampere. 
+coulomb = s*A")
+
+(equal
+	(MeasureFn ?X Coulomb)
+	(PerFn (MeasureFn ?X Ampere) (MeasureFn 1 Second-Duration)))
+
+; Electric Potential Units
+
+(instance-of Volt ElectricPotentialMeasure)
+(instance-of Volt SystemeInternationalUnit)
+(documentation Volt "SI electric potential unit. symbol: V. It is the difference
+of electric potential between two points of a conducting wire carrying
+a constant current of 1 ampere, when the power dissipated between
+these points is equal to 1 watt. 
+volt = W/A = m^2*kg*s^(-3)*A^(-1)")
+
+(instance-of Micro-Volt ElectricPotentialMeasure)
+(instance-of Micro-Volt Unit-Of-Measure)
+(documentation Micro-Volt "submultiple of volt. symbol: mV. A unit for
+measuring electrical potential equal to one millionth of a volt. 
+1 micro volt = 10^(-6) V")
+
+(equal
+	(MeasureFn ?X Micro-Volt)
+	(MeasureFn (MultiplicationFn ?X 0.000001) Volt))
+
+(instance-of milli-volt ElectricPotentialMeasure)
+(instance-of Milli-Volt Unit-Of-Measure)
+(documentation Milli-Volt "submultiple of volt. symbol: mV. A unit of
+electrical potential equal to one thousandth of a volt. 
+1 milli volt = 10^(-3) V")
+
+(equal
+	(MeasureFn ?X Milli-Volt)
+	(MeasureFn (MultiplicationFn ?X .001) Volt))
+
+; Capacitance Units
+
+(instance-of Farad CapacitanceMeasure)
+(instance-of  Farad SystemeInternationalUnit)
+(documentation Farad "SI capacitance unit. symbol: F. It is the capacitance of a
+capacitator between the plates of which there appears a difference of
+potential of 1 volt when it is charged by a quantity of electricity
+equal to 1 coulomb.
+farad = C/V = m^(-2)*kg(-1)*s^4*A^2")
+
+;Electric Resistance Units
+
+(instance-of Ohm ElectricResistanceMeasure)
+(instance-of Ohm SystemeInternationalUnit)
+(documentation Ohm "SI electric resistance unit. It is the electric
+resistance between two points of a conductor when a constant
+difference of potential of 1 volt, applied between these two points,
+produces in this conductor a current of 1 ampere, this conductor not
+being the force of any electromotive force. 
+ohm = V/A = m^2*kg*s^(-3)*A^(-2)")
+
+(instance-of Mega-Ohm ElectricResistanceMeasure)
+(instance-of Mega-Ohm Unit-Of-Measure)
+(documentation Mega-Ohm "multiple of ohm. Electric resistance unit equal 
+to one million ohm.
+1 megaohm = 10^(6) ohms")
+
+(equal
+	(MeasureFn ?X Mega-Ohm)
+	(MeasureFn (MultiplicationFn ?X 1.0E6) Ohm))
+
+(instance-of Micro-Ohm ElectricResistanceMeasure)
+(instance-of Micro-Ohm Unit-Of-Measure)
+(documentation Micro-Ohm "submultiple of ohm. Electric resistance unit
+equal to the millionth part of a ohm. 
+1 microohm = 10^(-6) ohms")
+
+(equal
+	(MeasureFn ?X Micro-Ohm)
+	(MeasureFn (MultiplicationFn ?X 0.000001) Ohm))
+
+; Electric Conductance Units
+
+(instance-of Siemens ElectricConductanceMeasure)
+(instance-of Siemens SystemeInternationalUnit)
+(documentation Siemens "SI unit for electric conductance. symbol:S. In the case
+of direct current, the conductance in siemens is the reciprocal of the 
+resistance in ohms; in the case of alternating current, it is the
+reciprocal of the impedance in ohms.
+siemens = A/V = m^(-2)*kg(-1)*s^(3)*A^2")
+
+; Magnetic Flux Units
+
+(instance-of Weber MagneticFluxMeasure)
+(instance-of  Weber SystemeInternationalUnit)
+(documentation Weber "SI unit for magnetic flux. symbol: Wb. It is the magnetic
+flux which, linking a circuit of one turn, produces in it an
+electromotive force of 1 volt as it is reduced to zero at a uniform
+rate in 1 second. 
+weber = V*s = m^2*kg*s^(-2)*A^(-1)" )
+
+; Magnetic Flux Density Units
+
+(instance-of Tesla MagneticFluxDensityMeasure)
+(instance-of Tesla SystemeInternationalUnit)
+(documentation Tesla "SI unit for magnetic flux density. symbol: T.
+One tesla equals one weber per square meter.
+tesla = Wb/m^2 = kg*s^(-2)*A^(-1)"
+
+; Inductance Units
+
+(instance-of Henry InductanceMeasure)
+(instance-of Henry SystemeInternationalUnit)
+(documentation Henry "SI unit for inductance. symbol: H.
+One henry is equivalent to one volt divided by one ampere per second. 
+If a current changing at the rate of one ampere per second induces an electromotive
+force of one volt, the circuit has an inductance of one henry.
+henry = Wb/A = m^2*kg*s^(-2)*A^(-2)")
+
+; Celsius Temperature unit
+
+(instance-of Celcius ThermodynamicTemperatureMeasure)
+(instance-of Celcius SystemeInternationalUnit)
+(documentation Celcius "A unit for measuring temperature.
+Kelvin differs from the Celcius scale that the triple point of water
+is defined to be 273.16 degrees Kelvin while it is 0 degrees
+Celcius. The boiling point of water is 100 degrees Celcius.
+The magnitudes of intervals in two scales are the same. By definition
+the conversion constant is 273.15")
+
+(equal
+        (MeasureFn ?X Celcius)
+        (MeasureFn (SubtractionFn ?X 273.15) Kelvin))
+
+; Luminous Flux Units
+
+(instance-of Lumen LuminousFluxMeasure)
+(instance-of Lumen SystemeInternationalUnit)
+(documentation Lumen "SI unit for luminous flux.  symbol: lm. It is the amount
+streaming outward through one solid angle of 1 steradian from a uniform point source
+having an intensity of one candela.  
+lumen = cd*sr = cd * 1")
+
+; Illuminance Units
+
+(instance-of Lux IlluminanceMeasure )
+(instance-of Lux SystemeInternationalUnit)
+(documentation Lux "SI unit for illuminance.  symbol: lx. It is the amount of
+illumination provided when one lumen is evenly distributed over an 
+area of 1 square meter. This is also equivalent to the illumination 
+that would exist on a surface all points of which are one metre from a point
+source of one candela.
+lux = lm/m^2 = m^(-2)*cd")
+
+; Activity Units
+
+(instance-of Becquerel ActivityMeasure)
+(instance-of Becquerel SystemeInternationalUnit)
+(documentation Becquerel "SI unit for activity.  symbol: Bq. It measures the amount
+of radioactivity contained in a given sample of matter. It is that quantity of a
+radioactive element in which there is one atomic disintegration per second.
+becquerel = s^(-1)")
+
+; Absorbed Dose Units
+
+(instance-of Gray AbsorbedDoseMeasure)
+(instance-of Gray SystemeInternationalUnit)
+(documentation Gray "SI unit for absorbed dose.  symbol: Gy. It measures the dose
+of radiation absorbed in living tissue. It is equal approximately to
+the absorbed dose delivered when the energy per unit mass imparted to
+matter by ionizing radiation is 1 joule per kilogram.
+gray = J/kg = m^2*s^(-2)")
+
+; Dose Equivalent Units
+
+(instance-of Sievert DoseEquivalentMeasure)
+(instance-of Sievert SystemeInternationalUnit)
+(documentation Sievert "SI unit for dose equivalent.  symbol: Sv. It is a unit of
+biologic dose of ionizing radiation.
+The sievert makes it possible to normalize doses of different types of
+radiation. It takes into account the relative biologic effectiveness of ionizing
+radiation, since each form of such radiation--e.g., X rays, gamma
+rays, neutrons--has a slightly different effect on living tissue for a given
+absorbed dose. The dose equivalent of a given type of radiation (in
+sievert) is the dose of the radiation in gray multiplied by a quality
+factor that is based on the relative biologic effectiveness of the radiation. Accordingly,
+one sievert is generally defined as the amount of radiation roughly
+equivalent in biologic effectiveness to one gray of gamma radiation.
+sievert = J/kg = m^2*s^(-2)")
+
+; Catalytic Activity Units
+
+(instance-of Katal CatalyticActivityMeasure)
+(instance-of Katal SystemeInternationalUnit)
+(documentation Katal "SI unit for catalytic activity.  symbol: kat")
+
+; Units that are accepted for -use- with SI
+
+(instance-of Day-Duration TimeMeasure-Duration)
+(instance-of Day-Duration Unit-Of-Measure)
+(documentation Day-Duration "Time unit. 1 day = 24 hours")
+
+(equal
+	(MeasureFn ?X Day-Duration)
+	(MeasureFn (MultiplicationFn ?X 24) Hour-Duration))
+
+(instance-of Hour-Duration TimeMeasure-Duration)
+(instance-of Hour-Duration Unit-Of-Measure)
+(documentation Hour-Duration "Time unit. 1 hour = 60 minutes.")
+
+(equal
+	(MeasureFn ?X Hour-Duration)
+	(MeasureFn (MultiplicationFn ?X 60) Minute-Duration))
+
+(instance-of Minute-Duration TimeMeasure-Duration)
+(instance-of Minute-Duration Unit-Of-Measure)
+(documentation Minute-Duration "Time unit. 1 minute = 60 second ")
+
+(equal
+        (MeasureFn ?X Minute-Duration)
+        (MeasureFn (MultiplicationFn ?X 60) Second-Duration))
+
+(instance-of Year-Duration TimeMeasure-Duration)
+(instance-of Year-Duration Unit-Of-Measure)
+(documentation Year-Duration "Time unit. one calendar year. 1 year =
+365 day = 31536000 second")
+
+(equal
+	(MeasureFn ?X Year-Duration)
+	(MeasureFn (MultiplicationFn ?X 365) Day-Duration))
+
+; Now units that are also accepted for -use- with SI whose values in the SI units
+; are obtained experimentally
+
+(instance-of Amu MassMeasure)
+(instance-of Amu Unit-Of-Measure)
+(documentation Amu "Atomic mass unit. symbol: u. It is the mass of 
+the twelfth part of an atom of the Carbon 12 isotope. ")
+(equal
+        (MeasureFn ?X Amu)
+        (MeasureFn (MultiplicationFn ?X 1.6605402E-27) Kilogram)) 
+
+(instance-of Electronvolt EnergyMeasure)
+(instance-of ElectronVolt Unit-Of-Measure)
+(documentation electronvolt "The elecronvolt is an energy measure. symbol: eV.
+It is the kinetic energy acquired by an electron in passing through a
+potential difference of 1 V in vacuum.")
+
+(equal
+        (MeasureFn ?X Electronvolt)
+        (MeasureFn (MultiplicationFn ?X 1.60217733E-19) Joule))
+
+; Units -temporarily- accepted for -use- with SI
+
+(instance-of Angstrom LengthMeasure)
+(instance-of Angstrom Unit-Of-Measure)
+(documentation Angstrom "The angstrom is a length measure. 
+1 agstrom = 10^(-10) m")
+
+(equal
+        (MeasureFn ?X angstrom)
+        (MeasureFn (MultiplicationFn ?X 1.0E-10) meter))
+
+; Other units of measure -outside- SI.
+; These units are unacceptable in SI but accepted in other systems.
+
+; More Length units
+
+(instance-of Foot LengthMeasure)
+(instance-of Foot Unit-Of-Measure)
+(documentation Foot "English length unit of feet.")
+
+(equal
+        (MeasureFn ?X Foot)
+        (MeasureFn (MultiplicationFn ?X 0.3048) Meter))
+
+(instance-of Inch LengthMeasure)
+(instance-of Inch Unit-Of-Measure)
+(documentation Inch "English length unit.")
+
+(equal
+        (MeasureFn ?X Inch)
+        (MeasureFn (MultiplicationFn ?X 0.0254) meter))
+
+(instance-of Mile LengthMeasure)
+(instance-of Mile Unit-Of-Measure)
+(documentation Mile "English length unit.")
+
+(equal
+        (MeasureFn ?X Mile)
+        (MeasureFn (MultiplicationFn ?X 1609.344) meter))
+
+; More Mass units
+
+(instance-of AtomGram MassMeasure)
+(instance-of AtomGram Unit-Of-Measure)
+(Documentation AtomGram
+"AKA gram-atom.  Defined as the mass in grams of a 1 mole of pure
+substance.  For example, 1 atom-gram of Carbon 12 will be 12 grams 
+of pure Carbon 12. 2 atom-grams of the same substance will be
+24 grams of it.  This is an unusual unit that it is essentially 1 
+mole of 'stuff' but measured in grams so that the actual value
+(i.e. mass) depends on the type of substance.")
+
+(instance-of Pound-Mass MassMeasure)
+(instance-of Pound-Mass Unit-Of-Measure)
+(documentation Pound-Mass "English mass unit.")
+
+(equal
+        (MeasureFn ?X Pound-Mass)
+        (MeasureFn (MultiplicationFn ?X 0.45359237) Kilogram))
+
+(instance-of Slug MassMeasure)
+(instance-of Slug Unit-Of-Measure)
+(documentation Slug "English mass unit.")
+
+(equal
+        (MeasureFn ?X Slug)
+        (MeasureFn (MultiplicationFn ?X 14.59390) Kilogram))
+
+; More Thermodynamic Temperature units
+
+(instance-of Rankine ThermodynamicTemperatureMeasure)
+(instance-of Rankine Unit-Of-Measure)
+(documentation Rankine "0 degree Rankine is the same as 
+the absolute zero (i.e. 0 degree Kelvin).  The magnitudes of a 
+degree Rankine is the same as that of a degree Fahrenheit.")
+
+(equal
+        (MeasureFn ?X Rankine)
+        (MeasureFn (MultiplicationFn ?X 1.8) Kelvin))
+
+; More Force units
+
+(instance-of Pound-Force ForceMeasure)
+(instance-of Pound-Force Unit-Of-Measure)
+(documentation Pound-Force "English pound of force. The conversion
+factor depends on the local value of the acceleration of free fall. A
+mean value is used. ")
+
+(equal
+        (MeasureFn ?X Pound-Force)
+        (MeasureFn (MultiplicationFn ?X 4.448222) newton))
+
+; More Energy units
+
+(instance-of Calorie EnergyMeasure)
+(instance-of Calorie Unit-Of-Measure)
+(documentation Calorie "A calorie is an energy unit.")
+
+(equal
+        (MeasureFn ?X Calorie)
+        (MeasureFn (MultiplicationFn ?X 4.1868) Joule))
+
+(instance-of BritishThermalUnit EnergyMeasure)
+(instance-of BritishThermalUnit Unit-Of-Measure)
+(documentation BritishThermalUnit "British thermal unit is a unit of energy.")
+
+(equal
+        (MeasureFn ?X BritishThermalUnit)
+        (MeasureFn (MultiplicationFn ?X 1055.05585262) Joule))
+
+; More plane angle units
+
+(instance-of AngularDegree IdentityMeasure)
+(instance-of AngularDegree Unit-Of-Measure)
+(documentation AngularDegree "Angular degree is a plane angle unit")
+
+(equal
+	(MeasureFn ?X AngularDegree)
+	(MeasureFn (MultiplicationFn ?X (DivisionFn Pi-TheNumber 180)) Radian))
+
+
+
+; Other interesting units of measure
+
+; Currency units
+
+(instance-of Dollar-UnitedStates CurrencyMeasure)
+(instance-of Dollar-UnitedStates Unit-Of-Measure)
+(documentation Dollar-UnitedStates "A currency unit.")
+
+(instance-of Cent-UnitedStates CurrencyMeasure)
+(instance-of Cent-UnitedStates Unit-Of-Measure)
+(documentation Cent-UnitedStates "A currency unit. 1 US cent = 10^-2
+US dollar")
+
+(equal
+        (MeasureFn ?X Cent-UnitedStates)
+        (MeasureFn (MultiplicationFn ?X .01) Dollar-UnitedStates))
+
+; Information units
+
+(instance-of Bit InformationMeasure)
+(instance-of Bit Unit-Of-Measure)
+(documentation Bit "One bit of information.  A one or a zero.")
+
+(instance-of Byte InformationMeasure)
+(instance-of Byte Unit-Of-Measure)
+(documentation Byte "One byte of information.  A byte is eight bits.")
+
+(equal
+        (MeasureFn ?X Byte)
+        (MeasureFn (MultiplicationFn ?X 8) Bit))
+
+(instance-of Kilo-Byte InformationMeasure)
+(instance-of Kilo-Byte Unit-Of-Measure)
+(documentation Kilo-Byte "One Kilo byte (K) of information.  One K is
+1024 bytes. This Kilo is different from the prefix kilo accepted in
+the SI system.")
+
+(equal
+        (MeasureFn ?X Kilo-Byte)
+        (MeasureFn (MultiplicationFn ?X 1024) Byte))
+
+(instance-of Mega-Byte InformationMeasure)
+(instance-of Mega-Byte Unit-Of-Measure)
+(documentation Mega-Byte "One Mega byte (MB) of information.  One MB
+is 1024 K. This mega is different from the prefix mega accepted in
+the SI system.")
+
+(equal
+        (MeasureFn ?X Mega-Byte)
+        (MeasureFn (MultiplicationFn ?X 1024) Kilo-Byte))
+
+;; The following content was inspired by the Quantities ontology developed
+;; by ITBM-CRN.
+
+(instance-of measure SpatialRelation)
+(nth-domain measure 1 Object)
+(nth-domain measure 2 PhysicalProperty)
+(nth-domain measure 3 PhysicalQuantity)
+(documentation measure "A very general relation for asserting that a particular 
+object is measured by a particular quantity along a certain dimension.  In general, 
+the second argument of this relation, and its subrelations, will be an instance of 
+the schema (MeasureFn ?X ?Y).")
+
+(subrelation-of age measure)
+(nth-domain age 1 Organism)
+(nth-domain age 2 TimeMeasure-Duration)
+(documentation age "Simply relates an organism to a number and unit-of-measure specifying the age of the organism.")
+
+(=>
+     (age ?X ?Y)
+     (exists (?Z ?W)
+          (and
+               (instance-of ?Z TimeMeasure-Duration)
+               (equal ?Y (MeasureFn ?W ?Z)))))
+
+(instance-of degree TernaryRelation)
+(nth-domain degree 1 Physical)
+(nth-domain degree 2 Abstract)
+(nth-domain degree 3 QualitativeValue)
+(documentation degree "The relative intensity of an attribute of an object or process.")
+ 
+(subrelation-of length measure)
+(singleValued length 2)
+
+(=>
+     (length ?X ?Y)
+     (exists (?Z ?W)
+          (and
+               (instance-of ?Z LengthMeasure)
+               (equal ?Y (MeasureFn ?W ?Z)))))  
+
+(subrelation-of diameter length)
+
+(instance-of distance SpatialRelation)
+(nth-domain distance 1 Object)
+(nth-domain distance 2 Object)
+(nth-domain distance 3 ScalarQuantity)
+(singleValued distance 3)
+(documentation distance "(distance <OBJECT1> <OBJECT2> <LENGTH>) means that the distance between the two objects <OBJECT1> and <OBJECT2> is <LENGTH>.")
+
+(=>
+     (distance ?X ?Y ?Z)
+     (exists (?V ?W)
+          (and
+               (instance-of ?V LengthMeasure)
+               (equal ?Z (MeasureFn ?W ?V)))))  
+
+(subrelation-of width length)
+
+(instance-of larger SpatialRelation)
+(nth-domain larger 1 Object)
+(nth-domain larger 2 Object)
+
+(instance-of smaller SpatialRelation)
+(nth-domain smaller 1 Object)
+(nth-domain smaller 2 Object)
+
+(inverse larger smaller)
+
+(subrelation-of monetaryValue measure)
+(singleValued monetaryValue 2)
+
+(=>
+     (monetaryValue ?X ?Y)
+     (exists (?Z ?W)
+          (and
+               (instance-of ?Z CurrencyMeasure)
+               (equal ?Y (MeasureFn ?W ?Z)))))  
+
+(instance-of Few QualitativeAttribute)
+(documentation Few "Usable for contextual assessment of numerosity; 
+no numeric range can be done, eg compare 'few books on the table' (3?) and 
+'few eritrocytes in your blood' (3 millions per part?).")
+
+(instance-of Many QualitativeAttribute)
+(documentation Many "Usable for contextual assessment of numerosity; 
+no numeric range can be done, eg compare 'many books on the table' (12?) and 
+'many eritrocytes in your blood' (8 millions per part?).")
+
+(<=>
+     (degree ?X ?Y Few)
+     (not
+          (degree ?X ?Y Many))) 
+
+;; The following axioms are not taken from the Quantities ontology, but they are 
+;; inspired by some of the content there.
+
+(=>
+     (forall (?X)
+          (=>
+               (measure ?A ?X)
+               (measure ?B ?X)))
+     (interchangeable ?A ?B))
+
+(=>
+     (exists (?X ?Y)
+          (and
+               (measure ?A ?X)
+               (measure ?B ?Y)
+               (not
+                    (equal ?X ?Y))))
+     (not
+          (equal ?A ?B)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  ORGANISM HIERARCHY   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; The following formulas incorporate the content in the Natural-Kinds ontology 
+;; developed by the CNR-ITBM group.  This content is essentially a set of high-
+;; level biological categories.
+
+(subclass-of Plant Organism)
+(documentation Plant "An organism having cellulose cell walls, growing by 
+synthesis of inorganic substances, generally distinguished by the presence of 
+chlorophyll, and lacking the power of locomotion.  Plant parts are included here 
+as well.")
+
+(=>
+	(instance-of ?X Plant)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y CellWall-Peptidoglycan))))
+
+(=>
+	(instance-of ?X Plant)
+	(exists (?Y ?Z)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Pigment)
+			(result ?Z ?Y)
+			(instance-of ?Z Photosynthesis))))
+
+(subclass-of Animal Organism)
+(documentation Animal "An organism with eukaryotic cells, and lacking stiff cell 
+walls, plastids and photosynthetic pigments. The children of this type in the 
+network are 'Invertebrate', and 'Vertebrate'.")
+(disjoint Plant Animal)
+
+(=>
+	(instance-of ?X Animal)
+	(exists (?Y ?Z)
+		(and
+			(component-of ?X ?Y)
+			(instance-of ?Y Cell)
+			(part-of ?Y ?Z)
+			(instance-of ?Z CellWall-NonRigid))))
+
+(subclass-of Microorganism Organism)
+(subclass-of Archaeon Microorganism)
+(documentation Archaeon "A member of one of the three domains of life, formerly 
+called Archaebacteria under the taxon Bacteria, but now considered separate and 
+distinct. Archaea are characterized by:  1) the presence of characteristic tRNAs 
+and ribosomal RNAs; 2) the absence of peptidoglycan cell walls; 3) the presence 
+of ether-linked lipids built from branched-chain subunits; and 4) their 
+occurrence in unusual habitats. While archaea resemble bacteria in morphology 
+and genomic organization, they resemble eukarya in their method of genomic 
+replication. Thermoproteales; Methanospirillum; Haloferax volcanii.")
+
+(subclass-of Bacterium Microorganism)
+(documentation Bacterium "A small, typically one-celled, prokaryotic micro-
+organism.")
+
+(=>
+	(instance-of ?X Bacterium)
+	(cardinality (SetFn ?Y (and (component-of ?Y ?X) (instance-of ?Y Cell))) 
+1))
+
+(=>
+	(and
+		(instance-of ?X Bacterium)
+		(located-at ?X ?Y))
+	(instance-of ?Y OrganicObject))
+
+(subclass-of Virus Microorganism)
+(documentation Virus "An organism consisting of a core of a single nucleic acid 
+enclosed in a protective coat of protein. A virus may replicate only inside a 
+host living cell. A virus exhibits some but not all of the usual characteristics 
+of living things.")
+
+(=>
+	(instance-of ?X Virus)
+	(cardinality (SetFn ?Y (and (component-of ?Y ?X) (instance-of ?Y 
+Molecule))) 1))
+
+(=>
+	(instance-of ?X Virus)
+	(and
+		(instance-of ?X Nucleic-Acid)
+		(exists (?Y ?Z)
+			(and
+				(superficial-part-of ?Y ?X)
+				(part-of ?Z ?Y)
+				(instance-of ?Z Protein)))))
+
+(=>
+	(and
+		(instance-of ?X Virus)
+		(instance-of ?Y Replication)
+		(effector-of ?Y ?X))
+	(exists (?Z)
+		(and
+			(located-at ?Y ?Z)
+			(instance-of ?Z Cell))))
+
+(=>
+	(and
+		(instance-of ?X Virus)
+		(located-at ?X ?Y))
+	(instance-of ?Y OrganicObject))
+	
+				 
+(subclass-of Chlamydia Microorganism)
+(documentation Chlamydia "An organism intermediate in size and complexity 
+between a virus and a bacterium, and which is parasitic within the cells of 
+insects and ticks. Included here are all the chlamydias, also called 'PLT' for 
+psittacosis-lymphogranuloma venereum-trachoma.")
+
+(=>
+	(instance-of ?X Chlamydia)
+	(exists (?Y ?Z)
+		(and
+			(lives-in ?X ?Y)
+			(instance-of ?Y Cell)
+			(component-of ?Y ?Z)
+			(or
+				(instance-of ?Z Insect)
+				(instance-of ?Z Tick)))))
+
+(=>
+	(and
+		(instance-of ?X Chlamydia)
+		(located-at ?X ?Y))
+	(instance-of ?Y OrganicObject))
+
+
+(subclass-of Vertebrate Animal)
+(documentation Vertebrate "An animal which has a spinal column.")
+
+(=>
+	(instance-of ?X Vertebrate)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Spinal-Column))))
+
+(subclass-of Invertebrate Animal)
+(disjoint Vertebrate Invertebrate)
+(documentation Invertebrate "An animal which has no spinal column. This type has 
+no children in the network and is assigned to all invertebrate animals.")
+
+(subclass-of Arthropod Invertebrate)
+(subclass-of Arachnid Arthropod)
+(subclass-of Tick Arachnid)
+(subclass-of Insect Arthropod)
+(subclass-of Vertebrate-ColdBlooded Vertebrate)
+(subclass-of Vertebrate-WarmBlooded Vertebrate)
+(disjoint Vertebrate-WarmBlooded Vertebrate-ColdBlooded)
+(subclass-of Mammal Vertebrate-WarmBlooded)
+
+(subclass-of Alga Plant)
+(documentation Alga "A chiefly aquatic plant that contains chlorophyll, but does 
+not form embryos during development and lacks vascular tissue.")
+
+(=>
+	(instance-of ?X Alga)
+	(exists (?Y)
+		(and
+			(lives-in ?X ?Y)
+			(instance-of ?Y Water))))
+
+(=>
+	(instance-of ?X Alga)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Chlorophyll))))
+
+(=>
+	(instance-of ?X Alga)
+	(has-developmental-form ?X Incoherent))
+
+(subclass-of Amphibian Vertebrate-ColdBlooded)
+(disjoint Amphibian Reptile)
+(documentation Amphibian "A cold-blooded, smooth-skinned vertebrate which 
+characteristically hatches as an aquatic larva, breathing by gills. When mature, 
+the amphibian breathes with lungs.")
+
+(=>
+	(instance-of ?X Amphibian)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Lungs))))
+
+(=>
+	(instance-of ?X Amphibian)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Smooth-Skin))))
+
+(=>
+	(instance-of ?X Amphibian)
+	(has-developmental-form ?X Aquatic-Larva))
+
+(subclass-of Bird Vertebrate-WarmBlooded)
+(disjoint Bird Mammal)
+(documentation Bird "A vertebrate having a constant body temperature and 
+characterized by the presence of feathers.")
+
+(=>
+	(instance-of ?X Bird)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Plumage)))) 
+
+(subclass-of Fish Vertebrate-ColdBlooded)
+(disjoint Fish Reptile)
+(documentation Fish "A cold-blooded aquatic vertebrate characterized by fins and 
+breathing by gills. Included here are fishes having either a bony skeleton, such 
+as a perch, or a cartilaginous skeleton, such as a shark, or those lacking a 
+jaw, such as a lamprey or hagfish.")
+
+(=>
+	(instance-of ?X Fish)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Gills)))) 
+
+(=>
+	(instance-of ?X Fish)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Fin)))) 
+
+(=>
+	(instance-of ?X Fish)
+	(exists (?Y)
+		(and
+			(lives-in ?Y ?X)
+			(instance-of ?Y Water))))
+
+(subclass-of Fungus Plant)
+(documentation Fungus "A eukaryotic organism characterized by the absence of 
+chlorophyll and the presence of a rigid cell wall. Included here are both slime 
+molds and true fungi such as yeasts, molds, mildews, and mushrooms.")
+
+(=>
+	(instance-of ?X Fungus)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Cell-Eurkaryotic))))
+
+(=>
+	(instance-of ?X Fungus)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y CellWall-Rigid))))
+
+(=>
+	(and
+		(instance-of ?X Fungus)
+		(located-at ?X ?Y))
+	(instance-of ?Y OrganicObject))
+	
+(subclass-of Human Mammal)
+(documentation Human "Modern man, the only remaining species of the Homo genus. 
+If a term describes a human being from the point of view of occupational, 
+family, social status, etc., then a type from the 'Group' hierarchy is assigned 
+instead.")
+
+(subclass-of Mammal Vertebrate-WarmBlooded)
+(documentation Mammal "A vertebrate having a constant body temperature and 
+characterized by the presence of hair, mammary glands and sweat glands.")
+
+(=>
+	(instance-of ?X Mammal)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Hair))))
+
+(=>
+	(instance-of ?X Mammal)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Mammary-Gland))))
+
+(=>
+	(instance-of ?X Mammal)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Sweat-Gland))))
+
+(subclass-of Reptile Vertebrate-ColdBlooded)
+(documentation Reptile "A cold-blooded vertebrate having an external covering of 
+scales or horny plates.  Reptiles breathe by means of lungs and are generally 
+egg-laying.")
+
+(=>
+	(instance-of ?X Reptile)
+	(exists (?Y)
+		(and
+			(component-of ?Y ?X)
+			(instance-of ?Y Lungs))))
+
+(=>
+	(instance-of ?X Reptile)
+	(exists (?Y)
+		(and
+			(superficial-part-of ?Y ?X)
+			(or
+				(instance-of ?Y Scale)
+				(instance-of ?Y Horny-Plate)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;    SOCIAL HIERARCHY    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; This section contains definitions and axioms relating to social groups and 
+;; the relations between them.
+
+(subclass-of Group Collection)
+
+(=>
+   (instance-of ?X Group)
+   (exists (?Y)
+      (mereologicalMember ?Y ?X)))
+
+(subclass-of GroupOfPeople Group)
+
+(=>
+   (and
+      (instance-of ?X GroupOfPeople)
+      (mereologicalMember ?Y ?X))
+   (instance-of ?Y Person))
+
+(subclass-of Community GroupOfPeople)
+
+(subclass-of AgeGroup GroupOfPeople)
+(documentation AgeGroup "An individual or individuals classified according to their age.")
+
+(=>
+   (instance-of ?X AgeGroup)
+   (forall (?Y ?Z ?P ?Q)
+      (=>
+         (and
+            (mereologicalMember ?Y ?X)
+            (mereologicalMember ?Z ?X)
+            (age ?Y ?P)
+            (age ?Z ?Q))
+         (equal ?P ?Q))))
+
+(subclass-of FamilyGroup GroupOfPeople)
+(documentation FamilyGroup "An individual or individuals classified according to their 
+family relationships or relative position in the family unit.")
+
+(=>
+   (instance-of ?X FamilyGroup)
+   (forall (?Y ?Z)
+      (=>
+         (and
+            (mereologicalMember ?Y ?X)
+            (mereologicalMember ?Z ?X))
+         (familyRelation ?Y ?Z))))
+
+(instance-of familyRelation EquivalenceRelation)
+(nth-domain familyRelation 1 Animal)
+(nth-domain familyRelation 2 Animal)
+(documentation familyRelation "This a very general predicate which simply states that there is some sort of blood tie between the two arguments.")
+
+(instance-of citizen-of BinaryRelation)
+(nth-domain citizen-of 1 Person)
+(nth-domain citizen-of 2 Nation)
+(documentation citizen-of "(citizen-of ?X ?Y) means that ?X is a citizen of the country ?Y.")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; TEMPORAL DEFINITIONS/AXIOMS ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; The first part of this section contains definitions and axioms for 'point in 
+;; time', 'time interval', and relations between these temporal notions.  Most 
+;; of these definitions and axioms were derived from Allen.  This part was 
+;; extensively revised on the basis of comments from Pat Hayes.  The second part of 
+;; this section is an attempt to incorporate the Simple-Time ontology on the 
+;; Ontolingua server into the merged ontology.
+
+;; Necessary intermediate constants
+
+(subclass-of TimeInterval TemporalMeasure)
+(documentation TimeInterval "An interval of time.")
+
+(subclass-of TimePoint TimeMeasure)
+(documentation TimePoint "A TimePoint is not a measurement of time, nor is it a 
+specification of time.  It is the point in time. The TimePoints at which events 
+occur can be known with various degrees of precision and approximation, but 
+conceptually TimePoints are point-like and not interval-like.  That is, it 
+doesn't make sense to talk about what happens during a TimePoint, or how long 
+the TimePoint lasts.")
+
+(subclass-of TimeMeasure Unit-Of-Measure)
+(subclass-of TimeMeasure-Duration TimeMeasure)
+(subclass-of TimeMeasure-Position TimeMeasure)
+
+;; Definitions of basic temporal relations
+
+(instance-of BeginFn TemporalRelation)
+(instance-of BeginFn UnaryFunction)
+(nth-domain BeginFn 1 TimeInterval)
+(range BeginFn TimePoint)
+(documentation BeginFn "A function that maps a time interval to the point of 
+time at which the interval begins")
+
+(instance-of EndFn TemporalRelation)
+(instance-of EndFn UnaryFunction)
+(nth-domain EndFn 1 TimeInterval)
+(range EndFn TimePoint)
+(documentation EndFn "A function that maps a time interval to the point of time 
+at which the interval ends")
+
+(instance-of starts TemporalRelation)
+(instance-of starts BinaryRelation)
+(nth-domain starts 1 TimeInterval)
+(nth-domain starts 2 TimeInterval)
+(documentation starts "Relates one time interval to another time interval with 
+which the first shares the same initial time point and of which the first is a 
+proper part")
+
+;; Axiom specifying the meaning of 'starts'
+
+(<=> 
+   (starts ?t1 ?t2)
+   (and 
+      (equal
+         (BeginFn ?t1)
+	   (BeginFn ?t2))
+      (before
+         (EndFn ?t1)
+  	   (EndFn ?t2))))
+
+;; Definition of 'finishes'
+
+(instance-of finishes TemporalRelation)
+(instance-of finishes BinaryRelation)
+(nth-domain finishes 1 TimeInterval)
+(nth-domain finishes 2 TimeInterval)
+(documentation finishes "Relates one time interval to another time interval with 
+which the first shares the same terminal time point and of which the first is a 
+proper part")
+
+;; Axiom specifying the meaning of 'finishes'
+
+(<=>
+   (finishes ?t1 ?t2)
+   (and
+      (before
+         (BeginFn ?t2)
+         (BeginFn ?t1))
+      (equal
+         (EndFn ?t2)
+         (EndFn ?t1))))
+
+;; Note that the definition of 'before' below has been broadened from its 
+;; statement in Allen.  The selectional restrictions for both arguments are now 
+;; 'TemporalEntity' instead of 'TimeInterval'.
+
+(instance-of before TemporalRelation)
+(instance-of before IrreflexiveRelation)
+(instance-of before TransitiveRelation)
+(nth-domain before 1 TemporalEntity)
+(nth-domain before 2 TemporalEntity)
+(documentation before "Means that the first temporal quantity precedes the 
+second, and there is no overlap between the two quantities")
+
+;;  Definition of 'beforeEq', from Chris Menzel.  
+
+(subrelation-of beforeEq before)
+(nth-domain beforeEq 1 TimePoint)
+(nth-domain beforeEq 2 TimePoint)
+(documentation beforeEq "Means that the first timepoint either is identical with 
+the second or occurs before it in time")
+
+;;  Axiom specifying the full meaning of 'beforeEq'.
+
+(<=> 
+   (beforeEq ?t1 ?t2)
+   (and 
+      (instance-of ?t1 TimePoint) 
+      (instance-of ?t2 TimePoint)
+      (or 
+         (before ?t1 ?t2) 
+         (equal ?t1 ?t2))))
+
+;; Definition of the relation 'overlaps-TimeInterval-proper'
+
+(instance-of overlaps-TimeInterval-proper TemporalRelation)
+(instance-of overlaps-TimeInterval-proper BinaryRelation)
+(nth-domain overlaps-TimeInterval-proper 1 TimeInterval)
+(nth-domain overlaps-TimeInterval-proper 2 TimeInterval)
+(documentation overlaps "Means that the first time interval ends after the 
+beginning and before the ending of the second interval") 
+
+;; Axiom specifying the meaning of 'overlaps-TimeInterval-proper'
+   
+(<=> 
+   (overlaps-TimeInterval-proper ?t1 ?t2)
+   (and 
+      (before
+         (BeginFn ?t2)
+         (BeginFn ?t1))
+      (before
+         (BeginFn ?t2)
+         (EndFn ?t1))
+      (before
+         (EndFn ?t1)
+         (EndFn ?t2))))
+
+;; Definition and axiom for 'overlaps-TimeInterval-general'.  Note that this 
+;; relation was extracted from Russell-Norvig's ontology.
+
+(instance-of overlaps-TimeInterval-general TemporalRelation)
+(instance-of overlaps-TimeInterval-general BinaryRelation)
+(nth-domain overlaps-TimeInterval-general 1 TimeInterval)
+(nth-domain overlaps-TimeInterval-general 2 TimeInterval)
+(documentation overlaps-TimeInterval-general "Means that the two time intervals 
+have some time interval in common")
+
+(<=>
+   (overlaps-TimeInterval-general ?t1 ?t2)
+   (and
+      (exists ?t3
+        (and
+          (during ?t3 ?t1)
+          (during ?t3 ?t2)))))
+
+;; Definition of the relation 'meets'
+
+(instance-of meets TemporalRelation)
+(instance-of meets BinaryRelation)
+(nth-domain meets 1 TimeInterval)
+(nth-domain meets 2 TimeInterval)
+(documentation meets "Means that the terminal point of the first interval is the 
+initial point of the second interval")
+
+;; Axiom specifying the meaning of 'meets'
+
+(<=> 
+   (meets ?t1 ?t2)
+   (equal 
+      (EndFn ?t1)
+      (BeginFn ?t2)))
+
+;; Extensionality Axiom for 'equal'
+
+(=>
+  (and
+    (equal
+      (BeginFn ?t1)
+      (BeginFn ?t2))
+    (equal
+      (EndFn ?t1)
+      (EndFn ?t2)))
+    (equal ?t1 ?t2))
+
+;; Definition of 'during'
+
+(instance-of during TemporalRelation)
+(instance-of during BinaryRelation)
+(nth-domain during 1 TimeInterval)
+(nth-domain during 2 TimeInterval)
+(documentation during "Means that the first time interval starts after and ends 
+before the second time interval")
+
+;; Axiom specifying the meaning of 'during'
+   
+(=> 
+   (during ?t1 ?t2)
+   (and 
+      (endof ?t1 ?e1)
+      (endof ?t2 ?e2)
+      (lessThan ?e1 ?e2)
+      (startof ?t1 ?s1)
+      (startof ?t2 ?s2)
+      (greaterThan ?s1 ?s2)))
+
+;; Definition of 'in-TimeInterval'
+
+(instance-of in-TimeInterval TemporalRelation)
+(instance-of in-TimeInterval BinaryRelation)
+(nth-domain in-TimeInterval 1 TimeInterval)
+(nth-domain in-TimeInterval 2 TimeInterval)
+(documentation in-TimeInterval "Means that the first time interval is a proper 
+part of the second time interval")
+
+(<=>
+   (in-TimeInterval ?t1 ?t2)
+   (or
+      (during ?t1 ?t2)
+      (starts ?t1 ?t2)
+      (finishes ?t1 ?t2)))
+
+
+;; Axiom concerning 'meets', 'during', and 'overlaps'
+
+(=> 
+  (and
+    (meets ?t1 ?t2)
+    (during ?t2 ?t3))
+  (or
+    (overlaps ?t1 ?t3)
+    (during ?t1 ?t3)
+    (meets ?t1 ?t3)))
+
+;; The following definitions and axioms (down to the next section break) cover 
+;; the content in the Simple-Time ontology on the Ontolingua server.
+
+(instance-of time TemporalRelation)
+(instance-of time BinaryRelation)
+(nth-domain time 1 Physical)
+(nth-domain time 2 TimeMeasure-Position)
+(documentation time "A general relation that specifies, at any level of 
+resolution, the time at which a particular thing occurs.")
+
+(instance-of date BinaryRelation)
+(nth-domain date 1 Physical)
+(nth-domain date 2 Day)
+(subrelation-of date time)
+(documentation date "A binary relation that specifies a point in absolute 
+calendar time, at the resolution of one day, for a particular thing.")
+
+(instance-of birthTime BinaryRelation)
+(nth-domain birthTime Organism)
+(nth-domain birthTime TimeMeasure-Position)
+(subrelation-of birthTime time)
+(documentation birthTime "A binary relation that specifies the time at which 
+a particular organism was born.")
+
+(instance-of deathTime BinaryRelation)
+(nth-domain deathTime Organism)
+(nth-domain deathTime TimeMeasure-Position)
+(subrelation-of deathTime time)
+(documentation deathTime "A binary relation that specifies the time at which 
+a particular organism died.")
+
+(instance-of YearFn TemporalRelation)
+(instance-of YearFn UnaryFunction)
+(nth-domain YearFn 1 NaturalNumber)
+(range YearFn Year)
+(documentation YearFn "A unary function that maps a number to the corresponding 
+calendar year.")
+
+(instance-of MonthFn TemporalRelation)
+(instance-of MonthFn BinaryFunction)
+(nth-domain MonthFn 1 NaturalNumber)
+(nth-domain MonthFn 2 Year)
+(range MonthFn Month)
+(documentation MonthFn "A binary function that maps a number and a year to the 
+corresponding month of the year.")
+
+(instance-of DayFn TemporalRelation)
+(instance-of DayFn BinaryFunction)
+(nth-domain DayFn 1 NaturalNumber)
+(nth-domain DayFn 2 Month)
+(range DayFn Day)
+(documentation DayFn "A binary function that maps a number and a month to the 
+corresponding day of the month.")
+
+(instance-of HourFn TemporalRelation)
+(instance-of HourFn BinaryFunction)
+(nth-domain HourFn 1 PositiveRealNumber)
+(nth-domain HourFn 2 Day)
+(range HourFn "A binary function that maps a number and a day to the 
+corresponding hour of the day.")
+
+(instance-of MinuteFn TemporalRelation)
+(instance-of MinuteFn BinaryFunction)
+(nth-domain MinuteFn 1 PositiveRealNumber)
+(nth-domain MinuteFn 2 Hour)
+(range MinuteFn Minute)
+(documentation MinuteFn "A binary function that maps a number and a hour to the 
+corresponding minute of the hour.")
+
+(instance-of SecondFn TemporalRelation)
+(instance-of SecondFn BinaryFunction)
+(nth-domain SecondFn 1 PositiveRealNumber)
+(nth-domain SecondFn 2 Minute)
+(range SecondFn Second)
+(documentation SecondFn "A binary function that maps a number and a minute to 
+the corresponding second of the minute.")
+
+(subclass-of Year TimeMeasure-Position)
+(subclass-of Month TimeMeasure-Position)
+
+(=>
+	(instance-of (MonthFn ?X ?Y) Month)
+	(lessThanOrEqualTo ?X 12))
+
+(subclass-of Day TimeMeasure-Position)
+
+(=>
+	(instance-of (DayFn ?X ?Y) Day)
+	(lessThanOrEqualTo ?X 31))
+
+(subclass-of Hour TimeMeasure-Position)
+
+(=>
+	(instance-of (HourFn ?X ?Y) Hour)
+	(lessThanOrEqualTo ?X 24))
+
+(subclass-of Minute TimeMeasure-Position)
+
+(=>
+	(instance-of (MinuteFn ?X ?Y) Minute)
+	(lessThanOrEqualTo ?X 60))
+
+(subclass-of Second TimeMeasure-Position)
+
+(=>
+	(instance-of (SecondFn ?X ?Y) Second)
+	(lessThanOrEqualTo ?X 60))
+
+(<=>
+	(instance-of ?X BinaryRelation)
+	(valence ?X 2))
+
+(<=>
+	(instance-of ?X TernaryRelation)
+	(valence ?X 3))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; MEREOTOPOLOGICAL DEFINITIONS/AXIOMS ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Most of this content is taken from Barry Smith's and Nicola Guarino's papers.
+
+;;  Axiom about the extensionality of 'part-of' from Smith and Sowa
+
+(=>
+     (forall (?Z)
+          (=>
+               (part-of ?Z ?X)
+               (overlaps ?Z ?Y)))
+     (part-of ?X ?Y))
+
+;; Axiom relating 'part-of' and 'equal'
+
+(=>
+   (and
+      (part-of ?X ?Y)
+      (part-of ?Y ?X))
+   (equal ?X ?Y))
+
+;; Definition of 'overlaps'
+
+(instance-of overlaps SpatialRelation)
+(instance-of overlaps BinaryRelation)
+(nth-domain overlaps 1 Physical)
+(nth-domain overlaps 2 Physical)
+(documentation overlaps "?x overlaps ?y iff ?x and ?y have some parts in common. 
+This is a reflexive and symmetric (but not transitive) relation.")
+
+;;  Axiom specifying the meaning of 'overlaps' (from Guarino)
+
+(<=>
+	(overlaps ?X ?Y)
+     	(exists (?Z)
+          	(and
+               	(part-of ?Z ?X)
+               	(part-of ?Z ?Y))))
+
+;; Definition of 'proper-part-of' 
+
+(subrelation-of proper-part-of part-of)
+(documentation proper-part-of "?x is a proper part of ?y iff ?x is a part of ?y 
+other than ?y itself. This is a transitive and asymmetric (hence irreflexive) 
+relation.")
+
+;; Axiom specifying part of the meaning of 'proper-part-of' (from Smith)
+
+(<=> 
+	(proper-part-of ?X ?Y)
+     	(and
+		(part-of ?X ?Y)
+		(not
+			(part-of ?Y ?X))))
+
+;; Definition of 'proper-overlaps' 
+
+(subrelation-of proper-overlaps overlaps)
+
+;; Axiom specifying part of the meaning of 'proper-overlaps' (from Guarino)
+
+(=>
+	(proper-overlaps ?X ?Y)
+	(and
+		(not
+			(part-of ?X ?Y))
+		(not
+			(part-of ?Y ?X))))
+
+;; Definition of 'interior-part-of' 
+
+(subrelation-of interior-part-of part-of)
+
+;; Axiom specifying part of the meaning of 'interior-part-of' (from Smith)
+
+(=>
+	(interior-part-of ?X ?Y)
+     	(forall (?Z)
+               	(=> 
+                    	(boundary ?Z ?Y)
+                    	(not
+                         	(overlaps ?X ?Z)))))
+
+;;  Definition of 'superficial-part-of' (from Casati and Varzi)
+
+(subrelation-of superficial-part-of part-of)
+(documentation superficial-part-of "?x is a superficial part of ?y iff ?x is a 
+part of ?y that has no interior parts of its own (or, intuitively, that only 
+overlaps those parts of y that are externally connected with the geometric 
+complement of y). This too is a transitive relation closed under sum-of and 
+prod-of.")
+
+;; Axiom specifying part of the meaning of 'superficial-part-of' (from Casati 
+;; and Varzi)
+
+(=> 
+	(superficial-part-of ?x ?y)
+	(not
+		(exists (?z)
+			(interior-part-of ?z ?x))))
+
+;; Definition of 'surface-of' (from Casati and Varzi)
+
+(subrelation-of surface-of superficial-part-of)
+(documentation surface-of "?x is a surface of ?y iff ?x is a maximally connected 
+superficial part of y.")
+
+;; Axiom specifying part of the meaning of 'surface-of' (from Casati and Varzi)
+
+(=> 
+	(surface-of ?x ?y)
+	(and 
+		(instance-of ?x SelfConnectedObject)
+		(forall (?z)
+			(=> 
+				(and 
+					(superficial-part-of ?z ?y)
+					(instance-of ?z SelfConnectedObject))
+					(=>
+						(connected ?z ?x)
+						(part-of ?z ?x))))))
+
+;; Definitions and Axioms for the notions of mereological sum, product, and 
+;; difference.
+
+(instance-of MereologicalFn SpatialRelation)
+(instance-of MereologicalFn BinaryFunction)
+(nth-domain MereologicalFn 1 Physical)
+(nth-domain MereologicalFn 2 Physical)
+(documentation MereologicalFn "This is an umbrella relation for 
+MereologicalSumFn, MereologicalProductFn, and MereologicalDifferenceFn.") 
+
+(subrelation-of MereologicalSumFn MereologicalFn)
+
+(<=>
+     (equal ?Z (MereologicalSumFn ?X ?Y))
+     (forall (?W)
+	       (<=>
+	            (overlaps ?W ?Z)
+		    (or
+	  	         (overlaps ?W ?X)
+			 (overlaps ?W ?Y)))))
+
+(subrelation-of MereologicalProductFn MereologicalFn)
+
+(<=>
+     (equal ?Z (MereologicalProductFn ?X ?Y))
+     (forall (?W)
+	       (<=>
+	            (part-of ?W ?Z)
+		    (and
+	  	         (part-of ?W ?X)
+			 (part-of ?W ?Y)))))
+
+(subrelation-of MereologicalDifferenceFn MereologicalFn)
+
+(<=>
+     (equal ?Z (MereologicalDifferenceFn ?X ?Y))
+     (forall (?W)
+	       (<=>
+	            (part-of ?W ?Z)
+		    (and
+	  	         (part-of ?W ?X)
+                         (not
+			      (overlaps ?W ?Y))))))
+	  
+
+
+;;  Definition of 'MaximalBoundaryFn'
+
+(instance-of MaximalBoundaryFn SpatialRelation)
+(instance-of MaximalBoundaryFn UnaryFunction)
+(nth-domain MaximalBoundaryFn 1 Physical)
+(range MaximalBoundaryFn Physical)
+
+(<=>
+     (equal ?Z (MaximalBoundaryFn ?X))
+     (forall (?W)
+               (=>
+	            (boundary ?W ?X)
+		    (part-of ?W ?Z))))
+
+;;  Definition of 'ClosureFn' (of an object)
+
+(equal
+	(ClosureFn ?X)
+     	(MereologicalSumFn ?X (MaximalBoundaryFn ?X)))
+
+;;  Basic axioms for a topology based on bona fide boundaries - these are the 
+;;  result of mereologizing the standard Kuratowski axioms for closure 
+;;  operators.
+
+(part-of ?X (ClosureFn ?X))
+
+(part-of (ClosureFn (ClosureFn ?X)) (ClosureFn ?X))
+
+(equal
+	(ClosureFn (MereologicalSumFn ?X ?Y)) 
+	(MereologicalSumFn (ClosureFn ?X) (ClosureFn ?Y)))
+
+;;  Definition of the relation of 'connected' from Smith
+
+(instance-of connected SpatialRelation)
+(instance-of connected BinaryRelation)
+(nth-domain connected 1 Physical)
+(nth-domain connected 2 Physical)
+
+(<=>
+	(connected ?X ?Y)
+     	(overlaps (ClosureFn ?X) (ClosureFn ?Y)))
+
+;;  Definition of 'externally-connected' (i.e. connection where the objects 
+;; themselves do not overlap with one another).
+
+(subrelation-of externally-connected connected)
+(documentation externally-connected "Means that the arguments of the relation 
+are "connected", but that they do not overlap.")
+
+(=>
+	(externally-connected ?X ?Y)
+     	(not
+        	(overlaps ?X ?Y)))
+
+;;  Definition of the class 'SelfConnectedObject' (from Casati and Varzi):  ?x 
+;;  is a SelfConnected just in case ?x does not consist of two or more 
+;;  disconnected parts.
+
+(subclass-of SelfConnectedObject Object)
+(documentation SelfConnectedObject "Something is a SelfConnectedObject just in 
+case it does not consist of two or more disconnected parts.")
+
+(<=> 
+	(instance-of ?X SelfConnectedObject)
+	(forall (?Y ?Z)
+		(=> 
+			(equal ?X (MereologicalSumFn ?Y ?Z))
+			(connected ?Y ?Z))))
+
+;;  Definition of the class 'ClosedObject'
+
+(subclass-of ClosedObject Object)
+
+(<=>
+	(instance-of ?X ClosedObject)
+     	(equal ?X (ClosureFn ?X)))
+
+;;  Definition of 'BoundaryClass' (the class of boundaries)
+
+(subclass-of BoundaryClass Object)
+(documentation BoundaryClass "This is just a convenient way of aggregating all 
+of the boundaries of objects.")
+
+(<=>
+	(instance-of ?X BoundaryClass)
+     	(exists (?Y)
+          	(boundary ?X ?Y)))
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;;    POSITIONS    ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+
+;; This section aligns the content in the Positions ontology of the ITBM-CRN 
+;; group.  This content is, for the most part, a set of predicates for 
+;; describing spatial relations.  Very few axioms are given.  Eventually, the 
+;; meaning of all of these predicates should be cashed out with the relations 
+;; defined in the earlier section "Mereotopological Definitions/Axioms".
+
+(instance-of position SpatialRelation)
+(instance-of position BinaryRelation)
+(nth-domain position 1 Object)
+(nth-domain position 2 Object)
+(documentation position "(position ?X ?Y) means that ?X is positioned with 
+respect to ?Y in some way.  This is a very general predicate whose main utility 
+is to function as an umbrella for the more specific positional predicates.")
+
+(subrelation-of above position)
+(documentation above "This is a cognitive primitive, derived from the up/down 
+schema and not involving contact.  A possible formalization of the medical 
+meaning must take into account the conventional body directions; though, there 
+is no unique direction hierarchy guiding the application of this relation to 
+anatomical spaces.")
+
+(=>
+  (above ?X ?Y)
+  (not
+    (connected ?X ?Y)))
+
+(subrelation-of adjacent position)
+(documentation adjacent "Close to, near or abutting another physical unit with 
+no other structure of the same kind intervening. This includes adjoins, abuts, 
+is contiguous to, is juxtaposed, and is close to.") 
+
+(=>
+  (adjacent ?X ?Y)
+  (or
+    (near ?X ?Y)
+    (connected ?X ?Y)))
+
+(subrelation-of along position)
+(documentation along "(along ?X ?Y) means that an object ?X shares the region of 
+?Y at least as far the extension of one dimension is concerned.")
+
+(subrelation-of behind position)
+(documentation behind "This is a cognitive primitive, derived from the 
+front/back schema; a possible formalization of the medical meaning must take 
+into account the conventional body directions; though, there is no unique 
+direction hierarchy guiding the application of this relation to anatomical 
+spaces.")
+
+(subrelation-of below position)
+
+(<=>
+  (below ?X ?Y)
+  (above ?Y ?X))
+
+(instance-of between SpatialRelation)
+(instance-of between TernaryRelation)
+(nth-domain between 1 Object)
+(nth-domain between 2 Object)
+(nth-domain between 3 Object)
+
+(=>
+  (between ?X ?Y ?Z)
+  (and
+    (left-of ?Y ?X)
+    (left-of ?X ?Z)))
+
+(subrelation-of contains position)
+(documentation contains "The surrounding relation for masses.")
+
+(=>
+  (contains ?X ?Y)
+  (forall (?Z)
+    (=>
+      (part-of ?Z ?Y)
+      (exists ?U
+        (interior-part-of ?U ?X)
+        (located-at ?Z ?U)))))
+
+(subrelation-of crosses-over position)
+(documentation crosses-over "(crosses-over ?X ?Y) means that X crosses-through 
+the region of y, without overlapping y.")
+
+(=>
+  (crosses-over ?X ?Y) 
+  (not
+    (connected ?X ?Y)))
+
+(subrelation-of crosses-through position)
+(documentation crosses-through "Here: x crosses-through y equals to x overlaps y 
+along at least one whole dimension (length, width or depth), say the interiors 
+of x and y overlap.") 
+
+(subrelation-of left-of position)
+(documentation left-of "This is a cognitive primitive, derived from the 
+left/right schema; a possible formalization of the medical meaning must take 
+into account the conventional body directions; though, there is no unique 
+direction hierarchy guiding the application of this relation to anatomical 
+spaces.")
+
+(subrelation-of near position)
+(documentation near "Specialized common sense adjacency without contact; 
+based on implicit scale and distance less than the diameter of the smaller 
+object; alternatively, based on the smallest distance among the higher 
+granularity objects.  Eg, in cell C near object P, P is the less distant object 
+of a higher granularity than C.")
+
+(subrelation-of on position)
+(documentation on "This is a cognitive primitive, derived from the up/down 
+schema and involving contact.  A possible formalization of the medical meaning 
+must take into account the conventional body directions; though, there is no 
+unique direction hierarchy guiding the application of this relation to 
+anatomical spaces.")
+
+(=>
+  (on ?X ?Y)
+  (connected ?X ?Y))
+
+(subrelation-of right-of position)
+
+(<=>
+  (right-of ?X ?Y)
+  (left-of ?Y ?X))
+
+(subrelation-of surrounds position)
+(documentation surrounds "limits, bounds, confines, encloses or circumscribes, 
+but excluding the containment of substances. Here it is defined by stating that 
+x surrounds y iff the interior of x wholly contains y.")
+
+(subrelation-of traverses position)
+(documentation traverses "Crosses or extends across another physical structure 
+or area. This includes crosses over and crosses through.")
+
+(subrelation-of under position)
+
+(=>
+  (under ?X ?Y)
+  (or
+    (on ?Y ?X)
+    (above ?Y ?X)))
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; THEORY OF HOLES ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+
+;; What follows is essentially a SUO-KIF translation of Casati and Varzi's 
+;; formal theory of holes that has been aligned with Sowa's upper ontology.
+
+;;Definition of binary relation 'hole-in'
+
+(instance-of hole-in SpatialRelation)
+(instance-of hole-in BinaryRelation)
+(nth-domain hole-in 1 Hole)
+(nth-domain hole-in 2 Object)
+(documentation hole-in "The main thesis is that a hole is an immaterial body 
+located at the surface (or at some surface) of a material object. Since the 
+notion of a surface is essentially a topological one, and since the property of 
+being immaterial is reflected in the morphological property of being fillable, 
+the ontological basis is concerned first and foremost with the general 
+dependence of a hole on its host.")
+
+;; Definition of class 'Hole'
+
+(subclass-of Hole Region)
+(documentation Hole "X is a hole iff it is a hole in something.  Since every 
+hole is ontologically dependent on its host (i.e., the object in which it is a 
+hole), being a hole is defined as being a hole in something.")
+
+;; Axioms relating 'hole-in' to 'Hole'
+
+(<=> 
+	(instance-of ?x Hole)
+	(exists (?Y)
+		(hole-in ?x ?y)))
+
+(=> 
+	(hole-in ?x ?y)
+        (not 
+		(instance-of ?y Hole)))
+
+;; Definitions of 'hole-part-of' and 'proper-hole-part-of'
+
+(subrelation-of hole-part-of part-of)
+(nth-domain hole-part-of 1 Hole)
+(nth-domain hole-part-of 2 Hole)
+(documentation hole-part-of "?x is a hole-part of ?y iff ?x is a hole that is a 
+part of ?y.  This is a partial ordering, like `part-of'; it applies only when ?y 
+is itself a (part of a) hole.")
+
+(subrelation-of proper-hole-part-of hole-part-of)
+(subrelation-of proper-hole-part-of proper-part-of)
+(documentation proper-hole-part-of "?x is a proper hole-part of ?y iff ?x is a 
+hole that is a proper part of ?y.  This is transitive, asymmetric, and 
+irreflexive relation.")
+
+;; Mereological Axioms
+
+;; No hole overlaps its own host (though the sum of a hole and its host may be a 
+;; legitimate host for different holes: e.g. the sum of a doughnut ?y and its 
+;; hole ?x -- if such a sum exists -- will not be a host of ?x, but it will be a 
+;; host of, say, a cavity that may be hidden inside ?y.
+
+(=> 
+	(hole-in ?x ?y)
+        (not 
+		(overlaps ?x ?y)))
+
+;; Any two hosts of a hole have a common proper part that entirely hosts the 
+;; hole.  (Of course, intuitively a hole has one host; but if we allow for 
+;; mereological sums or splittings, then every hole has a virtually infinite 
+;; class of hosts, partially ordered by proper-part-of.
+
+(=> 
+	(and 
+		(hole-in ?x ?y)
+              	(hole-in ?x ?z))
+      	(exists (?w)
+               	(and 
+			(proper-part-of ?w (MereologicalProductFn ?x ?y))
+                        (hole-in ?x ?w))))
+
+;; A common host of two holes hosts all hole-parts of the sum of those holes.
+
+(=> 
+	(and 
+		(hole-in ?x ?y)
+      		(hole-in ?z ?y))
+     	(forall (?w)
+        	(=> 
+			(hole-part-of ?w (MereologicalSumFn ?x ?z))
+                        (hole-in ?w ?y))))
+
+;; Any object that includes the host of a hole is a host of that hole, 
+;; unless its parts also include parts of that very hole.
+
+(=> 
+	(and 
+		(hole-in ?x ?y)
+             	(part-of ?y ?z))
+      	(or
+		(overlaps ?x ?z)
+                (hole-in ?x ?z)))
+
+;; Overlapping holes have overlapping hosts. (However, two holes may occupy 
+;; the same region, or part of the same region, without sharing any parts.  
+;; Holes are immaterial, and can penetrate one another; mereological overlapping 
+;; is not implied by spatial co-localization.)
+
+(=> 
+	(and 
+		(hole-in ?x ?y)
+             	(hole-in ?z ?w)
+             	(overlaps ?x ?z))
+      	(overlaps ?y ?w))
+
+;; No hole is atomic (though holes need not have proper hole-parts; 
+;; otherwise every hole would correspond to a pile of infinitely many, 
+;; gradually smaller holes).
+            
+(=> 
+	(instance-of ?x Hole)
+       	(exists (?y)
+       		(proper-part-of ?y ?x)))
+
+;; Topological Definitions
+
+;; Definition of 'PrincipalHostFn'
+
+(instance-of PrincipalHostFn SpatialRelation)
+(instance-of PrincipalHostFn UnaryFunction)
+(nth-domain PrincipalHostFn 1 Hole)
+(range PrincipalHostFn Object)
+(documentation PrincipalHostFn "The principle host of ?x is ?x's maximally 
+connected host (a notion taken here to be defined only when ?x is a hole).  We 
+may intuitively regard this as the host of the hole, every other host being 
+either a topologically scattered mereological aggregate including the principal 
+host or a potential part of this latter.")
+
+;; Axiom defining 'PrincipalHostFn'
+
+(=>
+     (equal ?Y (PrincipalHostFn ?x))
+     (forall (?w)
+		(<=> 
+			(overlaps ?w ?y)
+			(exists (?u)
+				(and 
+					(hole-in ?x ?u)
+				       	(instance-of ?u SelfConnectedObject)
+				       	(overlaps ?w ?u))))))
+
+;; Definition of 'GenusFn'
+
+(instance-of GenusFn SpatialRelation)
+(instance-of GenusFn UnaryFunction)
+(nth-domain GenusFn 1 Object)
+(range GenusFn 1 NonegativeInteger)
+(documentation GenusFn "Intuitively, the genus of an object is the maximum 
+number of simultaneous cuts that can be made without separating the object into 
+two unconnected pieces (0 if it is a sphere, 1 if it is a torus, etc.). This 
+notion could be defined in terms of connected-with, but that would lead us too 
+far afield.")
+
+;; Definition of 'cavity-in'
+
+(subrelation-of cavity-in hole-in)
+(documentation cavity-in "?x is a cavity in ?y iff ?x is an internal hole 
+enveloped by an entire host surface. A cavity is a topologically nonerasable 
+discontinuity.")
+
+;; Axiom defining 'cavity-in'
+
+(=> 
+	(cavity-in ?x ?y)
+	(exists (?z)
+		(and 
+			(surface-of ?z ?y)
+			(forall (?w)
+				(=> 
+					(part-of ?w ?z)
+					(connected ?x ?w))))))
+
+;; Definition of 'tunnel-through'
+
+(subrelation-of tunnel-through hole-in)
+(documentation tunnel-through "A tunnel (or a perforation) through a host is 
+also a topologically non-erasable hole, characterized by the fact that its host 
+has no connected part of genus 0 entirely hosting the hole. Note that a hole may 
+at once be a tunnel and a cavity: it may be a cavity-tunnel, e.g.,. a 'toroidal' 
+hole.")
+
+;; Axiom defining 'tunnel-through'
+
+(=> 
+	(tunnel-through ?x ?y)
+	(forall (?z)
+		(=> 
+			(and 
+				(part-of ?z ?y)
+				(instance-of ?z SelfConnectedObject)
+				(hole-in ?x ?z))
+			(not 
+			     	(equal (GenusFn ?x) 0)))))
+
+
+;; Definition of 'hollow-in'
+
+(subrelation-of hollow-in hole-in)
+(documentation hollow-in "?x is a hollow (or a depression) in ?y iff ?x is a 
+hole in ?y which is neither a tunnel through ?y nor a cavity in ?y. This is 
+always an external, topologically erasable disturbance, characterized by the 
+fact that the relevant host must have a part of genus 0 entirely hosting the 
+hole.")
+
+(=> 
+	(hollow-in ?x ?y)
+	(and
+		(not 
+			(tunnel-through ?x ?y))
+		(not 
+			(cavity-in ?x ?y))))
+
+
+;; Topological Axioms
+
+;; Holes are self-connected; i.e., there are no scattered holes.
+
+(=> 
+	(instance-of ?x Hole)
+       	(instance-of ?x SelfConnectedObject))
+
+;; Holes are connected with their hosts.
+
+(=> 
+	(hole-in ?x ?y)
+       	(connected ?x ?y))
+
+;; Every hole has some self-connected host.
+
+(=> 
+	(instance-of ?x Hole)
+       	(exists (?y)
+       		(and 
+			(hole-in ?x ?y)
+                      	(instance-of ?y SelfConnectedObject))))
+
+;; No hole can have a proper hole-part that is externally connected with exactly 
+;; the same things as the hole itself.
+
+(=> 
+	(and 
+		(instance-of ?x Hole)
+               	(proper-hole-part-of ?y ?x))
+      	(exists (?z)
+            	(and 
+			(externally-connected ?x ?z)
+                      	(not 
+				(externally-connected ?y ?z)))))
+
+;; Morphological Definitions
+
+;; Definition of 'filled-by'
+
+(instance-of filled-by BinaryRelation)
+(nth-domain filled-by 1 Hole)
+(nth-domain filled-by 2 Object)
+(documentation filled-by "Holes can be filled; 'filled' here mean PERFECTLY 
+filled. Holes can be filled (without losing their status of holes) insofar as 
+they determine a (partially) concave discontinuity in the surface of their 
+host.")
+ 
+;; Definition of 'FillableHole'
+
+(subclass-of FillableHole Hole)
+(documentation FillableHole "?x is fillable if it can be (perfectly) filled by 
+something.")
+
+(=> 
+	(instance-of ?x FillableHole)
+	(Poss 
+		(exists (?y) 
+			(filled-by ?x ?y))))
+
+;; Definition of 'completely-filled-by'
+
+(subrelation-of completely-filled-by filled-by)
+
+(=> 
+	(completely-filled-by ?x ?y)
+	(exists (?z)
+		(and 
+			(part-of ?z ?y)
+			(filled-by ?x ?z))))
+
+(documentation completely-filled-by "?x is completely filled by ?y iff there is 
+some part of ?y that perfectly fills ?x. This is a monotonic relation, in the 
+sense that if ?x is completely filled by ?y and ?y is a part of ?z, then ?x is 
+completely filled by ?z.")
+
+;; Definition of 'partially-filled-by'
+
+(instance-of partially-filled-by SpatialRelation)
+(instance-of partially-filled-by BinaryRelation)
+(nth-domain partially-filled-by 1 Hole)
+(nth-domain partially-filled-by 2 Object)
+(documentation partially-filled-by "?x is partially filled by ?y iff there is 
+some part of ?x that is completely filled by ?y. This too is a monotonic 
+relation, in the sense that if ?x is partially filled by ?y and ?y is part of 
+?z, then ?x is partially filled by ?z. Note that a partial filler need not be 
+wholly inside a hole (it may  stick out), which means that every complete filler 
+also qualifies as (a limit cases of) a partial one.")
+
+(=> 
+	(partially-filled-by ?x ?y)
+	(exists (?z)
+		(and 
+			(part-of ?z ?x)
+			(completely-filled-by ?z ?y))))
+
+
+;; Definition of 'properly-filled-by'
+
+(instance-of properly-filled-by SpatialRelation)
+(instance-of properly-filled-by BinaryRelation)
+(nth-domain properly-filled-by 1 Hole)
+(nth-domain properly-filled-by 2 Object)
+(documentation properly-filled-by "?x is properly (though perhaps incompletely) 
+filled by ?y iff some part of ?x is perfectly filled by ?y. properly-filled-by 
+is the dual of completely-filled-by, and is so related to partially-filled-by 
+that ?x is properly filled by ?y iff ?x is partially filled by every part of ?y. 
+(Thus, every perfect filler is both complete and proper in this sense.)")
+
+(=> 
+	(properly-filled-by ?x ?y)
+	(exists (?z)
+		(and 
+			(part-of ?z ?x)
+			(filled-by ?z ?y))))
+
+;; Definition of 'SkinFn'
+
+(instance-of SkinFn SpatialRelation)
+(nth-domain SkinFn 1 Hole)
+(range SkinFn Object)
+(documentation skin-of "The skin of ?x is the fusion of those superficial parts 
+of ?x's principal host with which ?x is externally connected (a notion that is 
+meant to apply only when ?x is a hole).")
+
+(=>
+     (equal ?Y (SkinFn ?X))
+     (forall (?z)
+		(<=> 
+			(overlaps ?z ?y)
+			(exists (?w)
+				(and 
+				      (superficial-part-of ?w (PrincipalHostFn ?x))
+				      (externally-connected ?x ?w)
+				      (overlaps ?z ?w))))))
+
+
+
+;; Definition of 'free-superficial-part-of'
+
+(subrelation-of free-superficial-part-of superficial-part-of)
+(documentation free-superficial-part-of "?w is a free superficial part of ?z 
+relative to ?x ; i.e., ?w is a superficial part of ?z that is not connected with 
+?x's host(s). (This notion is meant to apply only when ?x is a hole and ?z a 
+corresponding perfect filler.)")
+
+(=> 
+	(free-superficial-part-of ?x ?y ?z)
+	(not 
+		(connected ?x (SkinFn ?z))))
+
+
+
+;; Morphological Axioms
+
+;; Something is fillable just in case it is part of a hole; i.e., fillability is 
+;; an exclusive property of holes and their parts.
+
+(<=> 
+	(instance-of ?x FillableHole)
+       	(exists (?y)
+        	(and 
+			(instance-of ?y Hole)
+                       	(part-of ?x ?y))))
+
+;; Perfect fillers and fillable entities have no parts in common (rather, they 
+;; may occupy the same spatial region).
+
+(=> 
+	(and 
+		(filled-by ?x ?y)
+           	(instance-of ?z FillableHole))
+      	(not 
+		(overlaps ?y ?z)))
+
+;; A complete filler of (a part of) a hole is connected with everything 
+;; with which (that part of) the hole itself is connected.
+
+(=> 
+	(completely-filled-by ?x ?y)
+       	(forall (?z)
+   		(=> 
+			(connected ?z ?x)
+                  	(connected ?z ?y))))
+
+;; Every hole is connected with everything with which a proper filler of 
+;; the hole is connected. 
+
+(=> 
+	(and 
+		(properly-filled-by ?x ?y)
+          	(connected-with ?z ?y))
+     	(connected ?z ?x))
+
+;; A perfect filler of (a part of) a hole completely fills every proper 
+;; part of (that part of) that hole.
+
+(=> 
+	(and 
+		(filled-by ?x ?y)
+              	(proper-part-of ?z ?x))
+     	(completely-filled-by ?z ?y))
+
+;; Every proper part of a perfect filler of (a part of) a hole properly 
+;; fills (that part of) that hole.
+
+(=> 
+	(and 
+		(filled-by ?x ?y)
+              	(proper-part-of ?z ?y))
+     	(properly-filled-by ?y ?z))
+
+
+;;;;;;;;;;;
+;; NOTES ;;
+;;;;;;;;;;;
+
+;; We need to be able to distinguish instances of Continuant which are stuffs 
+;; (e.g. water, oxygen, sand) from instances of Continuant which are objects 
+;; (e.g. table, jacket, notebook).  From what I can see, there is no provision 
+;; for this distinction in Sowa's ontology.  Perhaps we could divide 
+;; 'Continuant' into two disjoint classes, viz. Continuant-Stuff and Continuant-
+;; Object.
+
+;; The following is a possible means of axiomatizing the distinction between 
+;; 'ContinuousObject' and 'CorpuscularObject' in the upper level ontology.  This 
+;; is borrowed from the Morphology ontology developed by ITBM-CNR (in particular 
+;; it is taken from the definitions of Heteromerous and Homeomerous in this 
+;; ontology).  The axioms are commented out for the time being, because 
+;; they are framed in terms of 'StuffType' which has not yet been included in 
+;; the ontology.
+
+;; (=>
+;;    (instance-of ?X CorpuscularObject)
+;;    (exists (?Y ?Z)
+;;       (and
+;;          (instance-of ?Y StuffType)
+;;          (instance-of ?Z StuffType)
+;;          (constituent-material-of ?Y ?X)
+;;          (constituent-material-of ?Z ?X)
+;;          (not (subclass-of ?Y ?Z))
+;;          (not (subclass-of ?Z ?Y)))))
+
+;; (=>
+;;    (instance-of ?X ContinuousObject)
+;;    (exists (?Y)
+;;       (and
+;;          (instance-of ?Y StuffType)
+;;          (constituent-material-of ?Y ?X)
+;;          (forall (?Z)
+;;             (=>
+;;                (and
+;;                   (instance-of ?Z StuffType)
+;;                   (constituent-material-of ?Z ?X)
+;;                (equal ?Z ?Y))))))           
+
+;; We may want to include something like the following axioms at some point.
+
+;;(=>
+;;     (playsRole ?Act ?Ent ?Role)
+;;     (capableOfDoing ?Ent ?Act ?Role))
+
+;;(=>
+;;     (and
+;;          (playsRole ?Act ?Res Resource)
+;;          (ends ?Act ?Time)
+;;          (holdsIn (STIB ?Time) (amountAvailable ?Res ?Amt1))
+;;          (holdsIn (STIF ?Time) (amountAvailable ?Res ?Amt2)))
+;;     (greaterThan ?Amt1 ?Amt2)) 
+
+;; The following is a provisional addition to the top level of the ontology.  
+;; The purpose of this addition is to accommodate normative notions.  If this 
+;; addition is embraced by the other SUO participants and if it is deemed 
+;; acceptable in other respects it will be commented out.
+
+;; (subclass-of Normative Entity)
+;; (subclass-of NormativeAttribute Normative)
+;; (subclass-of NormativeAttribute Abstract)
+;; (subclass-of Obligation NormativeAttribute)
+;; (documentation Obligation "This is just a placeholder for now.  It's not clear what 
+;; the real representation will be.  One possibility is to have it be a Microontology a 
+;; la Cyc.  The things that the Agent is obligated to make true are true in the Obligation.  
+;; Another possibility is to make Obligations individual propositions that the Agent must 
+;; make true, or individual actions the agent must perform.")
+;; (subclass-of Agreement NormativeAttribute)
+;; (documentation Agreement "The class of things which consititute an agreement 
+;; between two or more agents.  Agreements may be implicit or explicit.  They may 
+;; be written or verbal or gestural.")
+;; (subclass-of JudgementOfEtiquette NormativeAttribute)
+;; (subclass-of AestheticJudgement NormativeAttribute)
+;; (subclass-of InstitutionalObligation Obligation)
+;; (subclass-of PersonalObligation Obligation)
+;; (subclass-of ReligiousObligation InstitutionalObligation)
+;; (subclass-of LegalObligation InstitutionalObligation)
+;; (subclass-of RegulationOrLaw LegalObligation)
+;; (documentation RegulationOrLaw "An intellectual product resulting from legislative 
+;; or regulatory activity.")
+;;
+;; (=>
+;;    (instance-of ?X RegulationOrLaw)
+;;    (exists (?Y)
+;;       (and
+;;          (result ?Y ?X)
+;;          (instance-of ?Y RegulatoryActivity))))
+;;
+;; (=>
+;;    (instance-of ?X RegulationOrLaw)
+;;    (exists (?Y)
+;;       (and
+;;          (affects ?X ?Y)
+;;          (or
+;;             (instance-of ?Y Organization)
+;;             (instance-of ?Y Group)))))
+;;
+;; (subclass-of Contract Agreement)
+;; (documentation Contract "A formal agreement.")
+;; (subclass-of PurchaseContract Contract)
+;; (documentation PurchaseContract "An contract between two agents in which 
+;; one agent agrees to render the other some good or service in exchange for 
+;; currency.")
+;; (subclass-of ServiceContract Contract)
+;; (documentation ServiceContract "The class of contract where some agent agrees 
+;; to perform some service for another agent usually for some price")
+;; (subclass-of Warranty ServiceContract)
+;; (documentation Warranty "A class of contracts that state the cirumstances under 
+;; which defects in the product will corrected for no charge. These warrantees usually 
+;; include how long after the product is purchased that the agreement will hold and 
+;; what types of things are not included in the warranty. It should also include 
+;; descriptions of actions that invalidate the warranty.")
+;; (subclass-of Promise Agreement)
+;; (documentation Promise "An informal agreement.")
+;; (subclass-of obligationIn TernaryPredicate)
+;; (nth-domain obligationIn 1 KIF-Formula)
+;; (nth-domain obligationIn 2 Agent)
+;; (nth-subclass obligationIn 3 NormativeAttribute)
+;; (documentation Obligation-In "As qualified by the normative attribute, this agent 
+;; has the following obligation")
+
+
+;; The following is another provisional addition to the top level of the 
+;; ontology.  This addition locates the crucial notions of 'WavePropagation', 
+;; 'ElectronicWave', and 'ElectronicSignal' within the existing framework of 
+;; concepts.
+
+;; (subclass-of WavePropagation Process)
+;; (subclass-of ElectronicWave WavePropagation)
+;; (subclass-of ElectronicSignal ElectronicWave)
+;; (subclass-of ElectronicSignal Sign)
+
+;; We probably will need to add back some notion of 'Intention' or 
+;; 'IntentionalEntity' at some point.
+;;
+;; (documentation IntentionalEntity "Examples of intentions include the hopes, 
+;; fears, wishes, and purposes that mediate some agent's actions.")
+
+;; The following is a nice comment due to Pat Hayes.  We'll probably want to 
+;; figure out some way of incorporating its content into the official ontology.
+
+;;(documentation Occurrent/Continuant-contrast-note " The question of 
+;;deciding whether something is a continuant or an occurrent can be 
+;;subtle. Notice it only arises for entities that are located in space 
+;;and time: abstract things like sets and numbers are not classified in 
+;;either of these ways. (Note in particular that a set of physical 
+;;things is not itself physical.) The basic test is to ask whether the 
+;;thing in question is best thought of as something that can be said to 
+;;be 'happening' or whether one thinks of it as something that endures 
+;;for a time and participates in happenings. As an alternative 
+;;criterion, consider a time just before the thing in question exists. 
+;;Do you think of it as just going to start (occurrent), or as just 
+;;going to be created (continuant)?
+;;Many physical things, however, can be thought of as being either a 
+;;continuant or an occurrent. Examples include localized processes 
+;;forming objects whose identity arises from dynamic equilibrium, such 
+;;as a rainstorm, an ocean wave, a flame, a fountain plume, a river or 
+;;even a human body. In such cases the ontologist may need to introduce 
+;;two kinds of entities, one to express the continuant or enduring 
+;;nature and the other the occurrent or process nature of the thing in 
+;;question. For example, an ocean wave can be thought of as a moving 
+;;continuant which at each moment is manifested by a local occurrent 
+;;consisting of the motion of a part of the ocean surface. A 
+;;thunderstorm viewed in a satellite image can be seen as a moving 
+;;continuant, but seen from one position on the ground may be thought 
+;;of as an occurrent (with stages of the sky darkening, rain beginning 
+;;to fall, etc.). A similar duality is seen in the contrast between a 
+;;motion and the thing moving, and the contrast between a continuant 
+;;such as a person and that person's lifetime, which must be thought of 
+;;as an occurrent. In general, if one is unsure how to classify some 
+;;piece of a complex system, the safest strategy is to treat it as 
+;;having both aspects and introduce them both into the ontology, so 
+;;that enduring things always have lifetimes during which things happen 
+;;to them, and happenings are always happening to something.
+;;In a 4-d ontology there is no sharp contrast between occurrent and 
+;;continuant, and the same thing may be spatiotemporally divided up in 
+;;several different ways. In particular, a continuant can be identified 
+;;with its lifetime. This makes for fewer entities, but requires that 
+;;one specify carefully how properties are distributed with respect to 
+;;spatiotemporal divisions. One way to view the continuant/occurrrent 
+;;contrast is as a crude but useful system for making such 
+;;specifications.")
+

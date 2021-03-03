@@ -1,0 +1,82 @@
+
+<TITLE>Ontology Portal - Ontology Development</TITLE>
+
+<BODY BACKGROUND="images/border.gif">
+<UL>
+<B><font FACE="Arial, Helvetica" POINT-SIZE=24 WEIGHT=heavy STYLE="bold">Ontology Development</font></B><P>
+
+[<A HREF="index.html">Home</A> |
+  <A HREF="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO">Browse</A> | 
+  <A HREF="https://github.com/ontologyportal/sumo" TITLE="Download ontology and lexicon source files">Download</A> | 
+  <A HREF="Pubs.html" TITLE="publications about SUMO">Publications</A> | 
+  <A HREF="http://ontologyportal.github.io/sigmakee/">Tools</A> | 
+  <A HREF="WhatsNew.html">What&lsquo;s New</A> | 
+  <A HREF="About.html">About</A>]<P>
+
+
+An outline for an ontology development process<P>
+
+<ul>
+  <li>Use a set of instructions or documents as a source, or write down
+      text in natural language that describes the domain of interest. 
+  <li>Use the text as a basis for creating a glossary of natural language
+      terms and definitions
+  <li>Examine the SUMO hierarchy for each term in the glossary.  Eliminate
+      terms that are already covered by SUMO definitions.  For new definitions
+      add subclass or instance statements to the appropriate leaf term in
+      SUMO
+  <li>Look at the common <a href="Pitfalls.html">pitfalls</a> 
+      in ontology development.  Refer to these
+      examples periodically throughout the development process.
+  <li>Once a preliminary SUO-KIF file has been created, load it into Sigma, 
+      along with Merge.kif and all the other ontologies it extends.  Run the
+      Sigma Diagnostics to find any errors (which would be at this 
+      <a href="http://localhost:8080/sigma/Diag.jsp?kb=SUMO">URL</a> if
+      you are running Sigma locally).
+  <li>Use the information definitions you created in the glossary to guide creation
+      of SUO-KIF axioms.  Each class should have at least a 
+      <a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&term=subclass">subclass</a> statement
+      and a 
+      <a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&term=documentation">documentation</a> 
+      statement.  Each relation should have
+      <a href="http://54.183.42.206:8080/sigma/Browse.jsp?kb=SUMO&term=domain">domain</a> statements 
+      defining the class membership of its arguments, and be
+      defined as an appropriate type of relation, such as 
+      <a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&term=TransitiveRelation">TransitiveRelation</a>.  Each
+      term should have at least one rule, that helps to make the term usable for inference.
+      If there are very few things that can be stated about the term, reconsider whether
+      it should be created.
+   <li>Create 
+      <a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&term=format">format</a> and 
+      <a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&term=termFormat">termFormat</a> 
+      statements in the language of your choice to support natural language paraphrases in
+      Sigma for the axioms you have written
+   <li>Map the terms in your ontology to WordNet.  Use the existing SUMO-WordNet mapping files
+      (if you are mapping to English) and just update the links where needed to point to the
+      more specific terms you have created
+   <li>Load the revised mapping file into Sigma and use the Sigma WordNet Diagnostics to see where
+       the WordNet hierarchy may differ from the formal relationships you have created.  The
+       existence of differences is not necessarily bad, but they should be examined and 
+       understood.
+   <li>Run the Sigma 
+       <a href="http://localhost:8080/sigma/CCheck.jsp?kb=SUMO">Consistency Check</a> to find any 
+       logical contradictions in your new theory.  In future we may develop a capability
+       in the 
+       <a hrep="http://localhost:8080/sigma/SystemOnTPTP.jsp?kb=SUMO&sanitize=yes">SystemOnTPTP</a>
+       page to use a formal model finder to prove the consistency of a theory or portions of a theory.
+   <li>Publicize your theory and get others to try using and extending it.  Peer review is one of
+       the best ways to improve a theory.
+</ul>
+
+<P>
+
+<A HREF="mailTo:apease at articulatesoftware dot com">Webmaster</A><P>
+
+<script>
+var theDate = ""
+theDate = document.lastModified
+document.writeln("Last modified: ");
+document.write(theDate);
+document.write();
+</script></p>
+

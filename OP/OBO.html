@@ -1,0 +1,200 @@
+<TITLE>Ontology Portal - Open Biomedical Ontologies</TITLE>
+<BODY BACKGROUND="images/border.gif">
+<UL>
+
+<B><font FACE="Arial, Helvetica" POINT-SIZE=24 WEIGHT=heavy STYLE="bold">Open Biomedical Ontologies</font></B><P>
+
+[<A HREF="index.html">Home</A> |
+  <A HREF="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO">Browse</A> | 
+  <A HREF="https://github.com/ontologyportal/sumo" TITLE="Download ontology and lexicon source files">Download</A> | 
+  <A HREF="Pubs.html" TITLE="publications about SUMO">Publications</A> | 
+  <A HREF="http://ontologyportal.github.io/sigmakee/">Tools</A> | 
+  <A HREF="WhatsNew.html">What&lsquo;s New</A> | 
+  <A HREF="About.html">About</a>]<P>
+
+These are ontologies derived from 
+<a href="http://obofoundry.org/">the Open Biomedical Ontologies (OBO)</a> 
+, and used under the terms of the 
+    <a href="http://www.obofoundry.org/crit.shtml">OBO license</a>:
+" (a) its origin must be acknowledged and (b) it is not to be altered and 
+subsequently redistributed under the original name or with the same identifiers."<p>
+
+The files were converted to OWL on
+April 27, 2007 by Syed Hamid Ali Tirmizi - hamid@cs.utexas.edu
+http://www.cs.utexas.edu/~hamid/research/obo2owl.cgi
+A future alternative may be to use http://www.berkeleybop.org/ontologies/<p>
+
+The files were semi-automatically merged with <a href="index.html">SUMO</a>
+by Adam Pease, using the 
+<a href="http://ontologyportal.github.io/sigmakee/">Sigma</a> knowledge engineering environment's 
+ontology mapping tool and OWL to SUO-KIF translator.<p>
+
+It must be mentioned that these are "best guess" mappings.  In nearly all 
+cases, the original sources are simple taxonomies, with little formal 
+definition, and often even lacking documentation strings.  More effort 
+would be needed to turn them into formal ontologies.  In some cases, SUMO 
+does not have much content in the particular topic, so there are few 
+mappings.  For example, since SUMO has the concept of DNA, but not of 
+genomes or the many types of genomes, there won't be many mappings for 
+OBO's gene ontology.  However that ontology could be more fully integrated 
+by hand, and benefit from using SUMO's rich ontology of spatial relations 
+etc.<p> 
+
+Note also that this is just a first cut semi-automatic matching.  A full
+manual mapping would certainly find more connections.  For example, these
+ontologies make little or no use of the part-of relation that many of them
+contain, so many things like special anatomical parts wind up not being linked
+simply because there is no direct equivalent in SUMO.  A manual mapping however
+could use the part-of relation 
+(or more properly SUMO's 
+<a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=EnglishLanguage&term=typicalPart&simple=no">typicalPart</a> 
+and 
+<a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?lang=EnglishLanguage&kb=SUMO&term=typicallyContainsPart">typicallyContainsPart</a>), 
+    to state for example that a OBO:metatarsal is part of
+a SUMO:Hand even though the automatic mapper won't find a link for metatarsal
+since there's no direct equivalent in SUMO.<p>
+
+This is a work in progress, and new ontologies will be posted as they are mapped.<p>
+
+<table>
+    <tr><td><b>Name</b></td><td><b>Mapping file</b></td><td><b>Merged with SUMO</b></td><td>Notes</td></tr>
+    <tr><td>adult_mouse_anatomy</td>
+        <td><a href="OBO/SUMO-adult-mouse-anatomy-links.kif.html">.kif</a></td>
+        <td><a href="OBO/adult-mouse-anatomy-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>arabidopsis_development</td>
+        <td><a href="OBO/SUMO-arabidopsis_development-links.kif.html">.kif</a></td>
+        <td><a href="OBO/arabidopsis_development-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>caro</td>
+        <td><a href="OBO/SUMO-caro-links.kif.html">.kif</a></td>
+        <td><a href="OBO/caro-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>cell</td>
+        <td><a href="OBO/SUMO-cell-links.kif.html">.kif</a></td>
+        <td><a href="OBO/cell-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>cereals_development</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr bgcolor=#DDDDDD><td>chebi</td>
+        <td><a href="OBO/SUMO-chebi-links.kif.html">.kif</a></td>
+        <td><a href="OBO.html"></a></td><td></td></tr>
+    <tr><td>dictyostelium_anatomy</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr bgcolor=#DDDDDD><td>EMAP</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr><td>environment</td>
+        <td><a href="OBO/SUMO-environment-links.kif.html">.kif</a></td>
+        <td><a href="OBO/environment-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>evidence_code</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr><td>fix</td>
+        <td><a href="OBO/SUMO-fix-links.kif.html"></a></td>
+        <td><a href="OBO/fix-merged-SUMO.kif.html"></a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>fly_anatomy</td>
+        <td><a href="OBO/SUMO-fly-anatomy-links.kif.html">.kif</a></td>
+        <td><a href="OBO/fly-anatomy-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>flybase_controlled_vocabulary</td>
+        <td><a href="OBO/SUMO-flybase_controlled_vocabulary-links.kif.html">.kif</a></td>
+        <td><a href="OBO/flybase_controlled_vocabulary-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>fly_development</td>
+        <td><a href="OBO/SUMO-fly_development-links.kif.html">.kif</a></td>
+        <td><a href="OBO/fly_development-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>fma</td>
+        <td><a href="OBO/SUMO-FMA-links.kif.html">.kif</a></td>
+        <td><a href="OBO/FMA-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>fungal_anatomy</td>
+        <td><a href="OBO/SUMO-fungal_anatomy-links.kif.html">.kif</a></td>
+        <td><a href="OBO/fungal_anatomy-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>gene_ontology</td>
+        <td><a href="OBO/SUMO-gene-links.kif.html">.kif</a></td>
+        <td><a href="OBO/gene-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>human-dev-anat-abstract</td>
+        <td><a href="OBO/SUMO-human-dev-anat-abstract-links.kif.html">.kif</a></td>
+        <td><a href="OBO/human-dev-anat-abstract-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>human-dev-anat-staged</td>
+        <td><a href="OBO/SUMO-human-dev-anat-staged-links.kif.html">.kif</a></td>
+        <td><a href="OBO/human-dev-anat-staged-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>mammalian_phenotype</td>
+        <td><a href="OBO/SUMO-mammalian_phenotype-links.kif.html">.kif</a></td>
+        <td><a href="OBO/mammalian_phenotype-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>medaka</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr bgcolor=#DDDDDD><td>mesh</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr><td>molecule</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr bgcolor=#DDDDDD><td>mosquito_anatomy</td>
+        <td><a href="OBO/SUMO-mosquito_anatomy-links.kif.html">.kif</a></td>
+        <td><a href="OBO/mosquito_anatomy-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>mouse_pathology</td>
+        <td><a href="OBO/SUMO-mouse_pathology-links.kif.html">.kif</a></td>
+        <td><a href="OBO/mouse_pathology-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>pathway</td>
+        <td><a href="OBO/SUMO-pathway-links.kif.html">.kif</a></td>
+        <td><a href="OBO/pathway-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>plant_trait</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr bgcolor=#DDDDDD><td>po_anatomy</td>
+        <td><a href="OBO/SUMO-po_anatomy-links.kif.html">.kif</a></td>
+        <td><a href="OBO/po_anatomy-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>po_temporal</td>
+        <td></td>
+        <td></td><td>no mappings</td></tr>
+    <tr bgcolor=#DDDDDD><td>psi-mi</td>
+        <td><a href="OBO/SUMO-psi-mi-links.kif.html">.kif</a></td>
+        <td><a href="OBO/psi-mi-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>psi-mod</td>
+        <td></td>
+        <td></td><td>not mapped (file format issue)</td></tr>
+    <tr bgcolor=#DDDDDD><td>quality</td>
+        <td><a href="OBO/SUMO-quality-links.kif.html">.kif</a></td>
+        <td><a href="OBO/quality-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>rex</td>
+        <td><a href="OBO/SUMO-rex-links.kif.html">.kif</a></td>
+        <td><a href="OBO/rex-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr bgcolor=#DDDDDD><td>ro</td>
+        <td><a href="OBO/SUMO-ro-links.kif.html">.kif</a></td>
+        <td><a href="OBO/ro-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>sep</td>
+        <td><a href="OBO/SUMO-sep-links.kif.html">.kif</a></td>
+        <td><a href="OBO/sep-merged-SUMO.kif.html">.kif</a></td>
+        <td>Note that SEP already has included a number of terms from SUMO</td></tr>
+    <tr bgcolor=#DDDDDD><td>so</td>
+        <td></td>
+        <td></td>
+        <td>not mapped (file format issue)</td></tr>
+    <tr><td>worm_development</td>
+        <td></td>
+        <td></td>
+        <td>no mappings</td></tr>
+    <tr bgcolor=#DDDDDD><td>zea_mays_anatomy</td>
+        <td><a href="OBO/SUMO-zea_mays_anatomy-links.kif.html">.kif</a></td>
+        <td><a href="OBO/zea_mays_anatomy-merged-SUMO.kif.html">.kif</a></td><td></td></tr>
+    <tr><td>zebrafish_anatomy</td>
+        <td><a href="OBO/SUMO-zebrafish_anatomy-links.kif.html">.kif</a></td>
+        <td><a href="OBO/zebrafish_anatomy-merged-SUMO.kif.html">.kif</a></td>
+        <td></td></tr>
+</table><p>
+
+<A HREF="mailTo:apease at articulatesoftware dot com">Webmaster</A><P>
+
+<SMALL><script>
+var theDate = ""
+theDate = document.lastModified
+document.writeln("Last modified: ");
+document.write(theDate);
+document.write();
+</script></SMALL><P>
+
+
+
+
+
+
+
+

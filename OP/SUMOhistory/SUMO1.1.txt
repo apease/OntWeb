@@ -1,0 +1,1088 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;PREFACE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; This file is a perliminary merge of the SUO ontology sources.  The basis for the merge is
+;; is the upper level of Sowa's ontology.  The definitions and axioms of the other sources 
+;; have been mapped into this ontology.  Thus far, the merge incorporates Russell and Norvig's
+;; ontology, Casati and Varzi's theory of holes, Allen's temporal axioms, the relatively 
+;; noncontroversial elements of Smith's and Guarino's respective mereotopologies, and the KIF ;; formalization of CPR.  Note that this file does not not, as of yet, include Sowa's ;; upper-level ontology.  
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;METALINGUISTIC STUFF;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Definite descriptions
+
+;; Definite descriptions are not currently part of KIF.  However, they
+;; are used liberally in this ontology, so an axiom schema -- due
+;; largely to Bertrand Russell -- has been introduced to capture its
+;; meanings -- roughly, that an object ?x is the A iff A is in fact
+;; true of ?x, anything that A is true of must be identical to ?x.
+
+;; So, let WFF be a KIF sentence that contains a single free variable
+;; X.  For any term TRM, let WFF[Y] be the result of replacing every
+;; free occurrence of X in WFF with variable Y.  Then the following is
+;; an axiom:
+;;
+;; (<=> (= X (the (X) WFF))
+;;      (and WFF
+;;           (forall (Y)
+;;                   (=> WFF[Y]
+;;                       (= X Y)))))
+
+
+;;;;;;;;;;;;;;;AXIOMS EXPRESSING THE CLASS HIERARCHY OF ADDITIONAL CONTENT IN SOWA;;;;;;;;;;;;;
+
+(subclass-of ContinuousProcess Process)
+(subclass-of Initiation ContinuousProcess)
+(subclass-of Continuation ContinuousProcess)
+(subclass-of Cessation ContinuousProcess)
+(subclass-of DiscreteProcess Process)
+(subclass-of Act DiscreteProcess)
+(subclass-of Phenomenon Actuality)
+(subclass-of Role Actuality)
+(subclass-of Sign Actuality)
+(subclass-of PrehendingEntity Role)
+(subclass-of PrehendedEntity Role)
+(subclass-of Composite PrehendingEntity)
+(subclass-of Correlative PrehendingEntity)
+(subclass-of Correlative PrehendedEntity)
+(subclass-of Component PrehendedEntity)
+(subclass-of Whole Composite)
+(subclass-of Substrate Composite)
+(subclass-of part-of Component)
+(subclass-of Property Component)
+(subclass-of Piece part-of)
+(subclass-of Participant part-of)
+(subclass-of Stage part-of)
+(subclass-of Attribute Property)
+(subclass-of Manner Property)
+(subclass-of Determinant Participant)
+(subclass-of Source Participant)
+(subclass-of Product Participant)
+(subclass-of Immanent Participant)
+(subclass-of Initiator Determinant)
+(subclass-of Initiator Source)
+(subclass-of Resource Source)
+(subclass-of Resource Immanent)
+(subclass-of Goal Determinant)
+(subclass-of Goal Product)
+(subclass-of Essence Product)
+(subclass-of Essence Immanent)
+(subclass-of Agent Initiator)
+(subclass-of Recipient Goal)
+(subclass-of Beneficiary Recipient)
+(subclass-of Completion Goal)
+(subclass-of Destination Goal)
+(subclass-of Duration Resource)
+(subclass-of Effector Initiator)
+(subclass-of Experiencer Goal)
+(subclass-of Instrument Resource)
+(subclass-of Location Essence)
+(subclass-of Matter Resource)
+(subclass-of Medium Resource)
+(subclass-of Origin Initiator)
+(subclass-of Path Resource)
+(subclass-of Patient Essence)
+(subclass-of PointInTime Essence)
+(subclass-of Result Goal)
+(subclass-of Start Initiator)
+(subclass-of Theme Essence)
+(subclass-of SpatialForm Schema)
+(subclass-of Arrangement Schema)
+(subclass-of KineticForm Script)
+(subclass-of Procedure Script)
+(subclass-of Continuous SpatialForm)
+(subclass-of Corpuscular SpatialForm)
+(subclass-of Homogeneous Continuous)
+(subclass-of Variable Continuous)
+(subclass-of Organic Corpuscular)
+(subclass-of Assembly Corpuscular)
+
+
+;;;;;;;;;;;;;;;;;; DOCUMENTATION FOR THESE CLASSES ;;;;;;;;;;;;;;;;;;;;
+
+(documentation ContinuousProcess "A process in which incremental changes take place continuously.  This is the normal kind of physical process.")
+
+(documentation Initiation "A ContinuousProcess with an explicit starting point.")
+
+(documentation Continuation "A ContinuousProcess whose endpoints are not being considered.")
+
+(documentation Cessation "A ContinuousProcess with an explicit ending point.")
+
+(documentation DiscreteProcess "In a discrete process, which is typical of computer programs or idealized approximations to physical processes, changes occur in discrete steps called events, which are interleaved with periods of inactivity called states.")
+
+(documentation Phenomenon "A phenomenal entity is an actual entity considered by itself")
+
+(documentation Role "A Role is considered in relation to something else.")
+
+(documentation Sign "A Sign is considered as representing something to some agent.")
+
+(documentation Composite "An intrinsic prehending entity, called a Composite, bears a relationship to each component within itself.")
+(documentation Whole "A Whole is made up of its parts.")
+
+(documentation Substrate "a substrate (translated from Aristotle's word hypokeimenon) is the underlying material that supports dependent properties, such as size, weight, shape, or color.")
+
+(documentation Correlative "An extrinsic prehending or prehended entity, called a correlative, bears a relationship to something outside itself. Examples include mother and child, lawyer and client, or employer and employee. A correlative could be considered the prehending entity of one prehension or the prehended entity of the converse prehension.")
+
+(documentation Component "An intrinsic prehended entity, called a component, bears a relationship to the composite in which it inheres. Its subtypes include parts, whose existence is independent of the whole.")
+
+(documentation part-of "Instances of Component whose existence is independent of the whole")
+
+(documentation Property "Instances of Component which cannot exist without some substrate.")
+
+(documentation Piece "The parts of a continuant are called pieces. Examples of pieces include the doors and walls of a house, the states or provinces of a country, or the limbs and organs of an animal.")
+
+(documentation Participant "The spatially distinguished parts of an occurrent are called participants. They include the agent, patient, or recipient of an action, the flammable substance in burning, or the water that falls in rain.")
+
+(documentation Stage "The temporally distinguished parts of an occurrent are called stages. In the life of a human being, for example, the stages would include infancy, childhood, adolescence, and adulthood. Other possibly overlapping stages would include education, motherhood, business career, and retirement.")
+
+(documentation Attribute "The properties of a continuant, which are usually described by adjectives, are called attributes. They include entities like colors, shapes, sizes, and weights.")
+
+(documentation Manner "The properties of an occurrent, which are usually described by adverbs, are called manners. They include entities like the speed of the wind, the style of a dance, or the intensity of a sports competition.")
+
+(documentation Determinant "A determinant participant determines the direction of the process, either from the beginning as the initiator or from the end as the goal.")
+
+(documentation Immanent "An immanent participant is present throughout the process, but does not actively control what happens.")
+
+(documentation Source "A source must be present at the beginning of the process, but need not participate throughout the process.")
+
+(documentation Product "A product must be present at the end of the process but need not participate throughout the process.")
+
+(documentation Initiator "Initiator corresponds to Aristotle's efficient cause, "whereby a change or a state is initiated" (1013b23).")
+
+(documentation Resource "Resource corresponds to the material cause, which is "the matter or the substrate (hypokeimenon)" (983a30).")
+
+(documentation Goal "Goal corresponds to the final cause, which is "the purpose or the benefit; for this is the goal (telos) of any generation or motion" (983a32).")
+
+(documentation Essence "Essence corresponds to the formal cause, which is "the essence (ousia) or what it is (to ti ên einai)" (983a27).")
+
+(documentation Agent "An active animate entity that voluntarily initiates an action.  Example: Eve bit an apple.")
+
+(documentation Beneficiary "A recipient that derives a benefit from the successful completion of the event.  Example: Diamonds were given to Ruby.")
+
+(documentation Completion "A goal of a temporal process.  Example: Mary waited until noon. ")
+
+(documentation Destination "A goal of a spatial process.  Example: Bob went to Danbury.")
+
+(documentation Duration "A resource of a temporal process.  Example: The truck was serviced for 5 hours.")
+
+(documentation Effector "An active determinant source, either animate or inanimate, that initiates an action, but without voluntary intention.  Example: The tree produced new leaves. ")
+
+(documentation Experiencer "An active animate goal of an experience.  Example: Yojo sees the fish.")
+
+(documentation Instrument "A resource that is not changed by an event.  Example: The key opened the door.")
+
+(documentation Location "An essential participant of a spatial nexus.  Example: Vehicles arrive at a station.")
+
+(documentation Matter "A resource that is changed by the event.  Example: The gun was carved out of soap.")
+
+(documentation Medium "A physical resource for transmitting information, such as the sound of speech or the electromagnetic signals that transmit data.  Example: Bill told Boris by phone.")
+
+(documentation Origin "A passive determinant source of a spatial or ambient nexus.  Example: The chapter begins on page 20.")
+
+(documentation Path "A resource of a spatial nexus.  Example: The pizza was shipped via Albany and Buffalo.")
+
+(documentation Patient "An essential participant that undergoes some structural change as a result of the event.  Example: The cat swallowed the canary.")
+
+(documentation PointInTime "An essential participant of a temporal nexus.  Example: At 5:25 PM, Erin left.")
+
+(documentation Recipient "An animate goal of an act.  Example: Sue sent the gift to Bob.")
+
+(documentation Result "An inanimate goal of an act.  Example: Eric built a house.")
+
+(documentation Start "A determinant source of a temporal nexus.  Example: Bill waited from noon to three.")
+
+(documentation Theme "An essential participant that may be moved, said, or experienced, but is not structurally changed.  Example: Billy likes the Beer.")
+
+;;;;;;;;;;;;;DEFINITIONS TO ACCOMMODATE RUSSELL-NORVIG'S CONTENT AND cPR;;;;;;;;;;;;;;;;;;;;;;;;
+
+(subclass-of Sentence Sign)
+(subclass-of Sentence Structure)
+(subclass-of Number Schema)
+(subclass-of Set Schema)
+(subclass-of Weight Quantity)
+(subclass-of Solid Structure)
+(subclass-of Liquid Structure)
+(subclass-of Gas Structure)
+(subclass-of Animal Organic)
+(subclass-of Human Animal)
+(subclass-of TextObject Sign)
+(subclass-of TextObject Structure)
+
+(instance-of containsInformation BinaryRelation)
+(nth-domain containsInformation 1 TextObject)
+(nth-domain containsInformation 2 Proposition)
+
+(instance-of constraintOfProcedure BinaryRelation)
+(nth-domain constraintOfProcedure 1 Procedure)
+(nth-domain constraintOfProcedure 2 Requirement)
+
+(instance-of hasAnnotation BinaryRelation)
+(nth-domain hasAnnotation 1 Object)
+(nth-domain hasAnnotation 2 TextObject)
+
+(instance-of implementsProcedure BinaryRelation)
+(nth-domain implementsProcedure 1 Process)
+(nth-domain implementsProcedure 2 Procedure)
+
+(instance-of hasPurpose BinaryRelation)
+(nth-domain hasPurpose 1 Script)
+(nth-domain hasPurpose 2 Purpose)
+
+(instance-of subProcedure BinaryRelation)
+(nth-domain subProcedure 1 Procedure)
+(nth-domain subProcedure 2 Procedure)
+
+(instance-of subPurpose BinaryRelation)
+(nth-domain subPurpose 1 Purpose)
+(nth-domain subPurpose 2 Purpose)
+
+(instance-of subProcess BinaryRelation)
+(nth-domain subProcess 1 Process)
+(nth-domain subProcess 2 Process)
+
+(instance-of standardFor BinaryRelation)
+(nth-domain standardFor 1 Standard)
+(nth-domain standardFor 2 Actuality)
+
+(=>
+     (and
+          (subAction ?Act1 ?Act2)
+          (instance-of ?Act1 Action))
+     (during ?Act1 ?Act2))
+
+
+
+(subclass-of Standard Schema)
+(subclass-of Requirement Standard)
+(subclass-of ConsumableResource Resource)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;TEMPORAL AXIOMS (FROM ALLEN & CHRIS MENZEL);;;;;;;;;;;;;;
+
+;; Necessary intermediate constants
+
+  (subclass-of TemporalQuantity Quantity)
+  (documentation TemporalQuantity "This class contains all measures of time, e.g. TimePoint, TimeInterval, TimeQuantity-Definite, etc.")
+
+   (nth-domain exists-at 1 Actuality)
+   (nth-domain exists-at 2 TimePoint)
+   (documentation exists-at "Means that the Process/Object exists at the given point in time")
+
+;; Definitions of TimeInterval and TimePoint
+
+  (subclass-of TimeInterval TemporalQuantity)
+  (documentation TimeInterval "An interval of time.")
+
+  (subclass-of TimePoint TemporalQuantity)
+  (documentation TimePoint "[taken from Ontolingua user Rse] TimePoint is    independent of observer and context.  A TimePoint is not a measurement of time, nor is it a specification of time.  It is the point in time. The TimePoints at which events occur can be known with various degrees of precision and approximation, but conceptually TimePoints are point-like and not interval-like.  That is, it doesn't make sense to talk about what happens during a TimePoint, or how long the TimePoint lasts.")
+
+;; Definitions of basic temporal relations
+
+  (nth-domain startOf 1 TimeInterval)
+  (nth-domain startOf 2 TimePoint)
+  (documentation startof "Relates a time interval to the point of time at which the interval begins")
+
+  (nth-domain endOf 1 TimeInterval)
+  (nth-domain endOf 2 TimePoint)
+  (documentation endof "Relates a time interval to the point of time at which the interval ends")
+
+  (nth-domain starts 1 TimeInterval)
+  (nth-domain starts 2 TimeInterval)
+  (documentation starts "Relates one time interval to another time interval with which the first shares the same initial time point and of which the first is a proper part")
+
+;; Axiom specifying part of the meaning of 'starts'
+
+    (=> 
+      (starts ?t1 ?t2)
+      (and 
+        (startOf ?t1 ?s1)
+        (startOf ?t2 ?s2)
+        (= ?s1 ?s2)
+        (endOf ?t1 ?e1)
+        (endOf ?t2 ?e2)
+        (< ?e1 ?e2)))
+
+;; Definition of 'finishes'
+
+  (nth-domain finishes 1 TimeInterval)
+  (nth-domain finishes 2 TimeInterval)
+  (documentation finishes "Relates one time interval to another time interval with which the first shares the same terminal time point and of which the first is a proper part")
+
+;; Axioms specifying part of the meaning of 'finishes'
+    (=> 
+      (finishes ?t1 ?t2)
+      (and 
+        (endof ?t1 ?e1)
+        (endof ?t2 ?e2)
+        (= ?e1 ?e2)
+        (startof ?t1 ?s1)
+        (startof ?t2 ?s2)
+        (> ?s1 ?s2)))
+
+    (=> 
+      (finishes ?t1 ?t2)
+      (and 
+        (endof ?t1 ?p1)
+        (startof ?t2 ?p2)
+        (< ?p1 ?p2)))
+
+
+;; Note that the definition of 'before' below has been broadened from its statement in Allen.
+;; The selectional restrictions for both arguments are now 'TemporalQuantity' instead of
+;; 'TimeInterval'.
+
+  (nth-domain before 1 TemporalQuantity)
+  (nth-domain before 2 TemporalQuantity)
+  (documentation before "Means that the first temporal quantity precedes the second, and there is no overlap between the two quantities")
+    
+;; 'before' is a total ordering.  Note that the axioms about the irreflexivity and 
+;; transitivity are included, even though they are implied by the "total ordering" axiom, 
+;; because this axiom is controversial.  If it is eventually rejected, we should be able to ;; retain the other two axioms. 
+
+(=>
+   (and
+      (instance-of ?t1 TemporalQuantity)
+      (instance-of ?t2 TemporalQuantity))
+   (or 
+      (= ?t1 ?t2) 
+      (before ?t1 ?t2) 
+      (before ?t2 ?t1)))
+
+(not
+   (before ?t1 ?t1))
+
+(=> 
+   (and 
+      (before ?t1 ?t2) 
+      (before ?t2 ?t3))
+   (before ?t1 ?t3))
+
+;;  Definition of 'beforeEq'.  This relation is taken from Chris Menzel's SUO-KIF formalization
+;;  of Sowa's upper-level ontology, where it is used as a subsidiary relation to specify part
+;;  of the ontology.  
+
+   (nth-domain beforeEq 1 TimePoint)
+   (nth-domain beforeEq 2 TimePoint)
+   (documentation beforeEq "Means that the first timepoint either is identical with the second or occurs before it in time")
+
+;;  Axiom specifying the full meaning of 'beforeEq'.
+
+(<=> 
+   (beforeEq (?t1 ?t2)
+   (and 
+      (timepoint ?t1) 
+      (timepoint ?t2)
+      (or 
+         (before ?t1 ?t2) 
+         (= ?t1 ?t2))))
+
+;; Definition of the relation 'overlaps-TimeInterval-proper'
+
+  (nth-domain overlaps-TimeInterval-proper 1 TimeInterval)
+  (nth-domain overlaps-TimeInterval-proper 2 TimeInterval)
+  (documentation overlaps "Means that the first time interval ends after the beginning and before the ending of the second interval") 
+
+;; Axiom specifying the meaning of 'overlaps-TimeInterval-proper'
+   
+   (=> 
+      (overlaps-TimeInterval-proper ?t1 ?t2)
+      (and 
+        (endof ?t1 ?p1)
+        (startof ?t2 ?p2)
+        (> ?p1 ?p2)
+        (endof ?t1 ?p1)
+        (endof ?t2 ?p3)
+        (< ?p1 ?p3)))
+
+;; Definition of and axiom for 'overlaps-TimeInterval-general'.  Note that this relation was
+;; extracted from Russell-Norvig's ontology.
+
+(nth-domain overlaps-TimeInterval-general 1 TimeInterval)
+(nth-domain overlaps-TimeInterval-general 2 TimeInterval)
+(documentation overlaps-TimeInterval-general "Means that the two time intervals have some time interval in common")
+
+(<=>
+   (overlaps-TimeInterval-general ?t1 ?t2)
+   (and
+      (during ?t3 ?t1)
+      (during ?t3 ?t2)))
+
+;; Definition of the relation 'meets'
+
+  (nth-domain meets 1 TimeInterval)
+  (nth-domain meets 2 TimeInterval)
+  (documentation meets "Means that the terminal point of the first interval is the initial point of the second interval")
+
+;; Axiom specifying the meaning of 'meets'
+
+   (=> 
+      (meets ?t1 ?t2)
+      (and 
+        (endof ?t1 ?p1)
+        (startof ?t2 ?p2)
+        (= ?p1 ?p2)))
+
+;; Definition of 'equal-TimeInterval'
+
+  (nth-domain equal-TimeInterval 1 TimeInterval)
+  (nth-domain equal-TimeInterval 2 TimeInterval)
+  (documentation equal-TimeInterval "Means that the terminal point of the first time interval coincides with the initial point of the second time interval")
+
+;; Axiom specifying the meaning of 'equal-TimeInterval'
+
+(=> 
+   (equal-TimeInterval ?t1 ?t2)
+   (and 
+      (endof ?t1 ?e1)
+      (endof ?t2 ?e2)
+      (= ?e1 ?e2)
+      (startof ?t1 ?s1)
+      (startof ?t2 ?s2)
+      (= ?s1 ?s2)))
+
+;; Definition of 'during'
+
+   (nth-domain during 1 TimeInterval)
+   (nth-domain during 2 TimeInterval)
+   (documentation during "Means that the first time interval starts after and ends before the second time interval")
+
+;; Axiom specifying the meaning of 'during'
+   
+   (=> 
+      (during ?t1 ?t2)
+      (and 
+        (endof ?t1 ?e1)
+        (endof ?t2 ?e2)
+        (< ?e1 ?e2)
+        (startof ?t1 ?s1)
+        (startof ?t2 ?s2)
+        (> ?s1 ?s2)))))
+
+;; Definition of 'in-TimeInterval'
+
+  (nth-domain in-TimeInterval 1 TimeInterval)
+  (nth-domain in-TimeInterval 2 TimeInterval)
+  (documentation in-TimeInterval "Means that the first time interval is a proper part of the second time interval")
+
+   (<=>
+      (in ?t1 ?t2)
+      (or
+        (during ?t1 ?t2)
+        (starts ?t1 ?t2)
+        (finishes ?t1 ?t2)))
+
+
+;; Axiom concerning 'meets', 'during', and 'overlaps'
+
+(=> 
+  (and
+    (meets ?t1 ?t2)
+    (during ?t2 ?t3))
+  (or
+    (overlaps ?t1 ?t3)
+    (during ?t1 ?t3)
+    (meets ?t1 ?t3)))
+
+
+;;;;;;;;;;;;;MEREOTOPOLOGICAL DEFINITIONS/AXIOMS (FROM SMITH & GUARINO);;;;;;;;;;;;;;;;;;;;
+
+;;  Definition of 'overlaps' from Guarino
+
+(<=>
+	(overlaps ?X ?Y)
+     	(exists (?Z)
+          	(and
+               	(part-of ?Z ?X)
+               	(part-of ?Z ?Y))))
+
+(documentation overlaps "?x overlaps ?y iff ?x and ?y have some parts in common. This is a reflexive and symmetric (but not transitive) relation.")
+
+;;  Definition of 'proper-part-of' from Smith
+
+(<=> 
+	(proper-part-of ?X ?Y)
+     	(and
+		(part-of ?X ?Y)
+		(not
+			(= ?X ?Y))))
+
+(documentation proper-part-of "?x is a proper part of ?y iff ?x is a part of ?y other than ?y itself. This is a transitive and asymmetric (hence irreflexive) relation.")
+
+;;  Definition of 'proper-overlaps' from Guarino
+
+(<=>
+	(proper-overlaps ?X ?Y)
+	(and
+		(overlaps ?X ?Y)
+		(not
+			(part-of ?X ?Y))
+		(not
+			(part-of ?Y ?X))))
+
+;;  Definition of 'interior-part-of' from Smith
+
+(<=>
+	(interior-part-of ?X ?Y)
+     	(=>
+          	(part-of ?X ?Y)
+          	(forall (?Z)
+               	(=> 
+                    	(Boundary ?Z ?Y)
+                    	(not
+                         	(overlaps ?X ?Z))))))
+
+;;  Definition of 'superficial-part-of' from Casati and Varzi
+
+(<=> 
+	(superficial-part-of ?x ?y)
+	(and 
+		(part-of ?x ?y)
+		(not
+			(exists (?z)
+				(interior-part-of ?z ?x)))))
+
+(documentation superficial-part-of "?x is a superficial part of ?y iff ?x is a part of ?y that has no interior parts of its own (or, intuitively, that only overlaps those parts of y that are externally connected with the geometric complement of y). This too is a transitive relation closed under sum-of and prod-of.")
+
+;;  Definition of 'surface-of' from Casati and Varzi
+
+(<=> 
+	(surface-of ?x ?y)
+	(and 
+		(superficial-part-of ?x ?y)
+		(self-connected ?x)
+		(forall (?z)
+			(=> 
+				(and 
+					(superficial-part-of ?z ?y)
+					(self-connected ?z))
+					(=>
+						(connected-to ?z ?x)
+						(part-of ?z ?x)))))))
+
+(documentation surface-of "?x is a surface of ?y iff ?x is a maximally connected superficial part of y.")
+
+;;  Axiom about 'proper-part-of' from Sowa
+
+(=>
+	(proper-part-of ?X ?Y)
+	(exists (?Z)
+		(and
+			(part-of ?Z ?X)
+			(not
+				(overlaps ?Z ?Y)))))
+
+;;  Axiom about the extensionality of 'part-of' from Smith and Sowa
+
+(=>
+     (forall (?Z)
+          (=>
+               (part-of ?Z ?X)
+               (overlaps ?Z ?Y))
+     (part-of ?X ?Y))
+
+;;  Reflexivity, Antisymmetry, and Transitivity of 'part-of' from Smith
+
+(part-of ?X ?X)
+
+(=>
+     (and
+          (part-of ?X ?Y) 
+          (part-of ?Y ?X))
+     (= ?X ?Y))
+
+(=>
+     (and
+          (part-of ?X ?Y)
+          (part-of ?Y ?Z))
+     (part-of ?X ?Z))
+
+
+;;  Definitions of Mereological Sum, Product, and Difference from Guarino.  Note
+;;  that these definitions make use of the definite description operator 'the', 
+;;  which will have to be formally defined at some point within the framework of
+;;  SUO-KIF.
+
+(=
+	(mereological-sum ?X ?Y)
+	(the (?Z)
+		(forall (?W)
+			(<=>
+				(overlaps ?W ?Z)
+					(or
+						(overlaps ?W ?X)
+						(overlaps ?W ?Y))))))
+
+(=
+	(mereological-product ?X ?Y)
+	(the (?Z)
+		(forall (?W)
+			(<=>
+				(part-of ?W ?Z)
+				(and
+					(part-of ?W ?X)
+					(part-of ?W ?Y))))))
+
+(=
+	(mereological-difference ?X ?Y)
+	(the (?Z)
+		(forall (?W)
+			(<=>
+				(part-of ?W ?Z)
+				(and
+					(part-of ?W ?X)
+					(not
+						(overlaps ?W ?Y)))))))
+
+
+;;  Definition of 'Maximal-Boundary'
+
+(=
+	(Maximal-Boundary (?X)
+     	(mereological-sum ?Z (Boundary ?Z ?X)))
+
+;;  Definition of 'Closure' (of an object)
+
+(=
+	(Closure ?X)
+     	(mereological-sum ?X (Maximal-Boundary ?X)))
+
+;;  Basic axioms for a topology based on bona fide boundaries - these are the result
+;;  of mereologizing the standard Kuratowski axioms for closure operators
+
+(part-of ?X (Closure ?X))
+
+(part-of (Closure (Closure ?X)) (Closure ?X))
+
+(= 
+	(Closure (mereological-sum ?X ?Y)) 
+	(mereological-sum (Closure ?X) (Closure ?Y)))
+
+;;  Definition of the relation of 'connected' from Smith
+
+(<=>
+	(connected ?X ?Y)
+     	(or
+          	(overlaps ?X ?Y)
+          	(overlaps (Closure ?X) ?Y)
+	    	(overlaps ?X (Closure ?Y))))
+
+;;  Definition of 'externally-connected' (i.e. connection where the objects themselves do
+;;  not overlap with one another).
+
+(<=>
+	(externally-connected ?X ?Y)
+     	(and
+          	(connected ?X ?Y)
+          	(not
+               		(overlaps ?X ?Y))))
+
+;;  Definition of 'self-connected' (from Casati and Varzi):  ?x is self-connected 
+;;  just in case ?x does not consist of two or more disconnected parts.
+
+(<=> 
+	(self-connected ?x)
+	(=> 
+		(= ?x (sum-of ?y ?z))
+		(connected ?y ?z)))
+
+
+
+
+;;  Definition of 'Closed-Entity'
+
+(<=>
+	(Closed-Entity ?X)
+     	(= ?X (Closure ?X)))
+
+;;  Definition of 'Boundary-Unary' (the monadic predicate for boundaries)
+
+(<=>
+	(Boundary-Unary ?X)
+     	(exists (?Y)
+          	(Boundary ?X ?Y)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;THEORY OF HOLES;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Definition of binary relation 'hole-in'
+
+(instance-of hole-in BinaryRelation)
+(instance-of hole-in Juncture)
+(nth-domain hole-in 1 Object)
+(nth-domain hole-in 2 Hole)
+(documentation hole-in "The main thesis is that a hole is an immaterial body located at the surface (or at some surface) of a material object. Since the notion of a surface is essentially a topological one, and since the property of being immaterial is reflected in the morphological property of being fillable, the ontological basis is concerned first and foremost with the general dependence of a hole on its host.")
+
+
+;; Definition of class 'Hole'
+
+(subclass-of Hole Property)
+(documentation hole "X is a hole iff it is a hole in something.  Since every hole is ontologically dependent on its host (i.e., the object in which it is a hole), being a hole is defined as being a hole in something.")
+
+;; Axioms relating 'hole-in' to 'Hole'
+
+(<=> 
+	(hole ?x)
+	(exists (?Y)
+		(hole-in ?x ?y)))
+
+(=> 
+	(hole-in ?x ?y)
+        (not 
+		(hole ?y)))
+
+;; Definitions of 'hole-part-of' and 'proper-hole-part-of'
+
+(documentation hole-part-of "?x is a hole-part of ?y iff ?x is a hole that is a part of ?y.  This is a partial ordering, like `part-of'; it applies only when ?y is itself a (part of a) hole.")
+
+(<=> 
+	(hole-part-of (?x ?y)
+	(and 
+		(hole ?x)
+		(part-of ?x ?y)))
+
+(documentation proper-hole-part-of "?x is a proper hole-part of ?y iff ?x is a hole that is a proper part of ?y.  This is transitive, asymmetric, and irreflexive relation.")
+
+(<=> 
+	(proper-hole-part-of (?x ?y)
+	(and 
+		(hole ?x)
+		(proper-part-of ?x ?y)))
+
+;; Mereological Axioms
+
+;; No hole overlaps its own host (though the sum of a hole and its host may be a legitimate 
+;; host for different holes: e.g. the sum of a doughnut ?y and its hole ?x -- if such a sum 
+;; exists -- will not be a host of ?x, but it will be a host of, say, a cavity that may be 
+;; hidden inside ?y.
+
+(=> 
+	(hole-in ?x ?y)
+        (not 
+		(overlaps ?x ?y)))
+
+;; Any two hosts of a hole have a common proper part that entirely hosts the hole. 
+;; (Of course, intuitively a hole has one host; but if we allow for mereological sums or 
+;; splittings, then every hole has a virtually infinite class of hosts, partially ordered by 
+;; proper-part-of.
+
+(=> 
+	(and 
+		(hole-in ?x ?y)
+              	(hole-in ?x ?z))
+      	(exists (?w)
+               	(and 
+			(proper-part-of ?w (mereological-product ?x ?y))
+                        (hole-in ?x ?w))))
+
+;; A common host of two holes hosts all hole-parts of the sum of those holes.
+
+(=> 
+	(and 
+		(hole-in ?x ?y)
+      		(hole-in ?z ?y)
+     	(forall (?w)
+        	(=> 
+			(hole-part-of ?w (mereological-sum ?x ?z))
+                        (hole-in ?w ?y))))
+
+;; Any object that includes the host of a hole is a host of that hole, 
+;; unless its parts also include parts of that very hole.
+
+(=> 
+	(and 
+		(hole-in ?x ?y)
+             	(part-of ?y ?z))
+      	(or
+		(overlaps ?x ?z)
+                (hole-in ?x ?z)))
+
+;; Overlapping holes have overlapping hosts. (However, two holes may occupy 
+;; the same region, or part of the same region, without sharing any parts.  
+;; Holes are immaterial, and can penetrate one another; mereological overlapping 
+;; is not implied by spatial co-localization.)")
+
+(=> 
+	(and 
+		(hole-in ?x ?y)
+             	(hole-in ?z ?w)
+             	(overlaps ?x ?z))
+      	(overlaps ?y ?w))
+
+;; No hole is atomic (though holes need not have proper hole-parts; 
+;; otherwise every hole would correspond to a pile of infinitely many, 
+;; gradually smaller holes).
+            
+(=> 
+	(instance-of ?x Hole)
+       	(exists (?y)
+       		(proper-part-of ?y ?x)))
+
+
+;; Topological Definitions
+
+;; Definition of 'principal-host-of'
+
+(= (principle-host-of ?x)
+   (the (?y)
+   	(forall (?w)
+		(<=> 
+			(overlaps ?w ?y)
+			(exists (?u)
+				(and 
+					(hole-in ?x ?u)
+				       	(self-connected ?u)
+				       	(overlaps ?w ?u)))))))
+
+(documentation principal-host-of "The principle host of ?x is ?x's maximally connected host (a notion taken here to be defined only when ?x is a hole).  We may intuitively regard this as the host of the hole, every other host being either a topologically scattered mereological aggregate including the principal host or a potential part of this latter.")
+
+;; Definition of 'cavity-in'
+
+(<=> 
+	(cavity-in ?x ?y)
+	(and 
+		(hole-in ?x ?y)
+		(exists (?z)
+			(and 
+				(surface-of ?z ?y)
+			      	(forall (?w)
+					(=> 
+						(part-of ?w ?z)
+					   	(connected ?x ?w)))))))
+
+(documentation cavity-in "?x is a cavity in ?y iff ?x is an internal hole enveloped by an entire host surface. A cavity is a topologically nonerasable discontinuity.")
+
+;; Definition of 'tunnel-through'
+
+(<=> 
+	(tunnel-through ?x ?y)
+	(and 
+		(hole-in ?x ?y)
+		(forall (?z)
+			(=> 
+				(and 
+					(part-of ?z ?y)
+				   	(self-connected ?z)
+				   	(hole-in ?x ?z))
+			      (/= (genus-of ?x) 0)))))
+
+(documentation tunnel-through "A tunnel (or a perforation) through a host is also a topologically non-erasable hole, characterized by the fact that its host has no connected part of genus 0 entirely hosting the hole. Note that a hole may at once be a tunnel and a cavity: it may be a cavity-tunnel, e.g.,. a 'toroidal' hole.")
+
+(documentation genus-of "Intuitively, the genus of an object is the maximum number of simultaneous cuts that can be made without separating the object into two unconnected pieces (0 if it is a sphere, 1 if it is a torus, etc.). This notion could be defined in terms of connected-with, but that would lead us too far afield.")
+
+;; Definition of 'hollow-in'
+
+(<=> 
+	(hollow-in ?x ?y)
+	(and 
+		(hole-in ?x ?y)
+		(not 
+			(tunnel-through ?x ?y))
+		(not 
+			(cavity-in ?x ?y))))
+
+(documentation hollow-in "?x is a hollow (or a depression) in ?y iff ?x is a hole in ?y which is neither a tunnel through ?y nor a cavity in ?y. This is always an external, topologically erasable disturbance, characterized by the fact that the relevant host must have a part of genus 0 entirely hosting the hole.")
+
+;; Topological Axioms
+
+;; Holes are selfconnected; i.e., there is no scattered hole.
+
+(=> 
+	(instance-of ?x Hole)
+       	(self-connected ?x))
+
+;; Holes are connected with their hosts.
+
+(=> 
+	(hole-in ?x ?y)
+       	(connected ?x ?y))
+
+;; Every hole has some self-connected host.
+
+(=> 
+	(instance-of ?x Hole)
+       	(exists (?y)
+       		(and 
+			(hole-in ?x ?y)
+                      	(self-connected ?y))))
+
+;; No hole can have a proper hole-part that is externally connected with exactly the same
+;; things as the hole itself.
+
+(=> 
+	(and 
+		(instance-of ?x Hole)
+               	(proper-hole-part-of ?y ?x))
+      	(exists (?z)
+            	(and 
+			(externally-connected ?x ?z)
+                      	(not 
+				(externally-connected ?y ?z)))))
+
+
+;; Morphological Definitions
+
+;; Definition of 'filled-by'
+
+(instance-of filled-by BinaryRelation)
+(instance-of filled-by Juncture)
+(nth-domain filled-by 1 Object)
+(nth-domain filled-by 2 Object)
+(documentation filled-by "Holes can be filled; 'filled' here mean PERFECTLY filled. Holes can be filled (without losing their status of holes) insofar as they determine a (partially) concave discontinuity in the surface of their host."
+ 
+;; Definition of 'fillable'
+
+(<=> 
+	(fillable ?x)
+	(Poss 
+		(exists (?y) 
+			(filled-by ?x ?y))))
+
+(documentation fillable "?x is fillable if it can be (perfectly) filled by something.")
+
+;; Definition of 'completely-filled-by'
+
+(<=> 
+	(completely-filled-by ?x ?y)
+	(exists (?z)
+		(and 
+			(part-of ?z ?y)
+			(filled-by ?x ?z))))
+
+(documentation completely-filled-by "?x is completely filled by ?y iff there is some part of ?y that perfectly fills ?x. This is a monotonic relation, in the sense that if ?x is completely filled by ?y and ?y is a part of ?z, then ?x is completely filled by ?z.")
+
+
+
+;; Definition of 'partially-filled-by'
+
+(<=> 
+	(partially-filled-by ?x ?y)
+	(exists (?z)
+		(and 
+			(part-of ?z ?x)
+			(completely-filled-by ?z ?y))))
+
+(documentation partially-filled-by "?x is partially filled by ?y iff there is some part of ?x that is completely filled by ?y. This too is a monotonic relation, in the sense that if ?x is partially filled by ?y and ?y is part of ?z, then ?x is partially filled by ?z. Note that a partial filler need not be wholly inside a hole (it may  stick out), which means that every complete filler also qualifies as (a limit cases of) a partial one.")
+
+
+;; Definition of 'properly-filled-by'
+
+(<=> 
+	(properly-filled-by ?x ?y)
+	(exists (?z)
+		(and 
+			(part-of ?z ?x)
+			(filled-by ?z ?y))))
+
+(documentation properly-filled-by "?x is properly (though perhaps incompletely) filled by ?y iff some part of ?x is perfectly filled by ?y. properly-filled-by is the dual of completely-filled-by, and is so related to partially-filled-by that ?x is properly filled by ?y iff ?x is partially filled by every part of ?y. (Thus, every perfect filler is both complete and proper in this sense.)")
+
+;; Definition of 'skin-of'
+
+(= (skin-of ?x)
+   (the (?y)
+	(forall (?z)
+		(<=> 
+			(overlaps ?z ?y)
+			(exists (?w)
+				(and 
+					(superficial-part-of ?w (principle-host-of ?x))
+				        (externally-connected ?x ?w)
+				        (overlaps ?z ?w)))))))
+
+(documentation skin-of "The skin of ?x is the fusion of those superficial parts of ?x's principal host with which ?x is externally connected (a notion that is meant to apply only when ?x is a hole).")
+
+;; Definition of 'free-superficial-part-of'
+
+(<=> 
+	(free-superficial-part-of ?x ?y ?z)
+	(and 
+		(superficial-part-of ?x ?y)
+	     	(not 
+			(connected ?x skin-of ?z))))
+
+(documentation free-superficial-part-of "?w is a free superficial part of ?z relative to ?x ; i.e., ?w is a superficial part of ?z that is not connected with ?x's host(s). (This notion is meant to apply only when ?x is a hole and ?z a corresponding perfect filler.)")
+
+
+;; Morphological Axioms
+
+;; Something is fillable just in case it is part of a hole; i.e., fillability is an exclusive
+;; property of holes and their parts.
+
+(<=> 
+	(instance-of ?x Fillable)
+       	(exists (?y)
+        	(and 
+			(instance-of ?y Hole)
+                       	(part-of ?x ?y))))
+
+;; Perfect fillers and fillable entities have no parts in common (rather, they may 
+;; occupy the same spatial region).
+
+(=> 
+	(and 
+		(filled-by ?x ?y)
+            	(instance-of ?z fillable))
+            (not (overlaps ?y ?z)))))
+
+;; A complete filler of (a part of) a hole is connected with everything 
+;; with which (that part of) the hole itself is connected.
+
+(=> 
+	(completely-filled-by ?x ?y)
+       	(forall (?z)
+   		(=> 
+			(connected ?z ?x)
+                        (connected ?z ?y))))
+
+;; Every hole is connected with everything with which a proper filler of 
+;; the hole is connected. 
+
+(=> 
+	(and 
+		(properly-filled-by ?x ?y)
+          	(connected-with ?z ?y))
+     	(connected ?z ?x))
+
+;; A perfect filler of (a part of) a hole completely fills every proper ;; part of (that part of) that hole.
+
+(=> 
+	(and 
+		(filled-by ?x ?y)
+              	(proper-part-of ?z ?x))
+     	(completely-filled-by ?z ?y))
+
+;; Every proper part of a perfect filler of (a part of) a hole properly 
+;; fills (that part of) that hole.
+
+(=> 
+	(and 
+		(filled-by ?x ?y)
+              	(proper-part-of ?z ?y))
+     	(properly-filled-by ?y ?z))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;; GENERAL AXIOMS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Formulate an axiom to the effect that a DiscreteProcess consists of interleaved 
+;; events and states
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;; NOTES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; We need to be able to distinguish instances of Continuant which are stuffs (e.g. water, oxygen, 
+;; sand) from instances of Continuant which are objects (e.g. table, jacket, notebook).  From
+;; what I can see, there is no provision for this distinction in Sowa's ontology.  Perhaps we
+;; could divide 'Continuant' into two disjoint classes, viz. Continuant-stuff 
+;; and Continuant-object.
+
+;; We may want to include something like the following axioms at some point.
+
+(=>
+     (playsRole ?Act ?Ent ?Role)
+     (capableOfDoing ?Ent ?Act ?Role))
+
+(=>
+     (and
+          (playsRole ?Act ?Res Resource)
+          (ends ?Act ?Time)
+          (holdsIn (STIB ?Time) (amountAvailable ?Res ?Amt1))
+          (holdsIn (STIF ?Time) (amountAvailable ?Res ?Amt2)))
+     (greaterThan ?Amt1 ?Amt2)) 

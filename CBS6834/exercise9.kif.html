@@ -1,0 +1,127 @@
+(instance Coil ShapeAttribute)
+(documentation Coil EnglishLanguage "A &%LongAndThin object
+arranged into a &%Circle or &%Cylinder.")
+(termFormat EnglishLanguage Coil "coil")
+(=>
+  (attribute ?C Coil)
+  (attribute ?C LongAndThin))
+
+
+(subclass Reel Device)
+(termFormat EnglishLanguage HoseReel "reel")
+(documentation Reel EnglishLanguage "A &%Device for &%Keeping something &%Pliable and &%LongAndThin in place, typically in a coiled shape.")
+
+(=>
+  (instance ?X Reel)
+  (attribute ?X Round))
+
+(=>
+  (instance ?X Reel)
+  (hasPurpose ?X 
+    (exists (?K ?H)
+      (and
+        (instance ?K Keeping)
+        (instance ?H CorpuscularObject)
+        (attribute ?H LongAndThin)
+        (attribute ?H Pliable)
+        (instrument ?K ?X)
+        (patient ?K ?H)))))
+
+(=>
+  (and 
+    (instance ?HR Reel)
+    (instance ?K Keeping)
+    (instance ?H CorpuscularObject)
+    (attribute ?H LongAndThin)
+    (attribute ?H Pliable)
+    (instrument ?K ?HR)
+    (patient ?K ?H))
+  (exists (?P)
+    (and
+      (part ?P ?H)
+      (meetsSpatially ?P ?HR))))
+
+(=>
+  (and 
+    (instance ?HR HoseReel)
+    (instance ?K Keeping)
+    (instance ?H CorpuscularObject)
+    (attribute ?H LongAndThin)
+    (attribute ?H Pliable)
+    (instrument ?K ?HR)
+    (patient ?K ?H))
+  (exists (?R)
+    (and
+      (instance ?R Rotating)
+      (patient ?R ?HR)
+      (subProcess ?R ?K))))
+
+
+
+(subclass SolderingIron ElectricDevice)
+(termFormat EnglishLanguage SolderingIron "soldering iron")
+(documentation SolderingIron EnglishLanguage "An &%ElectricDevice
+for melting &%Solder and thereby &%Attaching metallic objects
+to one another.")
+
+(=>
+  (instance ?S Soldering)
+  (exists (?SI)
+    (and
+      (instance ?SI SolderingIron)
+      (instrument ?S ?SI))))
+
+(=>
+  (instance ?SI SolderingIron)
+  (exists (?X ?M)
+    (and
+      (part ?X ?SI)
+      (instance ?M Metal)
+      (material ?M ?X))))
+
+(=>
+  (instance ?S Soldering)
+  (exists (?M)
+    (and
+      (instance ?M Melting)
+      (subProcess ?M ?S))))
+
+
+(subclass Ruler MeasuringDevice)
+(termFormat EnglishLanguage Ruler "ruler")
+(documentation Ruler EnglishLanguage "A &%Rigid &%instrument 
+used in measuring relatively small &%distances.")
+
+(=>
+  (instance ?R Ruler)
+  (hasPurpose ?R
+    (exists (?D ?M)
+      (and
+        (instance ?D LinearExtent)
+        (instance ?M Measuring)
+        (result ?M ?D)
+        (instrument ?M ?R)))))
+
+(=>
+  (instance ?R Ruler)
+  (attribute ?R Rigid))
+
+(=>
+  (and
+    (instance ?R Ruler)
+    (instance ?M Measuring)
+    (instrument ?M ?R)
+    (instance ?LE LinearExtent)
+    (result ?M ?LE))
+  (lessThan ?LE (MeasureFn 10 Meter)))
+
+
+
+
+
+
+
+
+
+
+

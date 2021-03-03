@@ -1,0 +1,343 @@
+<h2>CBS6834 - Formal Ontology</h2>
+
+<a href="CBS6834.html#exercises">Exercises</a> | <a href="CBS6834.html#references">References</a> | <a href="CBS6834.html#syllabus">Syllabus</a> |
+<a href="CBS6834.html#project">Project Ideas</a><P>
+
+This course is about formal ontology - the representation of the world
+in large theories coded in mathematical logic.  The majority of the course
+will address the Suggested Upper Merged Ontology 
+(<a href="http://www.ontologyportal.org">SUMO</a>)<P>
+
+Participants (who get book copies): <a href="http://www.comp.polyu.edu.hk/en/people/research_staff/index.php">Xu Jian</a>*, Francesca QUATTRI*, <a href="https://sites.google.com/site/jiangyanproject/">Yan JIANG</a>*, Michal SVARNY*, Jiajia LI*, Hongzhi XU*<P>
+<small>Additional book copies for: 
+<a href="http://www.cbs.polyu.edu.hk/staffs/huang-chu-ren.php">Chu-Ren HUANG*</a>, 
+<a href="http://www4.comp.polyu.edu.hk/~csgngai/">Grace NGAI</a>*, 
+<a href="http://www4.comp.polyu.edu.hk/~csluqin/">Qin LU</a>*, 
+Huarui ZHANG*, Jing DING*, Shan WANG*, Jingxia LIN,  LEE Yat-mei (Sophia)*, Yao Yao*</small><br>
+<small>an * denotes that I've delivered a book to you</small><P>
+
+<a name="exercises"><h2>Exercises</h2>
+
+<b><a href="CBS6834/exercise9.kif.html">Exercise 9</a></b> (done in class)<P>
+
+<b>Exercise #7:</b><P>
+
+<a href="http://www.eprover.org">Download</a> the E prover.  Windows users can
+get a pre-compiled <a href="http://people.csail.mit.edu/kostas/E/">binary</a><P>
+
+To compile E on Linux, follow the instructions in the README file (slightly edited here)<P>
+
+<pre>tar -xzf E.tgz 
+cd E
+./configure
+make
+cd PROVER
+./eprover -h | more
+</pre>
+
+You'll create a file with the following inference test for E:<P>
+
+<pre>
+p(X) => q(X)
+q(X)|r(X) => t(X)
+p(a)
+
+t(a) | r(a)        - conjecture
+</pre>
+
+But the actual test file requires some syntactic "wrappers" around the formulae<P>
+
+<pre>
+fof(ax1,axiom, (p(X) => q(X))).
+fof(ax2,axiom, ((q(X)|r(X)) => t(X))).
+fof(ax3,axiom, (p(a))).
+fof(ax4,axiom, (~(t(a) | r(a) ))).
+</pre>
+
+Save this file as ex.tptp.  Run the following command line invocation (changing the path to eprover as needed in your installation) for Linux to run the prover and generate a proof.
+
+<pre>
+/home/user/Programs/E/PROVER/eprover -xAuto -tAuto --tptp3-in --tptp3-out -l 2 ex.tptp 
+
+</pre>
+
+Can you follow the proof and see why a contradiction follows from the four formulas in the input?
+
+You can get many more test problems from the <a href="http://www.cs.miami.edu/~tptp/">TPTP</a><P>
+
+<b>Completed in class by:</b> <i>Michal, Prof. Jiang, Hongzhi, Francesca, HuaRui</i><P>
+
+<b>Exercise #6:</b><P>
+
+Convert to CNF:
+
+<pre>((((![X]:a(X))|b(X)) | (?[X]:(?[Y]:p(X,f(Y))))) <=> q(g(a),X))</pre>
+
+<b>Completed so far by:</b> <i>Michal</i><P>
+
+Due Nov 12<P>
+
+<b>Exercise #5:</b><P>
+
+Add a WordNet-SUMO mapping for kangaroo by editing the wordnet noun file.
+Restart Sigma and verify that it loads the new mapping.
+A prerequisite for this exercise is having Sigma running on your laptop.  Follow the
+instructions in the 
+<a href="https://github.com/ontologyportal/sigmakee/blob/master/suo-kif.pdf">Sigma 
+User Guide</a> to install 
+<a href="https://github.com/ontologyportal/sigmakee">Sigma</a> <P>
+
+Due Oct 29<P>
+
+<b>Exercise #4:</b><P>
+
+<i>Part #1</i><P>
+Create an upper ontology without looking at SUMO or any other major ontology. 
+Start with a taxonomy and English definitions.  Create
+at least two dozen terms. Try to formalize a few axioms.  Don't wait until the
+deadline to do this part, since there's a part #2!<P>
+
+<i>Part #2</i><P>
+Form into groups of 2 or 3. Review each others' ontologies. Submit review comments to
+<a href="mailTo:apease@articulatesoftware.com">me</a>.<P>
+
+Due: Oct 29<P>
+
+<b>Completed so far by:</b> <i></i><P>
+
+<b>Exercise #3:</b><P>
+
+Find appropriate "parent" terms in SUMO for the following: crater,
+nosh, fault line, biohazard, to peep, to thud<P>
+
+Represent the statements below in SUO-KIF syntax and terms from SUMO whenever possible.<P>
+
+<ul>
+<li>if John likes Sue then Sue likes John
+<li>if John likes someone, that person likes him
+<li>If Someone likes someone else then he or she has the attribute of being likable
+<li>Every likable person knows someone
+<li>Every human has two feet
+<li>Every human is likable in the afternoon
+<li>John eats with a fork
+</ul>
+
+Create a very basic definition for kangaroo, consisting of at least the following
+statements in SUO-KIF and SUMO, paying careful attention to strictly correct
+syntax.<P>
+<ul>
+<li>documentation string. Maybe extract something short from Wikipedia
+<li>termFormat expression
+<li>subclass statement
+</ul>
+
+The following are harder, and may be considered "extra credit"<P>
+<ul>
+<li>Create a new term and definition for "skipping" (as in "The child was skipping down the street.")
+<li>Create a new term and definition for "bookshelf"
+<li>Policeman
+<li>Leeward (toward the wind)
+<li>Being a lawyer in the US implies passing the bar exam in the state one is allowed to practice
+</ul><P>
+
+<b>Completed so far by:</b> <i>Michal, Francesca, Prof Jiang, Jiajia, XU Jian</i><P>
+
+<b>Exercise #2:</b><P>
+
+Represent the statements below in SUO-KIF syntax.  You may be able to do
+this just by looking at examples in the 
+<a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO">SUMO</a>
+browser (type terms like "Object", "part", "Table" into the "KB term" field).  You
+can also use the 
+<a href="https://github.com/ontologyportal/sigmakee/blob/master/suo-kif.pdf">SUO-KIF 
+manual</a> as a reference. Also helpful may be 
+<a href="http://www.amazon.com/Schaums-Outline-Second-Edition-Series/dp/0071755462/ref=sr_1_1?ie=UTF8&qid=1348527333&sr=8-1&keywords=schaums+outline+logic">Schaums Outlines in Logic</a>,
+chapters 3 and 4, for more examples and discussion of logical representation.<P>
+
+<ul>
+<li>All men are mortal
+<li>Some men are rich 
+<li>Every city has a policeman who has been beaten by every thief in the city 
+<li>In every city, each policeman has been beaten by some thief in the city 
+<li>In some cities there are policemen who have been beaten by every thief in the city 
+</ul><P>
+
+Please email your exercises to 
+<a href="mailTo:apease@articulatesoftware.com">me</a>
+by October 7 so we can discuss them in the
+next class.  Please make the subject field of your email "CBS6834: Exercise #2".
+Feel free to ask questions!<P>
+
+<b>Completed so far by:</b> <i>Prof Jiang, Jiajia, Michal, Francesca, XU Jian</i><P>
+
+<b>Exercise #1:</b><P>
+
+Write a paragraph or so each on the following:<P>
+
+<ul>
+<li>describe any situation where two groups of people weren't communicating,
+due to some terminological confusion.  This could consist of two groups
+of people using the same term or label to mean different things, or two
+groups using different terms to mean the same thing.
+
+<li>Give an example of the symbol grounding problem in your experience
+
+<li>Describe any large system of metadata in your experience
+
+<li>Brainstorm on a short-term ontology-based project
+<ul><li>A good default project might be adding to SUMO any terms from the 
+standard list of <a href="http://en.wikipedia.org/wiki/List_of_Kangxi_radicals">Chinese
+radicals</a> that do not already have an equivalent in SUMO.  We may do some of these
+in class together.</ul>
+
+<li>Start a file of terms and definitions - this is a sort of mini dictionary
+that will be the start for formalising terms based on SUMO.  It should begin
+to cover terms in your proposed ontology project.
+</ul>
+
+Please email your exercises to 
+<a href="mailTo:apease@articulatesoftware.com">me</a>
+by September 23 so we can discuss them in the
+next class.  Please make the subject field of your email "CBS6834: Exercise #1".
+Feel free to ask questions!<P>
+
+<b>Completed so far by:</b> <i>Francesca, XU Jian, Jiajia, Michal</i><P>
+
+<a name="references"><h2>References and Resources</h2>
+
+<ul>
+<li>The textbook for the course is 
+<a href="http://www.ontologyportal.org/Book.html">Ontology: A Practical Guide</a> .  
+
+<li>Much of the content of the first lecture, and some introduction of the 
+material in subsequent lectures is covered in my 
+<a href="http://www.youtube.com/watch?v=EFQRvyyv7Fs">on line lecture</a>
+
+<li>If at all possible, bring a laptop to class.  You'll need to be online to do
+some of the exercises
+
+<li>The Sigma browser, is a primary resource.  With it you can see all the logical axioms that
+comprise the SUMO theory, as well as the mappings to WordNet -
+<a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO">Sigma browser</a>.
+At any time during the course, it's a good idea to get started on installing a local
+version of Sigma on your laptop.  It's open source and can be 
+<A href="https://github.com/ontologyportal/sigmakee">downloaded</a>.  Installation can be a bit
+tricky, so we may want to schedule a lab session where I can help you get it running, but
+give it a try yourself first.
+
+<li>Here are a few links to important parts of SUMO to help you get started thinking
+about the class projects.
+  <ul>
+  <li>The family of  
+<a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=EnglishLanguage&flang=SUO-KIF&term=CaseRole">CaseRole(s)</a> are relations that specify the roles of participants in
+<a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=EnglishLanguage&flang=SUO-KIF&term=Processes">Processes</a>.  An interesting project would be to expand the set of CaseRoles.  In particular, the relation 
+<a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=EnglishLanguage&flang=SUO-KIF&term=patient">patient</a> is overused, and more specialized relations are needed.
+  <li>a link to 
+<a href="http://sigma.ontologyportal.org:8080/sigma/Browse.jsp?kb=SUMO&lang=EnglishLanguage&flang=SUO-KIF&term=SpatialRelation">SpatialRelation</a>, 
+which is a starting point for any work in regards to Casati&Varzi's Parts and Places  
+
+</ul>
+</ul>
+
+<b>Books</b><P>
+
+<ul>
+<li><a href="http://www.amazon.com/Companion-Metaphysics-Blackwell-Companions-Philosophy/dp/0631199993">A Companion to Metaphysics</a>
+is a great resource.  One possibility is for the student pick a very concrete
+topic from this encyclopedia and relate it to SUMO, with a proposed
+axiomatization.
+
+<li>Casati and Varzi's 
+<a href="http://www.amazon.com/Parts-Places-Structures-Spatial-Representation/dp/026203266X/ref=sr_1_1?s=books&ie=UTF8&qid=1347736148&sr=1-1&keywords=parts+and+places%2C+casati+and+varzi">Parts and Places</a>
+appears to be out of print, but it can be ordered used from several sellers.  One student project could be to read the book, and propose any axiomatizations that might not already be covered in SUMO, along with a comparison and analysis of any required differences and open issues
+
+<li>Loux's 
+<a href="http://www.amazon.com/Metaphysics-Contemporary-Introduction-Introductions-Philosophy/dp/0415401348/ref=sr_1_1?s=books&ie=UTF8&qid=1347736261&sr=1-1&keywords=loux%2C+metaphysics">Metaphysics: 
+A Contemporary Introduction</a> is a good source for "big" issues.  A student project from this book would likely be more philosophical and less applied - an essay and not a formal axiomatization.
+
+<li><a href="http://www.amazon.com/WordNet-Electronic-Database-Language-Communication/dp/026206197X/ref=sr_1_2?s=books&ie=UTF8&qid=1347736498&sr=1-2&keywords=Wordnet">WordNet</a>
+If we have more students join, it would be good to have one person
+concentrate on issues in the SUMO-WordNet mappings, possibly sketching a
+concrete representation and core for the 
+<a href="professional/Brno.pdf">PhraseBank</a> proposal Christiane Fellbaum and I did years ago.
+</ul><P>
+
+This is just the list of hardcopies.  I'd also expect to suggest reading
+of some of my application papers that are 
+<a href="professional.html">available</a> on the web.  My
+preference is to give each student an in-depth topic beyond my book,
+covering just one of the books above.  So, the length of the reading
+list depends on the number of students joining the course, and how many
+professors (if any) join in as well.  I'd like to be sure that we have
+one student tackle an axiomatization of parts and
+places, and the other look into an expanded axiomatization of case roles
+wrt SUMO, which I think is probably the most practical issue that needs
+addressing at the moment.  It's also one that can be addressed
+incrementally, so can be adapted well to the time and interests of a
+student.<P>
+
+<a name="syllabus"><h2>Syllabus</h2>
+
+Please note that this is subject to change based on Prof. Huang's guidance.<P>
+
+<ul>
+<li><b>Class 1: Introduction</b><br>
+Motivation, Responding to the Critics, The Symbol Grounding Problem, Applications
+
+<li><b>Class 2: Knowledge Representation</b><br>
+Informal Languages, Frames, Description Logic, Propositional and Predicate Logic, First-Order Logic, Higher-Order Logics, SUO-KIF Details, Conversion from SUO-KIF to strict First-Order Logic
+
+<li><b>Class 3: Suggested Upper Merged Ontology</b><br>
+Validation, Principles of Construction, Digression - Open Research, SUMO History, SUMO Overview, SUMO's Eleven Modules, Lower Level Ontologies, Ontological Issues, Ontology Code Management, SUMO Details and Examples, Semiotics Content, Physical Systems
+
+<li><b>Class 4: Ontologies in Comparison and Extension</b><br>
+WordNet, DOLCE, Basic Formal Ontology, Open Biomedical Ontologies, Semantic Web, DBPedia
+Digression: Ontology Development Pitfalls,  YAGO: Extending SUMO with Wikipedia, eBay ontologies
+
+<li><b>Class 5: SUMO, WordNet Mappings, Language Generation</b><br>
+Interpreting Language, Global WordNet, The Interlingual Index, Arabic and Filipino Wordnets, Language Generation
+
+<li><b>Class 6: Knowledge Engineering Tools</b><br>
+Browsing and Display, Analysis and Debugging, Inference, Higher-Order Logic, Mapping, Merging and Translation, Working with Sigma and SUMO
+
+<li><b>Class 7: Using SUMO for Inference</b><br>
+Anatomy of a first order theorem prover, Proof Presentation, Normal form conversion
+
+<li><b>Class 8: English to Logic Translation</b><br>
+Simple Parsing and Interpretation, Issues in Translation, CELT Components
+
+<li><b>Class 9: Review of Formalization and Inference</b><br>
+Class exercises
+
+<li><b>Class 10: (Nov 26) Student lecture - Xu Jian - Biography Ontology</b>
+
+<li><b>Class 11: (Dec 3) Student lecture - Michal Svarny - Process Granularity</b>
+
+<li><b>Class 12: (Dec 10) Event Semantics and Causality</b>
+
+<li><b>Class 13: (Dec 17) Student lecture - Francesca Quattri - TBD</b>
+
+</ul><P>
+
+<a name="project"><h2>Project Ideas</h2>
+
+<ul>
+<li>Tree-based editor in Sigma for creating subclass/instance hierarchies in KIF
+<li>Create a mode in Emacs or another text editor for SUO-KIF/Sigma
+<li>Integrate the E prover into Sigma
+<li>Fix the set and list theories in SUMO to conform to Zeno-Frankel or other major approach
+<li>Elaborate the case role structure in SUMO, revising use of patient to be more specific
+<li>Package Sigma for all three four (or more) OS's so it's easy to install
+<li>Reload WordNet files button in Sigma
+<li>Allow loading of multiple wordnets in Sigma
+<li>Fix the error message reporting in Sigma
+<li>Help me work on a better manual
+</ul><P>
+
+contact: Adam Pease <a href="mailTo:apease@articulatesoftware.com">email</a>,
+<a href="professional.html">web</a><P>
+ 
+
+
+
+

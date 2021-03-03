@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language id="kif" _name="KIF" version="2.0" _section="Sources">
+  <metadata>
+    <property name="mimetypes">text/x-kif</property>
+    <property name="globs">*.kif</property>
+  </metadata>
+  <styles>
+    <style id="comment" _name="Comment" map-to="def:comment"/>
+    <style id="string" _name="String" map-to="def:preprocessor"/>
+    <style id="escaped-character" _name="Escaped Character" map-to="def:special-char"/>
+    <style id="keyword" _name="Keyword" map-to="def:keyword"/>
+    <style id="operator" _name="Data Type" map-to="def:type"/>
+    <style id="identifier" _name="Identifier" map-to="def:constant"/>
+    <style id="variable" _name="Identifier" map-to="xml:attribute-name"/>
+  </styles>
+  <definitions>
+    <context id="kif">
+      <include>
+
+    <context id="line-comment" style-ref="comment" end-at-line-end="true" class="comment" class-disabled="no-spell-check">
+      <start>;</start>
+      <include>
+        <context ref="def:in-comment"/>
+      </include>
+    </context>
+
+    <context id="string" style-ref="string" class="string" class-disabled="no-spell-check">
+      <start>"</start>
+      <end>"</end>
+      <include>
+        <context ref="def:escape"/>
+      </include>
+    </context>
+
+        <context ref="def:decimal"/>
+        <context ref="def:float"/>
+
+    <context id="variable" style-ref="variable">
+      <match>\?[\w\d_-]+</match>
+    </context>
+
+        <context id="operator" style-ref="operator">
+	  <keyword>\=\></keyword>
+          <keyword>and</keyword>
+          <keyword>or</keyword>
+          <keyword>not</keyword>
+          <keyword>forall</keyword>
+          <keyword>exists</keyword>
+        </context>
+
+        <context id="relation" style-ref="identifier">
+          <keyword>instance</keyword>
+          <keyword>subclass</keyword>
+          <keyword>domain</keyword>
+          <keyword>domainSubclass</keyword>
+        </context>
+
+        <context id="keyword" style-ref="keyword">
+          <keyword>Entity</keyword>
+          <keyword>Object</keyword>
+          <keyword>Process</keyword>
+          <keyword>Abstract</keyword>
+        </context>
+
+      </include>
+    </context>
+  </definitions>
+</language>
